@@ -43,11 +43,40 @@ Use Python 3.11–3.13, create a virtual environment, install `requirements.txt`
 
 ## Sample Run
 
-To be recorded after the tools and loop are implemented.
+These outputs used the local fallback because no model key was present in this workspace. A valid key produces model-written wording, and `python test.py` checks the actual service.
+
+```text
+$ python app.py ask 'vintage graphic tee under $30, size M'
+Found:    Y2K Baby Tee — Butterfly Print — $18.0 on depop
+Outfit:   Wear the Y2K Baby Tee — Butterfly Print with Baggy straight-leg jeans, dark wash and Chunky white sneakers for an easy secondhand look.
+Fit card: Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for an easy secondhand look.
+0 model calls this session
+
+$ python app.py ask 'designer ballgown size XXS under $5'
+No listings match that request. Try changing a keyword, choosing another size, or raising the price limit.
+0 model calls this session
+```
+
+The three tools were also called independently:
+
+```text
+$ python -c "from tools import search_listings; print([(x['id'], x['title'], x['price']) for x in search_listings('vintage graphic tee', 'M', 30)])"
+[('lst_002', 'Y2K Baby Tee — Butterfly Print', 18.0)]
+
+$ python -c "from tools import suggest_outfit; from utils.data_loader import load_listings,get_example_wardrobe; print(suggest_outfit(load_listings()[1],get_example_wardrobe()))"
+Wear the Y2K Baby Tee — Butterfly Print with Baggy straight-leg jeans, dark wash and Chunky white sneakers for an easy secondhand look.
+
+$ python -c "from tools import create_fit_card; from utils.data_loader import load_listings; print(create_fit_card('Baggy jeans and white sneakers.',load_listings()[1]))"
+Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Baggy jeans and white sneakers.
+```
 
 ## How I Used AI
 
-To be completed after implementation.
+**Moment 1:** I used Codex to implement the tool contracts. The initial search included a mesh top for a graphic tee request because its description mentioned layering under a tee. I narrowed the garment check to the title and style tags, and the query now returns only the tee.
+
+**Moment 2:** I used Codex to examine a model caption that claimed the wearer was selling the listing. I tightened the prompt and added a check that falls back to a caption grounded in the actual listing. I then ported the loop to this v2026 starter's `generate.py`, keeping its pacing, cache, and future MCP files.
+
+The three additional criteria in `criteria.md` were AI assisted in the earlier fork. I need to personally review and defend them as the assignment requires.
 
 ---
 
