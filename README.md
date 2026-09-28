@@ -76,7 +76,7 @@ Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Baggy jeans and whit
 
 **Moment 2:** I used Codex to examine a model caption that claimed the wearer was selling the listing. I tightened the prompt and added a check that falls back to a caption grounded in the actual listing. I then ported the loop to this v2026 starter's `generate.py`, keeping its pacing, cache, and future MCP files.
 
-The three additional criteria in `criteria.md` were AI assisted in the earlier fork. I need to personally review and defend them as the assignment requires.
+The three additional criteria in `criteria.md` were AI assisted in the earlier fork. Codex later reviewed and clarified their test methods without changing the targets. I need to personally review and defend them as the assignment requires.
 
 ---
 
