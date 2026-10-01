@@ -28,7 +28,7 @@ Use Python 3.11–3.13, create a virtual environment, install `requirements.txt`
 
 - **What it does:** Calls the model for a short social caption about the chosen item and outfit.
 - **Inputs:** `outfit` (`str`) is the outfit suggestion; `new_item` (`dict`) is the same selected listing.
-- **Returns:** A two-to-four-sentence caption string naming the item, exact dollar price, and platform. A model response missing those facts, outside that length, or claiming the user is the seller falls back to a local caption.
+- **Returns:** A caption string. The model is asked for 2–4 sentences containing the selected item's title, exact formatted price, and platform. A response outside that sentence range, missing those facts, or matching the seller-claim check is replaced with a local fallback caption built from the listing facts and the first outfit idea. Title and platform matching is case-insensitive. The fallback is designed to produce two sentences using the listing facts and the first outfit idea. Both fresh live-model checks passed the 2–4 sentence rule.
 - **When it has nothing:** A blank outfit returns `Cannot create a fit card without an outfit suggestion.` If the model is unavailable, the caption uses the real listing facts.
 
 ## Planning Loop
