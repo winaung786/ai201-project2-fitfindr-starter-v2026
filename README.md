@@ -4,7 +4,7 @@ Read [RUNNING.md](RUNNING.md) for setup and commands. The Unit 4 sections below 
 
 ## What This Does
 
-FitFindr takes a request such as `vintage graphic tee under $30, size M`, searches the supplied secondhand listings, selects the highest-ranked match, suggests an outfit from a wardrobe, and writes a caption. If nothing matches, it stops after search and names filters the user can change. An empty wardrobe gets general pairing advice.
+FitFindr takes a request such as `vintage graphic tee under $30, size M`, searches the supplied secondhand listings, selects the highest-ranked match, suggests two outfits from a wardrobe, and writes a caption. If nothing matches, it stops after search and names filters the user can change. An empty wardrobe gets two general pairing ideas labeled as general because no wardrobe is saved.
 
 Use Python 3.11–3.13, create a virtual environment, install `requirements.txt`, copy `.env.example` to `.env`, put your own `GEMINI_API_KEY` there, and run `python test.py`. The starter's `generate.py` handles model pacing and caching. Without a key, the text tools use a local fallback, but `test.py` still requires a valid key.
 
@@ -19,21 +19,21 @@ Use Python 3.11–3.13, create a virtual environment, install `requirements.txt`
 
 ### `suggest_outfit(new_item: dict, wardrobe: dict) -> str`
 
-- **What it does:** Calls the model for an outfit using the selected listing and wardrobe pieces.
+- **What it does:** Calls the model for two outfits using the selected listing and wardrobe pieces.
 - **Inputs:** `new_item` (`dict`) is one complete listing; `wardrobe` (`dict`) contains an `items` list of wardrobe item dictionaries.
-- **Returns:** A nonempty suggestion string naming the selected item and, when available, owned pieces.
-- **When it has nothing:** With an empty wardrobe it gives general pairings. If the model is unavailable it returns a local suggestion using the supplied item and wardrobe.
+- **Returns:** A nonempty string with two numbered outfit suggestions naming the selected item and, when available, wardrobe pieces by their exact names.
+- **When it has nothing:** With an empty wardrobe it gives two general pairings and says they are general because no wardrobe is saved. If the model is unavailable or fails the output checks, it returns two local suggestions using the supplied item and wardrobe.
 
 ### `create_fit_card(outfit: str, new_item: dict) -> str`
 
 - **What it does:** Calls the model for a short social caption about the chosen item and outfit.
 - **Inputs:** `outfit` (`str`) is the outfit suggestion; `new_item` (`dict`) is the same selected listing.
-- **Returns:** A caption string naming the item, exact dollar price, and platform. A model response missing those facts or claiming the user is the seller falls back to a local caption.
+- **Returns:** A two-to-four-sentence caption string naming the item, exact dollar price, and platform. A model response missing those facts, outside that length, or claiming the user is the seller falls back to a local caption.
 - **When it has nothing:** A blank outfit returns `Cannot create a fit card without an outfit suggestion.` If the model is unavailable, the caption uses the real listing facts.
 
 ## Planning Loop
 
-**Branch rule:** If `search_listings` returns `[]`, write a helpful message to the session and stop before `suggest_outfit`. Otherwise store the first result, call `suggest_outfit`, then `create_fit_card` with values read from the session.
+**Branch rule:** If `search_listings` returns `[]`, write a helpful message to the session and stop before `suggest_outfit`. Otherwise store the first result, call `suggest_outfit`, then `create_fit_card` with values read from the session. If the outfit suggestion is blank, stop before the fit card.
 
 **Where it lives:** `agent.py::run_agent`.
 
@@ -48,8 +48,9 @@ These outputs used the local fallback because no model key was present in this w
 ```text
 $ python app.py ask 'vintage graphic tee under $30, size M'
 Found:    Y2K Baby Tee — Butterfly Print — $18.0 on depop
-Outfit:   Wear the Y2K Baby Tee — Butterfly Print with Baggy straight-leg jeans, dark wash and Chunky white sneakers for an easy secondhand look.
-Fit card: Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for an easy secondhand look.
+Outfit:   1) Wear the Y2K Baby Tee — Butterfly Print with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.
+2) Style the Y2K Baby Tee — Butterfly Print with Wide-leg khaki trousers and Black combat boots for a different look.
+Fit card: Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.
 0 model calls this session
 
 $ python app.py ask 'designer ballgown size XXS under $5'
@@ -64,7 +65,8 @@ $ python -c "from tools import search_listings; print([(x['id'], x['title'], x['
 [('lst_002', 'Y2K Baby Tee — Butterfly Print', 18.0)]
 
 $ python -c "from tools import suggest_outfit; from utils.data_loader import load_listings,get_example_wardrobe; print(suggest_outfit(load_listings()[1],get_example_wardrobe()))"
-Wear the Y2K Baby Tee — Butterfly Print with Baggy straight-leg jeans, dark wash and Chunky white sneakers for an easy secondhand look.
+1) Wear the Y2K Baby Tee — Butterfly Print with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.
+2) Style the Y2K Baby Tee — Butterfly Print with Wide-leg khaki trousers and Black combat boots for a different look.
 
 $ python -c "from tools import create_fit_card; from utils.data_loader import load_listings; print(create_fit_card('Baggy jeans and white sneakers.',load_listings()[1]))"
 Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Baggy jeans and white sneakers.
@@ -75,6 +77,8 @@ Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Baggy jeans and whit
 **Moment 1:** I used Codex to implement the tool contracts. The initial search included a mesh top for a graphic tee request because its description mentioned layering under a tee. I narrowed the garment check to the title and style tags, and the query now returns only the tee.
 
 **Moment 2:** I used Codex to examine a model caption that claimed the wearer was selling the listing. I tightened the prompt and added a check that falls back to a caption grounded in the actual listing. I then ported the loop to this v2026 starter's `generate.py`, keeping its pacing, cache, and future MCP files.
+
+**Slide contract review:** After reading the full Unit 3 slide deck, I updated `suggest_outfit` to return two numbered ideas and to label general ideas when no wardrobe is saved. I also required two to four sentences in `create_fit_card`. Local checks covered both fallback and model-output validation; the revised prompts have not had a fresh live-model evaluation.
 
 The three additional criteria in `criteria.md` were AI assisted in the earlier fork. Codex later reviewed and clarified their test methods without changing the targets. I then reviewed criteria 3–5 and wrote the reasons for their targets in my own words.
 

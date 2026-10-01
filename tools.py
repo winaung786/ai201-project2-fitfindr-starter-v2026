@@ -62,34 +62,69 @@ def _fallback_outfit(new_item: dict, wardrobe_items: list[dict]) -> str:
     wanted_categories = ["bottoms", "shoes"] if category == "tops" else ["tops", "shoes"]
     if category == "shoes":
         wanted_categories = ["tops", "bottoms"]
-    owned = []
+    choices = []
     for wanted in wanted_categories:
-        match = next((item["name"] for item in wardrobe_items if item["category"] == wanted), None)
-        if match:
-            owned.append(match)
-    if owned:
-        return f"Wear the {title} with {' and '.join(owned)} for an easy secondhand look."
-    return f"Pair the {title} with relaxed jeans and clean sneakers for an easy everyday look."
+        names = [item["name"] for item in wardrobe_items if item["category"] == wanted]
+        if names:
+            choices.append(names)
+    if choices:
+        first = " and ".join(names[0] for names in choices)
+        second = " and ".join(names[1] if len(names) > 1 else names[0] for names in choices)
+        return (
+            f"1) Wear the {title} with {first} for a relaxed look.\n"
+            f"2) Style the {title} with {second} for a different look."
+        )
+    if wardrobe_items:
+        owned = wardrobe_items[0]["name"]
+        return (
+            f"1) Pair the {title} with {owned} and relaxed jeans.\n"
+            f"2) Try the {title} with {owned} and clean sneakers."
+        )
+    return (
+        "No wardrobe is saved, so these are general outfit ideas:\n"
+        f"1) Pair the {title} with relaxed jeans and clean sneakers.\n"
+        f"2) Try the {title} with a neutral skirt and ankle boots."
+    )
 
 
 def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
-    """Suggest an outfit using a model, with useful advice for an empty wardrobe."""
+    """Suggest two outfits, labeling general ideas when no wardrobe is saved."""
     items = wardrobe.get("items", [])
     names = [item["name"] for item in items]
     if names:
         context = "Available owned pieces: " + "; ".join(names)
-        rule = "Use only these named owned pieces. Suggest one outfit with the new item."
+        rule = "Use only these named owned pieces, spelled exactly as shown."
     else:
         context = "The user's wardrobe is empty."
-        rule = "Give general pairing ideas, but do not claim the user owns any clothes."
+        rule = "These are general ideas because no wardrobe is saved. Never claim the user owns any clothing."
     prompt = (
         f"You are a concise thrift stylist. New item: {new_item['title']} "
         f"({new_item['category']}; colors: {', '.join(new_item['colors'])}). "
-        f"{context} {rule} Name the new item and keep the answer to 1-2 sentences."
+        f"{context} {rule} Give exactly two distinct outfit suggestions, one per line "
+        "labeled 1) and 2). Name the new item by its exact title and pair it "
+        "with at least one other clothing or shoe type in each idea. "
+        "If the wardrobe is empty, first say that these are general ideas "
+        "because no wardrobe is saved."
     )
     try:
         result = generate(prompt, temperature=0.6).strip()
-        return result if new_item["title"].lower() in result.lower() else f"For the {new_item['title']}: {result}"
+        ideas = re.findall(r"(?m)^\s*[12][).]\s*(.+)$", result)
+        has_owned_pieces = not names or all(
+            any(name in idea for name in names) for idea in ideas
+        )
+        general_label = bool(re.search(r"no wardrobe|wardrobe is empty", result, re.I))
+        ownership_claim = bool(re.search(
+            r"\b(?:my|our|your)\b|\b(?:you|the user|i|we)\s+(?:already\s+)?(?:have|own)\b",
+            result, re.I,
+        ))
+        if (
+            len(ideas) == 2
+            and new_item["title"].lower() in result.lower()
+            and has_owned_pieces
+            and (names or (general_label and not ownership_claim))
+        ):
+            return result
+        return _fallback_outfit(new_item, items)
     except ModelUnavailable:
         return _fallback_outfit(new_item, items)
 
@@ -102,7 +137,7 @@ def create_fit_card(outfit: str, new_item: dict) -> str:
     price = f"${float(new_item['price']):.2f}"
     platform = new_item["platform"]
     prompt = (
-        "Write a casual social-media outfit caption in 1-3 sentences. "
+        "Write a casual social-media outfit caption in 2-4 sentences. "
         f"Mention this exact item title once: {title}. Mention its exact price {price} "
         f"and platform {platform} once each. Outfit: {outfit}. "
         "The wearer found this secondhand item and is not its seller. Do not say they "
@@ -112,9 +147,18 @@ def create_fit_card(outfit: str, new_item: dict) -> str:
     try:
         result = generate(prompt, temperature=0.9).strip()
         seller_claim = re.search(r"\b(?:i|we)\s+(?:just\s+)?(?:listed|sell|selling)\b", result, re.I)
-        if not seller_claim and title.lower() in result.lower() and price in result and platform.lower() in result.lower():
+        sentences = [part for part in re.split(r"(?<=[.!?])\s+", result) if part.strip()]
+        if (
+            not seller_claim
+            and 2 <= len(sentences) <= 4
+            and title.lower() in result.lower()
+            and price in result
+            and platform.lower() in result.lower()
+        ):
             return result
     except ModelUnavailable:
         pass
-    outfit_text = re.sub(rf"\bthe\s+{re.escape(title)}", "it", outfit.strip(), count=1, flags=re.I)
-    return f"Found {title} for {price} on {platform}. {outfit_text}"
+    ideas = re.findall(r"(?m)^\s*[12][).]\s*(.+)$", outfit)
+    outfit_text = ideas[0] if ideas else outfit.strip().splitlines()[0]
+    outfit_text = re.sub(rf"\bthe\s+{re.escape(title)}", "it", outfit_text, count=1, flags=re.I)
+    return f"Found {title} for {price} on {platform}. {outfit_text.rstrip('.!?')}."
