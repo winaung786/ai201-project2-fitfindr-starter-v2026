@@ -3,7 +3,8 @@
 import re
 
 import trace
-from tools import create_fit_card, search_listings, suggest_outfit
+from mcp_client import MCPError, call_tool
+from tools import create_fit_card, suggest_outfit
 
 
 def new_session(query: str, wardrobe: dict) -> dict:
@@ -50,8 +51,8 @@ def run_agent(query: str, wardrobe: dict) -> dict:
         if stage == "search":
             session["tool_calls"].append({"tool": "search_listings", "inputs": session["parsed"].copy()})
             try:
-                session["search_results"] = search_listings(**session["parsed"])
-            except (OSError, ValueError, KeyError, TypeError):
+                session["search_results"] = call_tool("search_listings", session["parsed"])
+            except (MCPError, OSError, ValueError, KeyError, TypeError):
                 session["error"] = "The listings could not be loaded. Check the data file and try again."
                 break
             if not session["search_results"]:

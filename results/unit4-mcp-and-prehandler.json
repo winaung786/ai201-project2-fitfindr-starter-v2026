@@ -1,0 +1,23 @@
+{
+  "when_utc": "2026-10-03T22:34:18.874882+00:00",
+  "records": [
+    {
+      "label": "mcp_normal_query",
+      "query": "vintage graphic tee under $30",
+      "cache_enabled": false,
+      "one_key_character_changed": false,
+      "returncode": 0,
+      "stdout": "\n  Found:    Graphic Tee — 2003 Tour Bootleg Style — $24.0 on depop\n\n  Outfit:   1) Graphic Tee — 2003 Tour Bootleg Style paired with Baggy straight-leg jeans, dark wash, Black combat boots, and Black crossbody bag\n2) Graphic Tee — 2003 Tour Bootleg Style paired with Wide-leg khaki trousers, Vintage black denim jacket, and Chunky white sneakers\n\n  Fit card: Found this insane secondhand Graphic Tee — 2003 Tour Bootleg Style while scrolling through depop for just $24.00. I love how effortlessly cool it looks styled with baggy straight-leg jeans, black combat boots, and a black crossbody bag. You can also totally dress it down with wide-leg khaki trousers, a vintage black denim jacket, and chunky white sneakers.\n\n2 model calls this session, 327 prompt + 147 output tokens\n",
+      "stderr": ""
+    },
+    {
+      "label": "unavailable_before_handler",
+      "query": "silk slip dress under $40, size M",
+      "cache_enabled": false,
+      "one_key_character_changed": true,
+      "returncode": 0,
+      "stdout": "\n  Found:    90s Silk Slip Dress — Floral, Midi Length — $30.0 on depop\n\n  Outfit:   1) Wear the 90s Silk Slip Dress — Floral, Midi Length with White ribbed tank top and Chunky white sneakers for a relaxed look.\n2) Style the 90s Silk Slip Dress — Floral, Midi Length with Oversized grey crewneck sweatshirt and Black combat boots for a different look.\n\n  Fit card: Found 90s Silk Slip Dress — Floral, Midi Length for $30.00 on depop. Wear it with White ribbed tank top and Chunky white sneakers for a relaxed look.\n\n2 model calls this session\n",
+      "stderr": ""
+    }
+  ]
+}

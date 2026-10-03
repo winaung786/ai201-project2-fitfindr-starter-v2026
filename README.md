@@ -192,10 +192,7 @@ that produced it:
 
 ```
 
-**On the MCP move:** <!-- what changed in your code, and whether anything
-behaved differently afterwards. If the rewire didn't work, say exactly where it
-broke — the error text and the last thing that worked. That earns the point in
-full. -->
+**On the MCP move:** `search_listings` is registered in `mcp_server.py` with the same typed inputs as Tool Inventory. `agent.py::run_agent` calls it through the starter `mcp_client.call_tool` instead of directly. The other two tools remain direct calls. Three direct-versus-MCP searches returned identical lists, including the empty case, and a fresh full query still completed. Registration, input types, and real outputs are in [MCP verification](results/unit4-mcp-verification.md).
 
 
 
