@@ -95,6 +95,7 @@ def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
         context = "Available owned pieces: " + "; ".join(names)
         rule = "Use only these named owned pieces, spelled exactly as shown."
     else:
+        print("No wardrobe items are saved. Using general pairing ideas; add wardrobe items for personal suggestions.")
         context = "The user's wardrobe is empty."
         rule = "These are general ideas because no wardrobe is saved. Never claim the user owns any clothing."
     prompt = (
@@ -125,7 +126,8 @@ def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
         ):
             return result
         return _fallback_outfit(new_item, items)
-    except ModelUnavailable:
+    except ModelUnavailable as exc:
+        print(f"The outfit model couldn't be reached. {exc} Using local styling advice; check GEMINI_API_KEY in .env and your connection, then retry.")
         return _fallback_outfit(new_item, items)
 
 
@@ -156,7 +158,8 @@ def create_fit_card(outfit: str, new_item: dict) -> str:
             and platform.lower() in result.lower()
         ):
             return result
-    except ModelUnavailable:
+    except ModelUnavailable as exc:
+        print(f"The caption model couldn't be reached. {exc} Using a local caption; check GEMINI_API_KEY in .env and your connection, then retry.")
         pass
     ideas = re.findall(r"(?m)^\s*[12][).]\s*(.+)$", outfit)
     outfit_text = ideas[0] if ideas else outfit.strip().splitlines()[0]

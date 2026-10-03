@@ -52,9 +52,32 @@ def run_agent(query: str, wardrobe: dict) -> dict:
             session["tool_calls"].append({"tool": "search_listings", "inputs": session["parsed"].copy()})
             try:
                 session["search_results"] = call_tool("search_listings", session["parsed"])
-            except (MCPError, OSError, ValueError, KeyError, TypeError):
-                session["error"] = "The listings could not be loaded. Check the data file and try again."
+            except (MCPError, OSError, ValueError, KeyError, TypeError) as exc:
+                session["error"] = (
+                    f"Search failed over MCP ({type(exc).__name__}). "
+                    "Check mcp_server.py and data/listings.json, then retry."
+                )
+                trace.step("search_listings (via MCP)", inputs=str(session["parsed"]),
+                           returned=session["error"], note="Search failed; stop before styling.")
                 break
+            results = session["search_results"]
+            if not isinstance(results, list) or any(
+                not isinstance(item, dict) or not all(
+                    key in item for key in ("id", "title", "category", "colors", "price", "platform")
+                ) for item in results
+            ):
+                session["error"] = (
+                    "Search returned an unexpected format. Check that the MCP tool "
+                    "returns a list of complete listing dictionaries, then retry."
+                )
+                trace.step("search_listings (via MCP)", inputs=str(session["parsed"]),
+                           returned=str(results), note=session["error"])
+                break
+            trace.step("search_listings (via MCP)", inputs=str(session["parsed"]),
+                       returned=results, note=(
+                           "No matches; stop before suggest_outfit. Change keyword, size, or price."
+                           if not results else "Matches found; store the first result in the session and style it."
+                       ))
             if not session["search_results"]:
                 session["error"] = (
                     "No listings match that request. Try changing a keyword, "
@@ -67,14 +90,21 @@ def run_agent(query: str, wardrobe: dict) -> dict:
             item = session["selected_item"]
             session["tool_calls"].append({"tool": "suggest_outfit", "new_item_id": item["id"]})
             session["outfit_suggestion"] = suggest_outfit(item, session["wardrobe"])
+            trace.step("suggest_outfit", inputs=str({"new_item_id": item["id"],
+                       "wardrobe_items": len(session["wardrobe"].get("items", []))}),
+                       returned=session["outfit_suggestion"],
+                       note="Read the selected item from the session; a nonempty outfit permits the caption step.")
             if not session["outfit_suggestion"] or not session["outfit_suggestion"].strip():
-                session["error"] = "No outfit suggestion was produced for this listing."
+                session["error"] = "No outfit suggestion was produced. Try another listing or check the styling tool, then retry."
                 break
             stage = "card"
         elif stage == "card":
             item = session["selected_item"]
             session["tool_calls"].append({"tool": "create_fit_card", "new_item_id": item["id"]})
             session["fit_card"] = create_fit_card(session["outfit_suggestion"], item)
+            trace.step("create_fit_card", inputs=str({"new_item_id": item["id"],
+                       "outfit": session["outfit_suggestion"]}), returned=session["fit_card"],
+                       note="Read the outfit and item from the session; the caption completes this run.")
             stage = None
         else:
             session["error"] = "The agent reached an unknown step."

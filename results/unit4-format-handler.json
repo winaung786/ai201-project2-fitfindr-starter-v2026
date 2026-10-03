@@ -1,0 +1,38 @@
+{
+  "forced_search_return": [
+    {
+      "id": "invalid"
+    }
+  ],
+  "session": {
+    "query": "vintage graphic tee under $30, size M",
+    "parsed": {
+      "description": "vintage graphic tee",
+      "size": "M",
+      "max_price": 30.0
+    },
+    "search_results": [
+      {
+        "id": "invalid"
+      }
+    ],
+    "selected_item": null,
+    "wardrobe": {
+      "items": []
+    },
+    "outfit_suggestion": null,
+    "fit_card": null,
+    "tool_calls": [
+      {
+        "tool": "search_listings",
+        "inputs": {
+          "description": "vintage graphic tee",
+          "size": "M",
+          "max_price": 30.0
+        }
+      }
+    ],
+    "error": "Search returned an unexpected format. Check that the MCP tool returns a list of complete listing dictionaries, then retry."
+  },
+  "trace": "[1] search_listings (via MCP)\n      in:  {'description': 'vintage graphic tee', 'size': 'M', 'max_price': 30.0}\n      out: [{'id': 'invalid'}]\n      →    Search returned an unexpected format. Check that the MCP tool returns a list of complete listing dictionaries, then retry."
+}

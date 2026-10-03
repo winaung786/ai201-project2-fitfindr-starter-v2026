@@ -1,0 +1,46 @@
+{
+  "when_utc": "2026-10-03T22:38:02.836558+00:00",
+  "records": [
+    {
+      "name": "happy_trace",
+      "query": "vintage graphic tee under $30, size M",
+      "empty_wardrobe": false,
+      "one_key_character_changed": false,
+      "cache_enabled": false,
+      "returncode": 0,
+      "stdout": "[1] search_listings (via MCP)\n      in:  {'description': 'vintage graphic tee', 'size': 'M', 'max_price': 30.0}\n      out: 1 items: Y2K Baby Tee — Butterfly Print\n      →    Matches found; store the first result in the session and style it.\n[2] suggest_outfit\n      in:  {'new_item_id': 'lst_002', 'wardrobe_items': 10}\n      out: 1) Y2K Baby Tee — Butterfly Print + Baggy straight-leg jeans, dark wash + Chunky white sneakers 2) Y2K Baby Te…\n      →    Read the selected item from the session; a nonempty outfit permits the caption step.\n[3] create_fit_card\n      in:  {'new_item_id': 'lst_002', 'outfit': '1) Y2K Baby Tee — Butterfly Print + Baggy straight-leg jeans, dark wash …\n      out: Found the cutest secondhand Y2K Baby Tee — Butterfly Print while out thrifting and I am obsessed with both way…\n      →    Read the outfit and item from the session; the caption completes this run.\n\n  Found:    Y2K Baby Tee — Butterfly Print — $18.0 on depop\n\n  Outfit:   1) Y2K Baby Tee — Butterfly Print + Baggy straight-leg jeans, dark wash + Chunky white sneakers\n2) Y2K Baby Tee — Butterfly Print + Wide-leg khaki trousers + Black combat boots\n\n  Fit card: Found the cutest secondhand Y2K Baby Tee — Butterfly Print while out thrifting and I am obsessed with both ways to style it. You can pair it with baggy straight-leg dark wash jeans and chunky white sneakers, or dress it up with wide-leg khaki trousers and black combat boots. I spotted this exact piece on depop for just $18.00 and it's such a versatile retro find.\n\n2 model calls this session, 302 prompt + 131 output tokens\n",
+      "stderr": ""
+    },
+    {
+      "name": "empty_search",
+      "query": "designer ballgown size XXS under $5",
+      "empty_wardrobe": false,
+      "one_key_character_changed": false,
+      "cache_enabled": false,
+      "returncode": 0,
+      "stdout": "[1] search_listings (via MCP)\n      in:  {'description': 'designer ballgown', 'size': 'XXS', 'max_price': 5.0}\n      out: [] (empty)\n      →    No matches; stop before suggest_outfit. Change keyword, size, or price.\n\n  No listings match that request. Try changing a keyword, choosing another size, or raising the price limit.\n\n0 model calls this session\n",
+      "stderr": ""
+    },
+    {
+      "name": "empty_wardrobe",
+      "query": "vintage graphic tee under $30, size M",
+      "empty_wardrobe": true,
+      "one_key_character_changed": false,
+      "cache_enabled": false,
+      "returncode": 0,
+      "stdout": "(running with an empty wardrobe)\n[1] search_listings (via MCP)\n      in:  {'description': 'vintage graphic tee', 'size': 'M', 'max_price': 30.0}\n      out: 1 items: Y2K Baby Tee — Butterfly Print\n      →    Matches found; store the first result in the session and style it.\nNo wardrobe items are saved. Using general pairing ideas; add wardrobe items for personal suggestions.\n[2] suggest_outfit\n      in:  {'new_item_id': 'lst_002', 'wardrobe_items': 0}\n      out: These are general ideas because no wardrobe is saved. 1) Y2K Baby Tee — Butterfly Print with low-rise bootcut …\n      →    Read the selected item from the session; a nonempty outfit permits the caption step.\n[3] create_fit_card\n      in:  {'new_item_id': 'lst_002', 'outfit': 'These are general ideas because no wardrobe is saved.\\n1) Y2K Baby Tee —…\n      out: Channeling total 2000s pop star energy by styling this secondhand Y2K Baby Tee — Butterfly Print with a pleate…\n      →    Read the outfit and item from the session; the caption completes this run.\n\n  Found:    Y2K Baby Tee — Butterfly Print — $18.0 on depop\n\n  Outfit:   These are general ideas because no wardrobe is saved.\n1) Y2K Baby Tee — Butterfly Print with low-rise bootcut denim jeans and chunky platform sandals.\n2) Y2K Baby Tee — Butterfly Print with a pleated pink tennis skirt and retro white skate sneakers.\n\n  Fit card: Channeling total 2000s pop star energy by styling this secondhand Y2K Baby Tee — Butterfly Print with a pleated pink tennis skirt and retro white skate sneakers. I can't believe someone let go of this gem for just $18.00 on depop. It's safe to say this cute little tee is my new favorite thrift find.\n\n2 model calls this session, 267 prompt + 133 output tokens\n",
+      "stderr": ""
+    },
+    {
+      "name": "model_unavailable",
+      "query": "90s track jacket under $45, size M",
+      "empty_wardrobe": false,
+      "one_key_character_changed": true,
+      "cache_enabled": false,
+      "returncode": 0,
+      "stdout": "[1] search_listings (via MCP)\n      in:  {'description': '90s track jacket', 'size': 'M', 'max_price': 45.0}\n      out: 1 items: 90s Track Jacket — Navy/White Stripe\n      →    Matches found; store the first result in the session and style it.\nThe outfit model couldn't be reached. The model rejected your API key. Check GEMINI_API_KEY in your .env file, or create a fresh key at aistudio.google.com. Using local styling advice; check GEMINI_API_KEY in .env and your connection, then retry.\n[2] suggest_outfit\n      in:  {'new_item_id': 'lst_004', 'wardrobe_items': 10}\n      out: 1) Wear the 90s Track Jacket — Navy/White Stripe with White ribbed tank top and Chunky white sneakers for a re…\n      →    Read the selected item from the session; a nonempty outfit permits the caption step.\nThe caption model couldn't be reached. The model rejected your API key. Check GEMINI_API_KEY in your .env file, or create a fresh key at aistudio.google.com. Using a local caption; check GEMINI_API_KEY in .env and your connection, then retry.\n[3] create_fit_card\n      in:  {'new_item_id': 'lst_004', 'outfit': '1) Wear the 90s Track Jacket — Navy/White Stripe with White ribbed tank …\n      out: Found 90s Track Jacket — Navy/White Stripe for $45.00 on poshmark. Wear it with White ribbed tank top and Chun…\n      →    Read the outfit and item from the session; the caption completes this run.\n\n  Found:    90s Track Jacket — Navy/White Stripe — $45.0 on poshmark\n\n  Outfit:   1) Wear the 90s Track Jacket — Navy/White Stripe with White ribbed tank top and Chunky white sneakers for a relaxed look.\n2) Style the 90s Track Jacket — Navy/White Stripe with Oversized grey crewneck sweatshirt and Black combat boots for a different look.\n\n  Fit card: Found 90s Track Jacket — Navy/White Stripe for $45.00 on poshmark. Wear it with White ribbed tank top and Chunky white sneakers for a relaxed look.\n\n2 model calls this session\n",
+      "stderr": ""
+    }
+  ],
+  "key_restored": true
+}
