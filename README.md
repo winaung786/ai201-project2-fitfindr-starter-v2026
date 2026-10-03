@@ -1,6 +1,6 @@
 # FitFindr
 
-Read [RUNNING.md](RUNNING.md) for setup and commands. The Unit 4 sections below are reserved for the next unit.
+Read [RUNNING.md](RUNNING.md) for setup and commands. Unit 3 build notes and Unit 4 test evidence are recorded below.
 
 ## What This Does
 
@@ -104,7 +104,7 @@ The temporary API-key file was deleted after the checks; it is not part of these
 
 **Slide contract review:** After reading the full Unit 3 slide deck, I updated `suggest_outfit` to return two numbered ideas and to label general ideas when no wardrobe is saved. I also required two to four sentences in `create_fit_card`. Local checks covered both fallback and model-output validation. On October 1, 2026, Codex ran fresh checks with caching disabled: the example-wardrobe and empty-wardrobe runs received valid Gemini responses without fallback, and the empty-search path stopped early. The outputs are recorded under Sample Run; the full Unit 4 evaluation remains separate.
 
-**Unit 4 so far:** I used Codex to register search over MCP, compare its results with direct search, add per-step traces, and trigger the required failures. The invalid-key run exposed a swallowed error, so Codex added a user message while preserving the existing local fallback. The model, dataset, search behavior, and committed acceptance criteria are unchanged.
+**Unit 4:** I used Codex to register search over MCP, compare its results with direct search, add per-step traces, and trigger the required failures. The invalid-key run exposed a swallowed error, so Codex added a user message while preserving the existing local fallback. Codex then ran 25 before trials, reviewed ownership claims in the actual saved wording, scored the unchanged criteria, and traced the caption misses to an incomplete prompt. I used its diagnosis to make one caption-prompt change and run the same 25 trials again. Both batches use the actual Gemini model with caching off; recording replacements are confined to the state criterion, as that criterion specifies. Codex wrote the score/review records and this explanation, so the ownership interpretation is explicit for me to review and explain. The model, dataset, search behavior, and committed acceptance criteria are unchanged.
 
 The three additional criteria in `criteria.md` were AI assisted in the earlier fork. Codex later reviewed and clarified their test methods without changing the targets. I then reviewed criteria 3–5 and wrote the reasons for their targets in my own words.
 
@@ -376,45 +376,27 @@ These are general ideas because no wardrobe is saved.
 
 ## What's Still Broken
 
-<!-- For each criterion still missed: what you'd do, and why you stopped where
-     you did. "I ran out of time" is fine if it's true. Pretending nothing is
-     left is not. -->
+No committed criterion remains MISSED in the after batch. That is the result of five fixed-scenario tries per criterion, not a guarantee of general reliability.
 
+- **Caption grammar:** After criterion 4 tries 4 and 5 include “Alternatively, would style…” without a clear subject. The captions meet the committed facts/length/ownership checks, but some wording would need editing before posting. I would next revise the prompt for natural complete sentences and add a measurable grammar/usability criterion. I stopped after the one permitted improvement so its effect could be measured separately.
+- **Ownership validation:** The caption validator still checks facts, length, and seller phrases; it does not deterministically validate every purchase or possession claim. The revised prompt reduced the observed claims to zero, but future responses could regress. A future change would add a grounded ownership check or a constrained response format and test more listings.
+- **Fallback sentence boundaries:** The existing fallback combines listing facts and the first outfit idea. Extra punctuation or several sentences in that idea can produce more than two sentences. It is designed for two sentences, not guaranteed for arbitrary input. I would normalize and check fallback sentence boundaries in a separate improvement; the required invalid-key example stayed readable.
+- **Coverage:** The committed model criteria use one tee listing and two fixed wardrobes. Broader descriptions, item categories, and empty-wardrobe captions still need repeated tests. I would tighten future criteria and add those scenarios without altering the original results.
 
+### Submission record
 
-<!-- ═════════════════════════════════════════════════════════════════════
+Same repository as Unit 3: [winaung786/ai201-project2-fitfindr-starter-v2026](https://github.com/winaung786/ai201-project2-fitfindr-starter-v2026).
 
-     SUBMISSION CHECKLIST — unit 3
+Unit 4 commits follow the milestone order: MCP registration/equality evidence; failure handlers and trace evidence; exact scenarios and logging; before results; diagnoses; one prompt improvement; after results; final write-up. This provides more than the required four new commits. `criteria.md`, `RUNNING.md`, the model/configuration, and both data files retain the Unit 3 contents.
 
-       [ ] criteria.md has five numbered criteria, each with a target
-       [ ] Each criterion has a reason underneath it
-       [ ] All five unit 3 sections above have real content
-       [ ] Tool Inventory: all three tools, inputs WITH TYPES, a specific
-           return value, and the empty case
-       [ ] Planning Loop names the branch rule and agent.py::run_agent
-       [ ] Sample Run: one full query plus the three per-tool tests, as text
-       [ ] At least four new commits
-       [ ] Repository URL submitted — WRITE IT DOWN, you submit the same one
-           next unit
-
-     SUBMISSION CHECKLIST — unit 4
-
-       [ ] mcp_server.py exists with one tool registered
-           (or a written record of exactly where the rewire broke)
-       [ ] Run Log — Before, five criteria, five tries each
-       [ ] Real output pasted underneath, naming file and function
-       [ ] A verdict on every criterion
-       [ ] A diagnosis for every miss, naming a place AND a mechanism
-       [ ] Loop Trace, with the MCP call visible in it
-       [ ] All three failure modes triggered and handled
-       [ ] One improvement, with Run Log — After in the same format
-       [ ] What's Still Broken
-       [ ] At least four new commits
-       [ ] The SAME repository URL as last unit
-
-     Do not delete and recreate this repository. Your commit history is what
-     shows your criteria existed before your results did.
-     ═════════════════════════════════════════════════════════════════════ -->
+- [x] One tool registered and called through MCP, with typed inputs, dollar units, and an empty-case contract.
+- [x] Empty search, empty wardrobe, and model-unavailable cases deliberately triggered and documented.
+- [x] Full happy-path and shorter empty-path traces show inputs, results, choices, and the MCP call.
+- [x] Five criteria, five tries each, before and after, with actual output for each criterion.
+- [x] A verdict for every criterion and a step/mechanism diagnosis for every before miss.
+- [x] One prompt change measured with the same agent, data, model, scenarios, and targets.
+- [x] Remaining limits and AI use disclosed; no API key included in the repository or evidence.
+- [ ] Submit the same repository URL in the course submission page.
 
 ---
 

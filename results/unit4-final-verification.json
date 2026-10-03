@@ -1,0 +1,13 @@
+{
+  "five_scenarios_five_tries_each_before_and_after": true,
+  "live_model_calls_in_evaluation": 60,
+  "criteria_sha256_unchanged": "e0c23c191dffa83722910db3a82c663db8ca7c784dbb69c00f6bddea8a11dbba",
+  "markdown_fences_balanced": true,
+  "local_document_links_valid": true,
+  "all_required_readme_sections_present": true,
+  "key_file_removed": true,
+  "saved_files_key_pattern_scan_clear": true,
+  "source_json_hashes_match_scored_records": true,
+  "one_prompt_change_verified": "See unit4-comparison-audit.json",
+  "failure_and_trace_evidence": "See unit4-failures.json"
+}
