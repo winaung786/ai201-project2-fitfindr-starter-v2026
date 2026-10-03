@@ -1,0 +1,23 @@
+--- before/tools.py
++++ after/tools.py
+@@ -139,12 +139,15 @@
+     price = f"${float(new_item['price']):.2f}"
+     platform = new_item["platform"]
+     prompt = (
+-        "Write a casual social-media outfit caption in 2-4 sentences. "
++        "Write a casual social-media outfit caption in 2-4 sentences about discovering an available secondhand listing. "
+         f"Mention this exact item title once: {title}. Mention its exact price {price} "
+-        f"and platform {platform} once each. Outfit: {outfit}. "
+-        "The wearer found this secondhand item and is not its seller. Do not say they "
+-        "listed it, are selling it, or own the listing. Use specific style details, "
+-        "no invented wardrobe pieces, and no hashtags."
++        f"and platform {platform} once each. Outfit ideas: {outfit}. "
++        "Describe possible pairings with 'could pair' or 'would style'. Only say the listing "
++        "was found or spotted. Do not claim the user bought, scored, acquired, picked up, "
++        "owns, or has worn any item. Do not call clothing 'my' or 'our'. Do not claim "
++        "the user listed or is selling anything. The price and platform belong only to "
++        "the new item; do not price the entire outfit. Keep wardrobe pieces grounded in "
++        "the supplied ideas and keep empty-wardrobe pairings hypothetical. No hashtags."
+     )
+     try:
+         result = generate(prompt, temperature=0.9).strip()
