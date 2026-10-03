@@ -1,0 +1,30 @@
+{
+  "same_criteria_sha256": "e0c23c191dffa83722910db3a82c663db8ca7c784dbb69c00f6bddea8a11dbba",
+  "same_scenarios": true,
+  "same_model": "gemini-3.5-flash-lite",
+  "same_temperature": 0.9,
+  "changed_source_files": [
+    "tools.py"
+  ],
+  "only_prompt_assignment_changed": true,
+  "before_source_sha256": "de731c0dbf4ffb46d3ac096dbe2d24e1fc117213ad7ae80549f74cb9b3e2ade3",
+  "after_source_sha256": "81b3115d412c5293d1425bf23d1417c1b632618c7efbb24dbfff26ed59da9557",
+  "before_trials": 25,
+  "after_trials": 25,
+  "live_model_calls_per_batch": 30,
+  "no_evaluation_fallbacks": true,
+  "before_scores": {
+    "1": 5,
+    "2": 5,
+    "3": 5,
+    "4": 2,
+    "5": 5
+  },
+  "after_scores": {
+    "1": 5,
+    "2": 5,
+    "3": 5,
+    "4": 5,
+    "5": 5
+  }
+}

@@ -1,0 +1,362 @@
+{
+  "source": "unit4-after.json",
+  "source_sha256": "81b3115d412c5293d1425bf23d1417c1b632618c7efbb24dbfff26ed59da9557",
+  "method": "Deterministic checks plus caption/outfit ownership reviews against the saved wording and wardrobe; no model calls.",
+  "rows": [
+    {
+      "criterion": 1,
+      "target": 4,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        }
+      ]
+    },
+    {
+      "criterion": 2,
+      "target": 5,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        }
+      ]
+    },
+    {
+      "criterion": 3,
+      "target": 5,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        }
+      ]
+    },
+    {
+      "criterion": 4,
+      "target": 4,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The caption spots an available listing and uses could-pair/would-style wording. It makes no purchase or possession claim; the named jeans, sneakers, trousers, and boots correspond to saved wardrobe pieces."
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Spotted a listing explicitly describes discovery. Both pairings are hypothetical and use saved wardrobe pieces; there is no unsupported acquisition or ownership claim."
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The listing is spotted and priced as the tee alone. Could-pair/would-style language describes possibilities using known wardrobe pieces without asserting possession or purchase."
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The caption describes a listing and hypothetical pairings with recorded jeans, sneakers, trousers, and boots. It has awkward phrasing in the third sentence, but makes no ownership/acquisition claim and meets the committed facts/length criterion."
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The caption describes a listing and possible combinations with known wardrobe pieces. The final sentence is awkward but contains no ownership/acquisition claim; facts and original sentence-count checks pass."
+        }
+      ]
+    },
+    {
+      "criterion": 5,
+      "target": 4,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The empty-wardrobe suggestion labels general ideas, names the exact selected tee title, suggests additional clothing/shoe types, and makes no ownership claim."
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The empty-wardrobe suggestion labels general ideas, names the exact selected tee title, suggests additional clothing/shoe types, and makes no ownership claim."
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The empty-wardrobe suggestion labels general ideas, names the exact selected tee title, suggests additional clothing/shoe types, and makes no ownership claim."
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The empty-wardrobe suggestion labels general ideas, names the exact selected tee title, suggests additional clothing/shoe types, and makes no ownership claim."
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The empty-wardrobe suggestion labels general ideas, names the exact selected tee title, suggests additional clothing/shoe types, and makes no ownership claim."
+        }
+      ]
+    }
+  ]
+}
