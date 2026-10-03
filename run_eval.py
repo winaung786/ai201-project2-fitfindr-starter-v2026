@@ -30,6 +30,8 @@ mode — caching is what usually explains it.
 
 import argparse
 import datetime as dt
+import hashlib
+import json
 import sys
 import traceback
 
@@ -38,29 +40,86 @@ import scenarios as scenario_module
 
 
 def run_once(scenario, use_trace=True):
-    """One scenario, one try. Returns everything worth recording."""
-    from agent import run_agent
+    """Record real model responses and received tool inputs, preserving agent behavior."""
+    import contextlib
+    import copy
+    import io
+    import os
+    import time
+    import tempfile
+    from unittest.mock import patch
+    # Import before redirection: the SDK binds its default child stderr at import time.
+    import mcp.client.stdio  # noqa: F401
+    import agent
+    import generate
+    import tools
     from utils.data_loader import get_example_wardrobe, get_empty_wardrobe
     import trace as trace_module
 
-    wardrobe = (
-        get_empty_wardrobe() if scenario["wardrobe"] == "empty" else get_example_wardrobe()
-    )
-
+    wardrobe = get_empty_wardrobe() if scenario["wardrobe"] == "empty" else get_example_wardrobe()
     if use_trace:
         trace_module.start_trace()
+    record = {"session": None, "trace": "", "crashed": None, "tool_inputs": [],
+              "model_responses": [], "state_probe": scenario.get("mode") == "state_probe"}
+    original_outfit, original_card, original_generate = agent.suggest_outfit, agent.create_fit_card, tools.generate
+    # MCP passes stderr to a child process, so it needs a real file descriptor.
+    stdout, stderr = io.StringIO(), tempfile.TemporaryFile(mode="w+", encoding="utf-8")
+    started, calls_before, tokens_before = time.monotonic(), generate.call_count(), generate.token_counts()
 
-    record = {"error": None, "session": None, "trace": "", "crashed": None}
-    try:
-        record["session"] = run_agent(scenario["query"], wardrobe)
-    except Exception as exc:  # noqa: BLE001 — a crash is a result worth logging
-        record["crashed"] = f"{type(exc).__name__}: {exc}"
-        record["traceback"] = traceback.format_exc()
+    def recorded_generate(prompt, *args, **kwargs):
+        response = {"prompt": prompt, "temperature": kwargs.get("temperature", config.TEMPERATURE)}
+        record["model_responses"].append(response)
+        try:
+            response["raw_text"] = original_generate(prompt, *args, **kwargs)
+            return response["raw_text"]
+        except Exception as exc:
+            response["error"] = f"{type(exc).__name__}: {exc}"
+            raise
 
-    if use_trace:
-        record["trace"] = trace_module.get_trace()
+    def recorded_outfit(new_item, wardrobe):
+        record["tool_inputs"].append({"tool": "suggest_outfit", "new_item": copy.deepcopy(new_item), "wardrobe": copy.deepcopy(wardrobe)})
+        return "State probe outfit." if record["state_probe"] else original_outfit(new_item, wardrobe)
 
+    def recorded_card(outfit, new_item):
+        record["tool_inputs"].append({"tool": "create_fit_card", "new_item": copy.deepcopy(new_item), "outfit": outfit})
+        return "State probe fit card." if record["state_probe"] else original_card(outfit, new_item)
+
+    with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr), patch.object(tools, "generate", recorded_generate), patch.object(agent, "suggest_outfit", recorded_outfit), patch.object(agent, "create_fit_card", recorded_card):
+        try:
+            record["session"] = agent.run_agent(scenario["query"], wardrobe)
+        except Exception as exc:
+            record["crashed"] = f"{type(exc).__name__}: {exc}"
+            record["traceback"] = traceback.format_exc()
+    record["trace"] = trace_module.get_trace() if use_trace else ""
+    stderr.seek(0)
+    record["stdout"], record["stderr"] = stdout.getvalue(), stderr.read()
+    stderr.close()
+    record["elapsed_seconds"] = round(time.monotonic() - started, 3)
+    record["model_calls"] = generate.call_count() - calls_before
+    tokens_after = generate.token_counts()
+    record["tokens"] = {name: tokens_after[name] - value for name, value in tokens_before.items()}
+    if not record["state_probe"] and record["session"]:
+        session = record["session"]
+        record["model_text_used"] = {
+            name: index < len(record["model_responses"]) and record["model_responses"][index].get("raw_text") == session.get(name)
+            for index, name in enumerate(("outfit_suggestion", "fit_card"))
+        } if record["model_responses"] else {}
+    # Secrets never enter a saved report, including an unexpected provider exception.
+    key = os.getenv("GEMINI_API_KEY", "")
+    if key:
+        record = json.loads(json.dumps(record, ensure_ascii=False).replace(key, "[REDACTED]"))
     return record
+
+
+def write_checkpoint(rows, args, metadata, complete=False):
+    """Persist every finished try; interruption cannot discard earlier model answers."""
+    config.RESULTS_DIR.mkdir(exist_ok=True)
+    path = config.RESULTS_DIR / f"unit4-{args.label or 'run'}.json"
+    payload = {"metadata": metadata, "complete": complete, "rows": rows}
+    temporary = path.with_suffix(".json.tmp")
+    temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temporary.replace(path)
+    return path
 
 
 def main():
@@ -88,15 +147,29 @@ def main():
     config.CACHE_ENABLED = False
     print("Cache is OFF for this run — that's deliberate.\n")
 
+    report_path = config.RESULTS_DIR / f"unit4-{args.label or 'run'}.json"
+    if report_path.exists():
+        raise SystemExit(f"Refusing to overwrite {report_path}. Choose a new --label to preserve the evidence.")
+    metadata = {
+        "label": args.label, "started_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "tries_per_criterion": args.tries, "cache_enabled": config.CACHE_ENABLED,
+        "model": config.MODEL, "temperature": config.TEMPERATURE,
+        "file_sha256": {name: hashlib.sha256((config.ROOT / name).read_bytes()).hexdigest()
+                        for name in ("criteria.md", "scenarios.py", "tools.py", "agent.py", "config.py", "generate.py", "mcp_server.py", "mcp_client.py", "run_eval.py", "data/listings.json", "data/wardrobe_schema.json")},
+        "state_test": "Criterion 3 replaces only the two text tools with recording functions as specified in criteria.md; MCP search is real.",
+    }
     rows = []
+    write_checkpoint(rows, args, metadata)
     for scenario in scenario_module.SCENARIOS:
         print(f"{scenario['name']}  ({scenario['wardrobe']} wardrobe)")
         print(f"  query: {scenario['query']}")
 
         tries = []
+        rows.append({"scenario": scenario, "tries": tries})
         for attempt in range(1, args.tries + 1):
             record = run_once(scenario)
             tries.append(record)
+            write_checkpoint(rows, args, metadata)
 
             if record["crashed"]:
                 print(f"  try {attempt}: CRASHED — {record['crashed']}")
@@ -108,9 +181,14 @@ def main():
                     card = (session.get("fit_card") or "")
                     print(f"  try {attempt}: completed — fit card {len(card)} chars")
 
-        rows.append({"scenario": scenario, "tries": tries})
         print()
 
+    import generate
+    metadata["finished_utc"] = dt.datetime.now(dt.timezone.utc).isoformat()
+    metadata["usage"] = generate.usage()
+    metadata["tokens"] = generate.token_counts()
+    path = write_checkpoint(rows, args, metadata, complete=True)
+    print(f"Wrote {path.relative_to(config.ROOT)}", flush=True)
     write_report(rows, args)
 
 

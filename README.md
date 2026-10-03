@@ -112,6 +112,8 @@ The three additional criteria in `criteria.md` were AI assisted in the earlier f
 
 ## Run Log — Before
 
+`scenarios.py` maps one scenario to each committed criterion, with the exact Unit 3 queries and wardrobes. `run_eval.py` runs five tries with caching off and saves JSON after every completed try. It records full sessions, actual tool inputs, raw model responses, traces, exceptions, token counts, and code/data hashes. Criterion 3 uses recording replacements for the two text tools, as required by its original wording; all other matching runs call the real model. No score is inferred from whether a response looks nice. The original criteria and targets remain unchanged.
+
 <!-- Five criteria, five tries each, in this exact format.
 
      Five, because your criteria are written out of five. Mark each try PASS
