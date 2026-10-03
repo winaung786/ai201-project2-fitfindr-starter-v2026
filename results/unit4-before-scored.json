@@ -1,0 +1,362 @@
+{
+  "source": "unit4-before.json",
+  "source_sha256": "de731c0dbf4ffb46d3ac096dbe2d24e1fc117213ad7ae80549f74cb9b3e2ade3",
+  "method": "Deterministic checks plus caption/outfit ownership reviews against the saved wording and wardrobe; no model calls.",
+  "rows": [
+    {
+      "criterion": 1,
+      "target": 4,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        }
+      ]
+    },
+    {
+      "criterion": 2,
+      "target": 5,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        }
+      ]
+    },
+    {
+      "criterion": 3,
+      "target": 5,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        }
+      ]
+    },
+    {
+      "criterion": 4,
+      "target": 4,
+      "passes": 2,
+      "verdict": "MISSED",
+      "tries": [
+        {
+          "try": 1,
+          "passed": false,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": false
+          },
+          "ownership_note": "\"Scored the ultimate vintage find while thrifting: the Y2K Baby Tee — Butterfly Print\" claims the selected tee was acquired. That tee is absent from the saved wardrobe; no purchase occurred in this agent run."
+        },
+        {
+          "try": 2,
+          "passed": false,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": false
+          },
+          "ownership_note": "\"Scored the cutest Y2K Baby Tee — Butterfly Print secondhand\" claims acquisition of the selected tee, which is absent from the saved wardrobe. The other referenced jeans, sneakers, bag, trousers, belt, and boots map to saved pieces."
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Finding/spotting the listing does not assert possession. The styling references map to the saved dark-wash straight-leg jeans, chunky white sneakers, wide-leg khaki trousers, and combat boots; no unsupported ownership claim appears."
+        },
+        {
+          "try": 4,
+          "passed": false,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": false
+          },
+          "ownership_note": "\"Y2K Baby Tee — Butterfly Print I just scored secondhand\" asserts the user acquired the selected tee, which is absent from the saved wardrobe; search only found an available listing."
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The caption describes styling and spotting the listing, without an acquisition or possessive claim. Jeans, sneakers, khaki trousers, brown belt, and combat boots correspond to saved pieces."
+        }
+      ]
+    },
+    {
+      "criterion": 5,
+      "target": 4,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The suggestion explicitly labels general ideas because no wardrobe is saved, names the exact selected title, pairs it with other clothing/shoes, and makes no ownership claim."
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The suggestion explicitly labels general ideas because no wardrobe is saved, names the exact selected title, pairs it with other clothing/shoes, and makes no ownership claim."
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The suggestion explicitly labels general ideas because no wardrobe is saved, names the exact selected title, pairs it with other clothing/shoes, and makes no ownership claim."
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The suggestion explicitly labels general ideas because no wardrobe is saved, names the exact selected title, pairs it with other clothing/shoes, and makes no ownership claim."
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "The suggestion explicitly labels general ideas because no wardrobe is saved, names the exact selected title, pairs it with other clothing/shoes, and makes no ownership claim."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "reviewer": "Codex, with explicit sentence-level judgments for the user to inspect",
+  "ownership_rule": "Apply the original criterion literally: the selected listing is not in the saved wardrobe. Saying the user scored/acquired it asserts an unsupported acquisition and possession. Found/spotted is discovery; describing possible styling alone does not prove ownership. Targets and criterion text are unchanged.",
+  "reviews": {
+    "4-1": {
+      "text_sha256": "82ba0258c26fa69a6c0c9f4fdcddddc6b8eb753482ee779cd91fb781e412aaa7",
+      "passes": false,
+      "note": "\"Scored the ultimate vintage find while thrifting: the Y2K Baby Tee — Butterfly Print\" claims the selected tee was acquired. That tee is absent from the saved wardrobe; no purchase occurred in this agent run.",
+      "reviewed_text": "Scored the ultimate vintage find while thrifting: the Y2K Baby Tee — Butterfly Print. It’s listed on depop for just $18.00, and I’m obsessed with how versatile it is. You can easily style it with baggy dark-wash jeans and chunky white sneakers, or switch it up with wide-leg khaki trousers and black combat boots."
+    },
+    "4-2": {
+      "text_sha256": "3bd37ae588b952b4053990564002935647808b0f308aae5872655343fc196f25",
+      "passes": false,
+      "note": "\"Scored the cutest Y2K Baby Tee — Butterfly Print secondhand\" claims acquisition of the selected tee, which is absent from the saved wardrobe. The other referenced jeans, sneakers, bag, trousers, belt, and boots map to saved pieces.",
+      "reviewed_text": "Scored the cutest Y2K Baby Tee — Butterfly Print secondhand for just $18.00 on depop! I've been styling it two ways: first with baggy straight-leg jeans and chunky white sneakers plus a black crossbody bag, and then switched up with wide-leg khaki trousers, a brown leather belt, and black combat boots. Which vibe are we feeling more?"
+    },
+    "4-3": {
+      "text_sha256": "895fb6b8ae8c97c480435bb2a0c28e2b294ff7c0b7b9f9fd044ac324816acfa0",
+      "passes": true,
+      "note": "Finding/spotting the listing does not assert possession. The styling references map to the saved dark-wash straight-leg jeans, chunky white sneakers, wide-leg khaki trousers, and combat boots; no unsupported ownership claim appears.",
+      "reviewed_text": "Found the ultimate thrifted gem: this Y2K Baby Tee — Butterfly Print paired with baggy dark-wash straight-leg jeans and chunky white sneakers. I also love styling it with wide-leg khaki trousers and black combat boots for a totally different vibe. I spotted this secondhand piece on depop for just $18.00 and I'm obsessed with how versatile it is."
+    },
+    "4-4": {
+      "text_sha256": "785325adae907ee95eaf31ca8758578bc6fffbbfc5ee5b31012585ec86442c9d",
+      "passes": false,
+      "note": "\"Y2K Baby Tee — Butterfly Print I just scored secondhand\" asserts the user acquired the selected tee, which is absent from the saved wardrobe; search only found an available listing.",
+      "reviewed_text": "Found the ultimate throwback fit styled two ways, first with baggy dark wash straight-leg jeans and chunky white sneakers, and then with wide-leg khaki trousers and black combat boots. The centerpiece is this amazing Y2K Baby Tee — Butterfly Print I just scored secondhand on depop for $18.00. I am so obsessed with how versatile this piece turned out to be!"
+    },
+    "4-5": {
+      "text_sha256": "5e3d2d0243e6600eb3546c5ebdcbc2097c961e1f11c67cd7a924c749ace38b1e",
+      "passes": true,
+      "note": "The caption describes styling and spotting the listing, without an acquisition or possessive claim. Jeans, sneakers, khaki trousers, brown belt, and combat boots correspond to saved pieces.",
+      "reviewed_text": "Found the ultimate throwback fit featuring this Y2K Baby Tee — Butterfly Print paired with baggy straight-leg jeans in a dark wash and chunky white sneakers. For the second look, I styled the same cute tee with wide-leg khaki trousers, a brown leather belt, and black combat boots. I spotted this amazing secondhand find on depop for just $18.00, and honestly, the nostalgia is unmatched!"
+    },
+    "5-1": {
+      "text_sha256": "c7e3549eceab0ed4d56f86ca362ce1dc23d94cd25b7e476d83c4f6767b3e6207",
+      "passes": true,
+      "note": "The suggestion explicitly labels general ideas because no wardrobe is saved, names the exact selected title, pairs it with other clothing/shoes, and makes no ownership claim.",
+      "reviewed_text": "These are general ideas because no wardrobe is saved.\n1) Y2K Baby Tee — Butterfly Print with baggy low-rise cargo pants and chunky platform sneakers.\n2) Y2K Baby Tee — Butterfly Print with a denim pleated mini skirt and strappy kitten heels."
+    },
+    "5-2": {
+      "text_sha256": "9d14c467bf0fa8e6a8d03e10ac9f8cf9eef3e649ae18d93092f74935280b1289",
+      "passes": true,
+      "note": "The suggestion explicitly labels general ideas because no wardrobe is saved, names the exact selected title, pairs it with other clothing/shoes, and makes no ownership claim.",
+      "reviewed_text": "These are general ideas because no wardrobe is saved.\n1) Y2K Baby Tee — Butterfly Print with low-rise bootcut denim jeans and chunky platform sneakers.\n2) Y2K Baby Tee — Butterfly Print with a pleated pink tennis skirt and strappy block-heel sandals."
+    },
+    "5-3": {
+      "text_sha256": "30068f8a803b485e346f8c586e70fa6e363ac6451741325c561c8bc281137fdf",
+      "passes": true,
+      "note": "The suggestion explicitly labels general ideas because no wardrobe is saved, names the exact selected title, pairs it with other clothing/shoes, and makes no ownership claim.",
+      "reviewed_text": "These are general ideas because no wardrobe is saved.\n1) Y2K Baby Tee — Butterfly Print with low-rise bootcut denim jeans and platform sandals\n2) Y2K Baby Tee — Butterfly Print with a pink pleated tennis skirt and chunky white sneakers"
+    },
+    "5-4": {
+      "text_sha256": "f6eb3d5a786c0dab49b0a7a5cccfd1ef1784505d04bcd869bf137dc8d8f13764",
+      "passes": true,
+      "note": "The suggestion explicitly labels general ideas because no wardrobe is saved, names the exact selected title, pairs it with other clothing/shoes, and makes no ownership claim.",
+      "reviewed_text": "These are general ideas because no wardrobe is saved.\n1) Y2K Baby Tee — Butterfly Print with low-rise bootcut denim jeans and platform sandals\n2) Y2K Baby Tee — Butterfly Print with a pleated pink tennis skirt and chunky white sneakers"
+    },
+    "5-5": {
+      "text_sha256": "a66501bbd0bae5e24ee9b4eb80006e0a265938fab992004946c06658cd9f9e51",
+      "passes": true,
+      "note": "The suggestion explicitly labels general ideas because no wardrobe is saved, names the exact selected title, pairs it with other clothing/shoes, and makes no ownership claim.",
+      "reviewed_text": "These are general ideas because no wardrobe is saved.\n1) Y2K Baby Tee — Butterfly Print with low-rise bootcut denim jeans and chunky platform sneakers.\n2) Y2K Baby Tee — Butterfly Print with a pink pleated tennis skirt and strappy platform sandals."
+    }
+  }
+}

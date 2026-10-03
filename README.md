@@ -112,31 +112,80 @@ The three additional criteria in `criteria.md` were AI assisted in the earlier f
 
 ## Run Log — Before
 
-`scenarios.py` maps one scenario to each committed criterion, with the exact Unit 3 queries and wardrobes. `run_eval.py` runs five tries with caching off and saves JSON after every completed try. It records full sessions, actual tool inputs, raw model responses, traces, exceptions, token counts, and code/data hashes. Criterion 3 uses recording replacements for the two text tools, as required by its original wording; all other matching runs call the real model. No score is inferred from whether a response looks nice. The original criteria and targets remain unchanged.
+Command: `python run_eval.py --label before`. `scenarios.py` maps one scenario to each unchanged criterion using the exact Unit 3 query and wardrobe. Each criterion has five distinct agent runs; caching is off. Criterion 3 replaces only the two text tools with recording functions, as its original wording requires; its search still uses MCP. Criteria 1, 4, and 5 make real model calls. The runner checkpoints every completed try.
 
-<!-- Five criteria, five tries each, in this exact format.
+The raw [before JSON](results/unit4-before.json) records full sessions, actual tool inputs, raw prompts/responses, traces, exceptions, tokens, and code/data hashes. It completed 25 tries with 30 Gemini calls (4,370 prompt + 1,881 output tokens). All 30 received model responses were used directly; no local fallback was used in this evaluation.
 
-     Five, because your criteria are written out of five. Mark each try PASS
-     or FAIL, count the passes, and read that count against your target — a
-     row targeting 4 of 5 with three PASS cells is MISSED (3/5).
-
-     `python run_eval.py --label before` runs everything and writes the table
-     into results/. Paste it here and fill in the verdicts. -->
+The original `criteria.md` SHA256 remains `e0c23c191dffa83722910db3a82c663db8ca7c784dbb69c00f6bddea8a11dbba`. Targets are 4/5, 5/5, 5/5, 4/5, and 4/5. Criterion 4 is scored at its original **1–4 sentences**, while the tool's separate slide contract requests 2–4 sentences. No criterion or target was revised.
 
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |  |  |
+| 1. Full three-tool run returns a fit card | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 2. Empty search stops before styling | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 3. Actual item inputs match session state | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 4. Fit card accuracy | 4 of 5 | FAIL | FAIL | PASS | FAIL | PASS | MISSED (2/5) |
+| 5. Empty wardrobe behavior | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
 
-**Real output from one try**, pasted as text, naming the file and function
-that produced it:
+Scores come from `score_saved.py`, which reads saved JSON and makes no model calls. Ownership is a semantic judgment, so Codex inspected each relevant caption/suggestion and recorded the exact text, its hash, a verdict, and a reason in [ownership review](results/unit4-before-ownership-review.json). The selected tee is not in the saved wardrobe. We read the original rule literally: saying it was “scored” asserts an unsupported acquisition; finding or spotting a listing and describing styling alone do not assert possession. This interpretation is explicit so the verdict can be challenged. The scorer preserves the raw JSON and records its hash in [scored results](results/unit4-before-scored.json).
 
+### Actual output from one try for each criterion
+
+These are actual values captured by `run_eval.py::run_once` from `agent.py::run_agent`, not invented examples.
+
+**Criterion 1, try 1**
+
+Produced by `agent.py::run_agent` and `tools.py::create_fit_card`:
+
+```text
+tool order: search_listings -> suggest_outfit -> create_fit_card
+fit_card: I spotted the cutest Y2K Baby Tee — Butterfly Print while out thrifting and had to style it two ways. It looks so good paired with baggy straight-leg jeans and chunky white sneakers, or dressed down with wide-leg khaki trousers and black combat boots. I can't believe I found this secondhand gem scrolling on depop for just $18.00!
 ```
 
+**Criterion 2, try 1**
+
+Produced by `agent.py::run_agent` empty-search branch:
+
+```text
+tool order: search_listings
+selected_item: None
+outfit_suggestion: None
+fit_card: None
+message: No listings match that request. Try changing a keyword, choosing another size, or raising the price limit.
 ```
+
+**Criterion 3, try 1**
+
+Produced by `run_eval.py::run_once` recording functions and `agent.py::run_agent`:
+
+```text
+selected_item id: lst_002
+search_results[0] id: lst_002
+suggest_outfit actually received new_item id: lst_002
+create_fit_card actually received new_item id: lst_002
+selected_item equals search_results[0]: True
+model calls: 0 (recording replacements required by criterion 3)
+```
+
+**Criterion 4, try 1**
+
+Produced by `tools.py::create_fit_card`, called by `agent.py::run_agent`; this try fails the ownership rule:
+
+```text
+Scored the ultimate vintage find while thrifting: the Y2K Baby Tee — Butterfly Print. It’s listed on depop for just $18.00, and I’m obsessed with how versatile it is. You can easily style it with baggy dark-wash jeans and chunky white sneakers, or switch it up with wide-leg khaki trousers and black combat boots.
+```
+
+**Criterion 5, try 1**
+
+Produced by `tools.py::suggest_outfit` with `get_empty_wardrobe()`:
+
+```text
+error: None
+These are general ideas because no wardrobe is saved.
+1) Y2K Baby Tee — Butterfly Print with baggy low-rise cargo pants and chunky platform sneakers.
+2) Y2K Baby Tee — Butterfly Print with a denim pleated mini skirt and strappy kitten heels.
+```
+
+All five actual outputs per criterion are preserved in [the generated run log](results/run_2026-10-03_1945_before.md) and the full JSON above.
 
 ---
 
