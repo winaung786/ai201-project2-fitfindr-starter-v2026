@@ -13,6 +13,100 @@ Read [RUNNING.md](RUNNING.md) for setup and commands. Unit 3 build notes and Uni
 
 **Commit-order rule:** This README declaration must appear in Git history *before* the corresponding implementation commits. Do not count any stretch points until the code, documented runtime evidence, and measurement conditions exist.
 
+## Stretch Features — Implemented and Measured
+
+The declaration above was committed as `3e4486b` before any bonus implementation. The second MCP tool, bounded retry, and their live baseline were committed as `5b73b1a`. The fallback improvement and its full comparison run were committed as `375cc9e`. The original Unit 4 before/after logs and `criteria.md` remain in place.
+
+### Second MCP tool (+1)
+
+`mcp_server.py` now registers `suggest_outfit(new_item: dict, wardrobe: dict) -> str` alongside `search_listings`. `agent.py::run_agent` calls styling through `mcp_client.call_tool`, while `create_fit_card` remains a direct tool call. The MCP wrapper returns the same string shape as the direct styling tool. The client passes the model settings to the server subprocess; `run_eval.py` records that subprocess's model response and token use so evaluation counts both model tools. The CLI's final `generate.usage()` line is local to the caption process and does not include styling calls made inside MCP; use the saved evaluation totals for the complete count.
+
+One actual uncached run in [the bonus retry record](results/bonus-retry-run.json) includes both MCP tools in order. The tool outputs below are clipped by `trace.py`; the saved JSON has the full strings:
+
+```text
+[1] search_listings (via MCP)
+      in:  {'description': 'vintage graphic tee', 'size': 'XL', 'max_price': 30.0}
+      out: [] (empty)
+      →    No matches; retry once without the size filter (XL).
+[2] search_listings (via MCP) retry without size
+      in:  {'description': 'vintage graphic tee', 'size': None, 'max_price': 30.0}
+      out: 3 items: Graphic Tee — 2003 Tour Bootleg Style, Vintage Band Tee — Faded Grey, Y2K Baby Tee — Butterfly Print
+      →    Size filter dropped; matches found, so continue to styling.
+[3] suggest_outfit (via MCP)
+      in:  {'new_item_id': 'lst_006', 'wardrobe_items': 10}
+      out: 1) Graphic Tee — 2003 Tour Bootleg Style layered under a Black cropped zip hoodie with Baggy straight-leg jean…
+      →    Read the selected item from the session; a nonempty outfit permits the caption step.
+[4] create_fit_card
+      in:  {'new_item_id': 'lst_006', 'outfit': '1) Graphic Tee — 2003 Tour Bootleg Style layered under a Black cropped z…
+      out: Spotted this incredible Graphic Tee — 2003 Tour Bootleg Style listed on depop for $24.00. One could pair it un…
+      →    Read the outfit and item from the session; the caption completes this run.
+```
+
+### One retry with a looser size constraint (+1)
+
+If the first search is empty **and a size was specified**, the agent makes exactly one more `search_listings` MCP call with `size=None`. It keeps the description and price ceiling. The session records `dropped_constraint: size XL` and displays `No matches in size XL; retried once without the size filter.` The trace above shows the first empty result and the successful retry. If the retry also finds nothing, the agent stops before styling; the five `designer ballgown size XXS under $5` runs in each bonus log show that shorter path. A query without a size does not retry.
+
+Criterion 2 in the unchanged `criteria.md` requires the agent to stop **after search** without styling or a card; it does not require exactly one search call. The bonus scorer therefore accepts one or two `search_listings` calls and still requires no selected item, outfit, or card on that empty scenario. This interpretation is visible in `score_saved.py`, and the raw `tool_calls` are preserved in both bonus logs.
+
+### Second measured improvement (+2)
+
+The earlier [What's Still Broken](#whats-still-broken) diagnosis named unstable sentence boundaries in the **local fallback** from `tools.py::create_fit_card`. When the first outfit idea contains two sentences, the old fallback copied both after its listing-facts sentence. I changed only the fallback assembly to use the first complete outfit thought; the model prompt and normal model path stayed the same.
+
+A deliberate model failure used the same listing and outfit text on both versions. Actual output from `tools.py::create_fit_card`, recorded by `scripts/bonus_fallback_probe.py`:
+
+```text
+Before (3 sentences): Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Pair it with jeans. Add white sneakers for contrast.
+After  (2 sentences): Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Pair it with jeans.
+```
+
+The [before](results/bonus-fallback-before.json) and [after](results/bonus-fallback-after.json) probe records contain the identical input, the actual captions, sentence counts, and code hashes. Title, `$18.00`, and `depop` remain present. The shorter fallback loses the second styling detail; that is the tradeoff for a stable caption length.
+
+I also ran the unchanged five criteria five times each with caching off before and after this fallback change. The **bonus baseline** was recorded after the two other stretch features and before the fallback edit. It is an additional comparison point; the original Unit 4 before/after evaluation is untouched. The saved [bonus baseline](results/unit4-bonus-baseline.json) has 25 tries and 30 model calls, and the saved [bonus after](results/unit4-bonus-after.json) has 25 tries and 31 calls, including one rate-limit retry. In every model-based try, the saved raw response equals the returned text; the fallback was not exercised in these live runs. The [comparison audit](results/bonus-comparison-audit.json) confirms `tools.py` was the only hashed source file changed between these two batches, with the same scenarios, criteria, model, temperature, and cache setting.
+
+**Bonus baseline — five tries per criterion:**
+
+| Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
+|---|---|---|---|---|---|---|---|
+| 1. Full three-tool run returns a fit card | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 2. Empty search stops before styling | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 3. Actual item inputs match session state | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 4. Fit card accuracy | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 5. Empty wardrobe behavior | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+
+**Bonus after — the same format and unchanged targets:**
+
+| Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
+|---|---|---|---|---|---|---|---|
+| 1. Full three-tool run returns a fit card | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 2. Empty search stops before styling | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 3. Actual item inputs match session state | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 4. Fit card accuracy | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+| 5. Empty wardrobe behavior | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET (5/5) |
+
+**Did it help?** Yes on the diagnosed fallback input: three sentences became two with the listing facts preserved. The five live criterion scores stayed at 5/5 because their valid model responses did not reach the fallback. That is a measured *no observable effect on those five live scenarios*, not evidence that the fallback changed model behavior. Full output for every try appears in [the baseline run log](results/run_2026-10-07_2216_bonus-baseline.md) and [the after run log](results/run_2026-10-07_2232_bonus-after.md); the saved [ownership reviews](results/unit4-bonus-after-ownership-review.json) explain the semantic judgments.
+
+One actual bonus-after try per criterion, captured by `run_eval.py::run_once` from `agent.py::run_agent`:
+
+```text
+Criterion 1, try 1 — tools: search_listings → suggest_outfit → create_fit_card
+fit_card: Spotted this cute Y2K Baby Tee — Butterfly Print listed on depop for $18.00. It could pair with a black cropped zip hoodie, baggy straight-leg dark wash jeans, and chunky white sneakers for an effortless throwback vibe. Alternatively, one would style it with wide-leg khaki trousers, black combat boots, a brown leather belt, and a black crossbody bag.
+
+Criterion 2, try 1 — tools: search_listings → search_listings; size XXS was dropped
+selected_item: None; outfit_suggestion: None; fit_card: None
+error: No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.
+
+Criterion 3, try 1 — recorded by run_eval.py::run_once
+selected_item id: lst_002; suggest_outfit received: lst_002; create_fit_card received: lst_002
+
+Criterion 4, try 1 — produced by tools.py::create_fit_card
+Spotted a Y2K Baby Tee — Butterfly Print listed on depop for $18.00. This top could pair nicely under a black cropped zip hoodie with baggy straight-leg jeans in a dark wash and chunky white sneakers. Alternatively, it would style well with wide-leg khaki trousers, a brown leather belt, and black combat boots.
+
+Criterion 5, try 1 — produced by tools.py::suggest_outfit through MCP
+These are general ideas because no wardrobe is saved.
+1) Y2K Baby Tee — Butterfly Print with low-rise bootcut denim jeans and chunky platform sandals.
+2) Y2K Baby Tee — Butterfly Print with a pleated pink tennis skirt and retro white skate sneakers.
+```
+
 ## What This Does
 
 FitFindr takes a request such as `vintage graphic tee under $30, size M`, searches the supplied secondhand listings, selects the highest-ranked match, suggests two outfits from a wardrobe, and writes a caption. If nothing matches, it stops after search and names filters the user can change. An empty wardrobe gets two general pairing ideas labeled as general because no wardrobe is saved.
@@ -44,7 +138,7 @@ Use Python 3.11–3.13, create a virtual environment, install `requirements.txt`
 
 ## Planning Loop
 
-**Branch rule:** If `search_listings` returns `[]`, write a helpful message to the session and stop before `suggest_outfit`. Otherwise store the first result, call `suggest_outfit`, then `create_fit_card` with values read from the session. If the outfit suggestion is blank, stop before the fit card.
+**Branch rule:** If `search_listings` returns `[]` and a size was specified, retry once without the size filter. If that retry is also empty, or if the original query had no size, write a helpful message to the session and stop before `suggest_outfit`. Otherwise store the first result, call `suggest_outfit` through MCP, then call `create_fit_card` with values read from the session. If the outfit suggestion is blank, stop before the fit card.
 
 **Where it lives:** `agent.py::run_agent`.
 
@@ -116,6 +210,8 @@ The temporary API-key file was deleted after the checks; it is not part of these
 **Slide contract review:** After reading the full Unit 3 slide deck, I updated `suggest_outfit` to return two numbered ideas and to label general ideas when no wardrobe is saved. I also required two to four sentences in `create_fit_card`. Local checks covered both fallback and model-output validation. On October 1, 2026, Codex ran fresh checks with caching disabled: the example-wardrobe and empty-wardrobe runs received valid Gemini responses without fallback, and the empty-search path stopped early. The outputs are recorded under Sample Run; the full Unit 4 evaluation remains separate.
 
 **Unit 4:** I used Codex to register search over MCP, compare its results with direct search, add per-step traces, and trigger the required failures. The invalid-key run exposed a swallowed error, so Codex added a user message while preserving the existing local fallback. Codex then ran 25 before trials, reviewed ownership claims in the actual saved wording, scored the unchanged criteria, and traced the caption misses to an incomplete prompt. I used its diagnosis to make one caption-prompt change and run the same 25 trials again. Both batches use the actual Gemini model with caching off; recording replacements are confined to the state criterion, as that criterion specifies. Codex wrote the score/review records and this explanation, so the ownership interpretation is explicit for me to review and explain. The model, dataset, search behavior, and committed acceptance criteria are unchanged.
+
+**Unit 4 stretch:** I used Codex to add a second MCP tool, implement and trace one retry without the size filter, capture model calls made inside the MCP subprocess, and run a fresh 25-try bonus baseline. Codex then tested the already-diagnosed fallback caption problem with a forced model outage, changed the fallback assembly, reran the same 25 live trials, and recorded both the targeted improvement and the unchanged live criterion scores. The bonus declaration precedes these implementation commits.
 
 The three additional criteria in `criteria.md` were AI assisted in the earlier fork. Codex later reviewed and clarified their test methods without changing the targets. I then reviewed criteria 3–5 and wrote the reasons for their targets in my own words.
 
@@ -288,7 +384,7 @@ The caption model couldn't be reached. The model rejected your API key. Check GE
 
 A user can act on these messages by relaxing filters, saving wardrobe items, or fixing the model key/connection. Actual output and exit codes are in [the failure log](results/unit4-failures.json); rerun with `python scripts/unit4_failures.py` using your own local `.env`.
 
-**On the MCP move:** `search_listings` is registered in `mcp_server.py` with the same typed inputs as Tool Inventory. `agent.py::run_agent` calls it through the starter `mcp_client.call_tool` instead of directly. The other two tools remain direct calls. Three direct-versus-MCP searches returned identical lists, including the empty case, and a fresh full query still completed. Registration, input types, and real outputs are in [MCP verification](results/unit4-mcp-verification.md).
+**On the required Unit 4 MCP move, before stretch work:** `search_listings` was registered in `mcp_server.py` with the same typed inputs as Tool Inventory. `agent.py::run_agent` called it through the starter `mcp_client.call_tool` instead of directly. The other two tools were direct calls at that checkpoint. Three direct-versus-MCP searches returned identical lists, including the empty case, and a fresh full query still completed. Registration, input types, and real outputs are in [MCP verification](results/unit4-mcp-verification.md). The stretch work later moved `suggest_outfit` to MCP as recorded above.
 
 
 
@@ -391,7 +487,7 @@ No committed criterion remains MISSED in the after batch. That is the result of 
 
 - **Caption grammar:** After criterion 4 tries 4 and 5 include “Alternatively, would style…” without a clear subject. The captions meet the committed facts/length/ownership checks, but some wording would need editing before posting. I would next revise the prompt for natural complete sentences and add a measurable grammar/usability criterion. I stopped after the one permitted improvement so its effect could be measured separately.
 - **Ownership validation:** The caption validator still checks facts, length, and seller phrases; it does not deterministically validate every purchase or possession claim. The revised prompt reduced the observed claims to zero, but future responses could regress. A future change would add a grounded ownership check or a constrained response format and test more listings.
-- **Fallback sentence boundaries:** The existing fallback combines listing facts and the first outfit idea. Extra punctuation or several sentences in that idea can produce more than two sentences. It is designed for two sentences, not guaranteed for arbitrary input. I would normalize and check fallback sentence boundaries in a separate improvement; the required invalid-key example stayed readable.
+- **Fallback sentence boundaries:** The bonus improvement now uses the first complete thought from the first outfit idea; the measured multi-sentence example produces two sentences. Unusual punctuation inside an item title or a first thought could still need a stronger sentence parser. The required invalid-key example stayed readable.
 - **Coverage:** The committed model criteria use one tee listing and two fixed wardrobes. Broader descriptions, item categories, and empty-wardrobe captions still need repeated tests. I would tighten future criteria and add those scenarios without altering the original results.
 
 ### Submission record
@@ -400,7 +496,7 @@ Same repository as Unit 3: [winaung786/ai201-project2-fitfindr-starter-v2026](ht
 
 Unit 4 commits follow the milestone order: MCP registration/equality evidence; failure handlers and trace evidence; exact scenarios and logging; before results; diagnoses; one prompt improvement; after results; final write-up. This provides more than the required four new commits. `criteria.md`, `RUNNING.md`, the model/configuration, and both data files retain the Unit 3 contents.
 
-- [x] One tool registered and called through MCP, with typed inputs, dollar units, and an empty-case contract.
+- [x] Required search tool registered and called through MCP, with typed inputs, dollar units, and an empty-case contract; styling later moved through MCP for stretch credit.
 - [x] Empty search, empty wardrobe, and model-unavailable cases deliberately triggered and documented.
 - [x] Full happy-path and shorter empty-path traces show inputs, results, choices, and the MCP call.
 - [x] Five criteria, five tries each, before and after, with actual output for each criterion.

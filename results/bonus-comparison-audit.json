@@ -1,0 +1,50 @@
+{
+  "changed_hashed_source_files": [
+    "tools.py"
+  ],
+  "unchanged_criteria_sha256": "99c79d68b12af0e8f30d38b241fb4dd8d74c4eed998a17974772fe3646272f0f",
+  "unchanged_scenarios_sha256": "fd4e2234fb319d1f984c2098ac2a8d99cd329feccf976fbc60693cff5e8ebf81",
+  "same_model": "gemini-3.5-flash-lite",
+  "same_temperature": 0.9,
+  "cache_disabled_in_both": true,
+  "baseline": {
+    "tries": 25,
+    "model_calls": 30,
+    "all_model_text_used": true,
+    "scores": {
+      "1": 5,
+      "2": 5,
+      "3": 5,
+      "4": 5,
+      "5": 5
+    },
+    "tokens": {
+      "prompt": 5480,
+      "output": 1854,
+      "total": 7334
+    }
+  },
+  "after": {
+    "tries": 25,
+    "model_calls": 31,
+    "all_model_text_used": true,
+    "scores": {
+      "1": 5,
+      "2": 5,
+      "3": 5,
+      "4": 5,
+      "5": 5
+    },
+    "tokens": {
+      "prompt": 5488,
+      "output": 1883,
+      "total": 7371
+    }
+  },
+  "fallback_probe": {
+    "same_input": true,
+    "before_sentences": 3,
+    "after_sentences": 2,
+    "listing_facts_present_both": true
+  }
+}
