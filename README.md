@@ -2,6 +2,17 @@
 
 Read [RUNNING.md](RUNNING.md) for setup and commands. Unit 3 build notes and Unit 4 test evidence are recorded below.
 
+
+## Unit 4 Stretch Features — Declared Before Implementation
+
+**Declaration checkpoint (bonus work, after the completed required Unit 4 submission):** The features below are planned in this commit **before** changing the agent or tools for the bonus. The existing Unit 3 criteria, original Unit 4 before/after evidence, and the required one-improvement comparison will remain intact.
+
+1. **Second MCP tool (+1):** Publish `suggest_outfit(new_item: dict, wardrobe: dict) -> str` alongside `search_listings`, use it from the agent through `mcp_client.call_tool`, and capture a full trace showing both MCP calls. `create_fit_card` stays direct. The model's work will occur in the MCP server subprocess, which is a measurement limitation to disclose.
+2. **Retry with looser constraints (+1):** Only when search returns no matches **and the user specified a size**, retry **once** with `size=None` while preserving the description and maximum price; show clearly that the **size filter was dropped**. If the retry also returns nothing, stop without outfit or card and explain the empty result. No unbounded retries.
+3. **Second measured improvement (+2):** Fix the already-diagnosed **fallback caption sentence-boundary problem** in `tools.py::create_fit_card`, leaving the normal model prompt unchanged. Evaluate against the existing after baseline, then generate a third **five-criteria × five-tries** uncached run log, judge the unchanged criteria, and report whether it helped, failed, or produced no observable difference. A third live run requires a valid private Gemini key; deterministic/offline tests must not be presented as equivalent live evidence.
+
+**Commit-order rule:** This README declaration must appear in Git history *before* the corresponding implementation commits. Do not count any stretch points until the code, documented runtime evidence, and measurement conditions exist.
+
 ## What This Does
 
 FitFindr takes a request such as `vintage graphic tee under $30, size M`, searches the supplied secondhand listings, selects the highest-ranked match, suggests two outfits from a wardrobe, and writes a caption. If nothing matches, it stops after search and names filters the user can change. An empty wardrobe gets two general pairing ideas labeled as general because no wardrobe is saved.
