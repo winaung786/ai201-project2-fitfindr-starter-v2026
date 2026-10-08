@@ -30,7 +30,7 @@ def score(data, reviews):
             if number == 1:
                 checks.update(tool_order=calls == ["search_listings", "suggest_outfit", "create_fit_card"], fit_card_nonempty=bool(card.strip()))
             elif number == 2:
-                checks.update(search_only=calls == ["search_listings"], selected_item_none=session.get("selected_item") is None,
+                checks.update(search_only=bool(calls) and all(call == "search_listings" for call in calls), selected_item_none=session.get("selected_item") is None,
                               outfit_none=session.get("outfit_suggestion") is None, card_none=session.get("fit_card") is None,
                               useful_message=bool(re.search(r"keyword|size|price", session.get("error") or "", re.I)))
             elif number == 3:
@@ -41,7 +41,7 @@ def score(data, reviews):
                               selected_matches_first=bool(item) and bool(session.get("search_results")) and item == session["search_results"][0])
             elif number == 4:
                 review = reviews[f"4-{i}"]
-                assert review["text_sha256"] == hashlib.sha256(card.encode()).hexdigest(), "Ownership review is for different text"
+                assert review["text_sha256"] == hashlib.sha256(card.encode()).hexdigest(), f"Ownership review is for different text: 4-{i}"
                 sentences = [x for x in re.split(r"(?<=[.!?])\s+", card) if x.strip()]
                 checks.update(card_nonempty=bool(card.strip()), one_to_four_sentences=1 <= len(sentences) <= 4,
                               exact_title=bool(item) and item["title"] in card,
@@ -78,13 +78,13 @@ def main():
     args = parser.parse_args()
     source = ROOT / "results" / f"unit4-{args.label}.json"
     before_hash = hashlib.sha256(source.read_bytes()).hexdigest()
-    data = json.loads(source.read_text())
-    reviews = json.loads((ROOT / "results" / f"unit4-{args.label}-ownership-review.json").read_text())["reviews"]
+    data = json.loads(source.read_text(encoding="utf-8"))
+    reviews = json.loads((ROOT / "results" / f"unit4-{args.label}-ownership-review.json").read_text(encoding="utf-8"))["reviews"]
     rows = score(data, reviews)
     output = {"source": source.name, "source_sha256": before_hash,
               "method": "Deterministic checks plus caption/outfit ownership reviews against the saved wording and wardrobe; no model calls.", "rows": rows}
-    (ROOT / "results" / f"unit4-{args.label}-scored.json").write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n")
-    (ROOT / "results" / f"unit4-{args.label}-table.md").write_text(table(rows) + "\n")
+    (ROOT / "results" / f"unit4-{args.label}-scored.json").write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (ROOT / "results" / f"unit4-{args.label}-table.md").write_text(table(rows) + "\n", encoding="utf-8")
     assert hashlib.sha256(source.read_bytes()).hexdigest() == before_hash
     print(table(rows))
 

@@ -28,10 +28,17 @@ right trade for one unit.
 
 import asyncio
 import json
+import os
 import sys
 from pathlib import Path
 
 SERVER = Path(__file__).parent / "mcp_server.py"
+
+
+def _server_environment() -> dict[str, str]:
+    """Pass the model settings and evaluation recorder to the MCP subprocess."""
+    names = ("GEMINI_API_KEY", "AI201_CACHE", "AI201_MODEL", "FITFINDR_MCP_MODEL_LOG")
+    return {name: os.environ[name] for name in names if name in os.environ}
 
 
 class MCPError(RuntimeError):
@@ -75,6 +82,7 @@ async def _call(name: str, arguments: dict):
     params = StdioServerParameters(
         command=sys.executable,
         args=[str(SERVER)],
+        env=_server_environment(),
     )
 
     async with stdio_client(params) as (read, write):
@@ -149,7 +157,7 @@ if __name__ == "__main__":
         from mcp import ClientSession, StdioServerParameters
         from mcp.client.stdio import stdio_client
 
-        params = StdioServerParameters(command=sys.executable, args=[str(SERVER)])
+        params = StdioServerParameters(command=sys.executable, args=[str(SERVER)], env=_server_environment())
         async with stdio_client(params) as (read, write):
             async with ClientSession(read, write) as session:
                 await session.initialize()

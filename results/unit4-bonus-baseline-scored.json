@@ -1,0 +1,362 @@
+{
+  "source": "unit4-bonus-baseline.json",
+  "source_sha256": "edbc2933b64d1dac6e9ed483397724ce20f2da27cb9331a04b99ea0ffed3afe0",
+  "method": "Deterministic checks plus caption/outfit ownership reviews against the saved wording and wardrobe; no model calls.",
+  "rows": [
+    {
+      "criterion": 1,
+      "target": 4,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "tool_order": true,
+            "fit_card_nonempty": true
+          },
+          "ownership_note": null
+        }
+      ]
+    },
+    {
+      "criterion": 2,
+      "target": 5,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "search_only": true,
+            "selected_item_none": true,
+            "outfit_none": true,
+            "card_none": true,
+            "useful_message": true
+          },
+          "ownership_note": null
+        }
+      ]
+    },
+    {
+      "criterion": 3,
+      "target": 5,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "recording_replacements_used": true,
+            "both_calls_received": true,
+            "ids_match": true,
+            "selected_matches_first": true
+          },
+          "ownership_note": null
+        }
+      ]
+    },
+    {
+      "criterion": 4,
+      "target": 4,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Reviewed the exact caption against the unchanged ownership rule: it describes an available listing and hypothetical pairings without an unsupported acquisition or possession claim."
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Reviewed the exact caption against the unchanged ownership rule: it describes an available listing and hypothetical pairings without an unsupported acquisition or possession claim."
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Reviewed the exact caption against the unchanged ownership rule: it describes an available listing and hypothetical pairings without an unsupported acquisition or possession claim."
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Reviewed the exact caption against the unchanged ownership rule: it describes an available listing and hypothetical pairings without an unsupported acquisition or possession claim."
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "card_nonempty": true,
+            "one_to_four_sentences": true,
+            "exact_title": true,
+            "formatted_price": true,
+            "platform": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Reviewed the exact caption against the unchanged ownership rule: it describes an available listing and hypothetical pairings without an unsupported acquisition or possession claim."
+        }
+      ]
+    },
+    {
+      "criterion": 5,
+      "target": 4,
+      "passes": 5,
+      "verdict": "MET",
+      "tries": [
+        {
+          "try": 1,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Reviewed the exact empty-wardrobe suggestion: it offers general pairings and makes no claim that the user owns a specific piece."
+        },
+        {
+          "try": 2,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Reviewed the exact empty-wardrobe suggestion: it offers general pairings and makes no claim that the user owns a specific piece."
+        },
+        {
+          "try": 3,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Reviewed the exact empty-wardrobe suggestion: it offers general pairings and makes no claim that the user owns a specific piece."
+        },
+        {
+          "try": 4,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Reviewed the exact empty-wardrobe suggestion: it offers general pairings and makes no claim that the user owns a specific piece."
+        },
+        {
+          "try": 5,
+          "passed": true,
+          "checks": {
+            "no_crash": true,
+            "no_session_error": true,
+            "selected_item_present": true,
+            "outfit_nonempty": true,
+            "exact_title": true,
+            "other_clothing_pair": true,
+            "ownership_review": true
+          },
+          "ownership_note": "Reviewed the exact empty-wardrobe suggestion: it offers general pairings and makes no claim that the user owns a specific piece."
+        }
+      ]
+    }
+  ]
+}

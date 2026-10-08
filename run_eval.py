@@ -64,6 +64,10 @@ def run_once(scenario, use_trace=True):
     original_outfit, original_card, original_generate = agent.suggest_outfit, agent.create_fit_card, tools.generate
     # MCP passes stderr to a child process, so it needs a real file descriptor.
     stdout, stderr = io.StringIO(), tempfile.TemporaryFile(mode="w+", encoding="utf-8")
+    child_log = tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", suffix=".jsonl", delete=False)
+    child_log_path = child_log.name
+    child_log.close()
+    child_responses = []
     started, calls_before, tokens_before = time.monotonic(), generate.call_count(), generate.token_counts()
 
     def recorded_generate(prompt, *args, **kwargs):
@@ -84,20 +88,30 @@ def run_once(scenario, use_trace=True):
         record["tool_inputs"].append({"tool": "create_fit_card", "new_item": copy.deepcopy(new_item), "outfit": outfit})
         return "State probe fit card." if record["state_probe"] else original_card(outfit, new_item)
 
-    with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr), patch.object(tools, "generate", recorded_generate), patch.object(agent, "suggest_outfit", recorded_outfit), patch.object(agent, "create_fit_card", recorded_card):
-        try:
-            record["session"] = agent.run_agent(scenario["query"], wardrobe)
-        except Exception as exc:
-            record["crashed"] = f"{type(exc).__name__}: {exc}"
-            record["traceback"] = traceback.format_exc()
+    try:
+        with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr), patch.dict(os.environ, {"FITFINDR_MCP_MODEL_LOG": child_log_path}), patch.object(tools, "generate", recorded_generate), patch.object(agent, "suggest_outfit", recorded_outfit), patch.object(agent, "create_fit_card", recorded_card):
+            try:
+                record["session"] = agent.run_agent(scenario["query"], wardrobe)
+            except Exception as exc:
+                record["crashed"] = f"{type(exc).__name__}: {exc}"
+                record["traceback"] = traceback.format_exc()
+        with open(child_log_path, encoding="utf-8") as log:
+            child_responses = [json.loads(line) for line in log if line.strip()]
+    finally:
+        os.unlink(child_log_path)
+    record["model_responses"] = child_responses + record["model_responses"]
     record["trace"] = trace_module.get_trace() if use_trace else ""
     stderr.seek(0)
     record["stdout"], record["stderr"] = stdout.getvalue(), stderr.read()
     stderr.close()
     record["elapsed_seconds"] = round(time.monotonic() - started, 3)
-    record["model_calls"] = generate.call_count() - calls_before
+    record["model_calls"] = generate.call_count() - calls_before + sum(
+        response.get("model_calls", 0) for response in child_responses
+    )
     tokens_after = generate.token_counts()
-    record["tokens"] = {name: tokens_after[name] - value for name, value in tokens_before.items()}
+    record["tokens"] = {name: tokens_after[name] - value + sum(
+        response.get("tokens", {}).get(name, 0) for response in child_responses
+    ) for name, value in tokens_before.items()}
     if not record["state_probe"] and record["session"]:
         session = record["session"]
         record["model_text_used"] = {
@@ -183,10 +197,11 @@ def main():
 
         print()
 
-    import generate
     metadata["finished_utc"] = dt.datetime.now(dt.timezone.utc).isoformat()
-    metadata["usage"] = generate.usage()
-    metadata["tokens"] = generate.token_counts()
+    total_calls = sum(record["model_calls"] for row in rows for record in row["tries"])
+    metadata["usage"] = f"{total_calls} model calls across agent and MCP server"
+    metadata["tokens"] = {name: sum(record["tokens"][name] for row in rows for record in row["tries"])
+                          for name in ("prompt", "output", "total")}
     path = write_checkpoint(rows, args, metadata, complete=True)
     print(f"Wrote {path.relative_to(config.ROOT)}", flush=True)
     write_report(rows, args)
@@ -281,10 +296,9 @@ def write_report(rows, args):
 
     path.write_text("\n".join(lines), encoding="utf-8")
 
-    import generate
-
     print(f"Wrote {path.relative_to(config.ROOT)}")
-    print(generate.usage())
+    total_calls = sum(record["model_calls"] for row in rows for record in row["tries"])
+    print(f"{total_calls} model calls across agent and MCP server")
     print("\nCommit this file. It's the evidence the test actually happened.")
 
     if not any(r["tries"][0]["trace"] for r in rows):
