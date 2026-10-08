@@ -167,4 +167,9 @@ def create_fit_card(outfit: str, new_item: dict) -> str:
     ideas = re.findall(r"(?m)^\s*[12][).]\s*(.+)$", outfit)
     outfit_text = ideas[0] if ideas else outfit.strip().splitlines()[0]
     outfit_text = re.sub(rf"\bthe\s+{re.escape(title)}", "it", outfit_text, count=1, flags=re.I)
-    return f"Found {title} for {price} on {platform}. {outfit_text.rstrip('.!?')}."
+    # A numbered idea can itself contain several sentences. Use its first
+    # complete thought so the local caption keeps a stable two-sentence shape.
+    first_thought = re.split(r"[.!?]+(?=\s|$)", outfit_text, maxsplit=1)[0].strip()
+    if not first_thought:
+        first_thought = "Try one of the suggested outfit pairings"
+    return f"Found {title} for {price} on {platform}. {first_thought.rstrip('.!?')}."

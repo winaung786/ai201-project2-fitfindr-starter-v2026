@@ -1,0 +1,12 @@
+{
+  "label": "after",
+  "method": "Forced ModelUnavailable in create_fit_card; captured the real local fallback result.",
+  "source_sha256": "3750020090f9f22793ad77be10c8555d098d521a130f86bab7667229771b4e82",
+  "listing_id": "lst_002",
+  "outfit_input": "1) Pair the Y2K Baby Tee — Butterfly Print with jeans. Add white sneakers for contrast.\n2) Style the Y2K Baby Tee — Butterfly Print with a denim skirt and boots.",
+  "caption": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Pair it with jeans.",
+  "sentence_count": 2,
+  "exact_title": true,
+  "price": true,
+  "platform": true
+}
