@@ -63,6 +63,8 @@ The [before](results/bonus-fallback-before.json) and [after](results/bonus-fallb
 
 I also ran the unchanged five criteria five times each with caching off before and after this fallback change. The **bonus baseline** was recorded after the two other stretch features and before the fallback edit. It is an additional comparison point; the original Unit 4 before/after evaluation is untouched. The saved [bonus baseline](results/unit4-bonus-baseline.json) has 25 tries and 30 model calls, and the saved [bonus after](results/unit4-bonus-after.json) has 25 tries and 31 calls, including one rate-limit retry. In every model-based try, the saved raw response equals the returned text; the fallback was not exercised in these live runs. The [comparison audit](results/bonus-comparison-audit.json) confirms `tools.py` was the only hashed source file changed between these two batches, with the same scenarios, criteria, model, temperature, and cache setting.
 
+The bonus runs were made from a Windows checkout, so their raw working-tree SHA256 for `criteria.md` includes CRLF line endings. Normalizing only those line endings produces the original Unit 4 criteria SHA256, `e0c23c191dffa83722910db3a82c663db8ca7c784dbb69c00f6bddea8a11dbba`. The GitHub file content and committed targets were not revised; the audit records both hashes.
+
 **Bonus baseline — five tries per criterion:**
 
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |

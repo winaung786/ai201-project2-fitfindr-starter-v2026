@@ -1,6 +1,7 @@
 """Audit the bonus baseline and after records without making model calls."""
 
 import json
+import hashlib
 import sys
 from pathlib import Path
 
@@ -18,6 +19,7 @@ def main():
     after_score = read("unit4-bonus-after-scored.json")
     fallback_before = read("bonus-fallback-before.json")
     fallback_after = read("bonus-fallback-after.json")
+    original_after = read("unit4-after.json")
 
     before_hashes = before["metadata"]["file_sha256"]
     after_hashes = after["metadata"]["file_sha256"]
@@ -31,6 +33,10 @@ def main():
     assert fallback_before["outfit_input"] == fallback_after["outfit_input"]
     assert fallback_before["listing_id"] == fallback_after["listing_id"]
     assert fallback_before["sentence_count"] == 3 and fallback_after["sentence_count"] == 2
+    normalized_criteria = hashlib.sha256(
+        (ROOT / "criteria.md").read_bytes().replace(b"\r\n", b"\n")
+    ).hexdigest()
+    assert normalized_criteria == original_after["metadata"]["file_sha256"]["criteria.md"]
 
     def details(run, scored):
         records = [record for row in run["rows"] for record in row["tries"]]
@@ -48,6 +54,8 @@ def main():
     audit = {
         "changed_hashed_source_files": changed,
         "unchanged_criteria_sha256": before_hashes["criteria.md"],
+        "criteria_sha256_with_lf_line_endings": normalized_criteria,
+        "original_unit4_criteria_sha256": original_after["metadata"]["file_sha256"]["criteria.md"],
         "unchanged_scenarios_sha256": before_hashes["scenarios.py"],
         "same_model": before["metadata"]["model"],
         "same_temperature": before["metadata"]["temperature"],

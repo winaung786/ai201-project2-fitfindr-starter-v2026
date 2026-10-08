@@ -3,6 +3,8 @@
     "tools.py"
   ],
   "unchanged_criteria_sha256": "99c79d68b12af0e8f30d38b241fb4dd8d74c4eed998a17974772fe3646272f0f",
+  "criteria_sha256_with_lf_line_endings": "e0c23c191dffa83722910db3a82c663db8ca7c784dbb69c00f6bddea8a11dbba",
+  "original_unit4_criteria_sha256": "e0c23c191dffa83722910db3a82c663db8ca7c784dbb69c00f6bddea8a11dbba",
   "unchanged_scenarios_sha256": "fd4e2234fb319d1f984c2098ac2a8d99cd329feccf976fbc60693cff5e8ebf81",
   "same_model": "gemini-3.5-flash-lite",
   "same_temperature": 0.9,
