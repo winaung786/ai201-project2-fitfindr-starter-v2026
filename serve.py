@@ -38,14 +38,34 @@ import threading
 # and fixes the Windows console encoding for every module that imports it.
 import config  # noqa: F401
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
+from pathlib import Path
 
 from agent import run_agent
 from telemetry import clocks, record_run
-from utils.data_loader import get_example_wardrobe
+from utils.data_loader import get_example_wardrobe, load_listings
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 32 * 1024
+WEB_ROOT = Path(__file__).resolve().parent / "web"
+
+
+@app.get("/")
+def website():
+    """The same web UI, connected to the existing agent when running locally."""
+    return (WEB_ROOT / "index.html").read_text(encoding="utf-8").replace(
+        'data-transport="browser"', 'data-transport="api"'
+    )
+
+
+@app.get("/assets/<path:filename>")
+def website_asset(filename):
+    return send_from_directory(WEB_ROOT / "assets", filename)
+
+
+@app.get("/catalog.json")
+def website_catalog():
+    return jsonify(load_listings())
 
 
 # ── one request at a time ─────────────────────────────────────────────────────

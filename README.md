@@ -1,5 +1,28 @@
 # FitFindr
 
+## FitFindr website
+
+[Open the FitFindr website](https://fitfindr-style-budget.winaung.chatgpt.site)
+
+A responsive, accessible interface with a simple top navigation, one outfit form,
+optional category sizes, illustrated item cards, visible subtotal/remaining budget,
+and browser-local saved outfits. There is no navigation sidebar or account setup.
+The sample-catalog label, excluded tax/shipping, and illustrative artwork are visible
+in the interface; no live product photos, availability or missing links are invented.
+
+The hosted edition runs deterministic selection in the browser against the original
+catalog. The same interface at `python serve.py` calls the existing Python agent
+through `/ask`. It adds a browser companion; it does not replace the original
+CLI, MCP tools, test evidence or criteria. Neither budget path needs a model key.
+Browser and Python selections agree on **33 style/budget/size scenarios**.
+
+Website validation: **21 Python tests** and **5 Node test groups** passed. Manual
+browser checks covered a low-budget failure, size filters, saving/reloading/viewing
+looks, copying a summary, the help dialog, a 390px phone layout with no horizontal
+overflow, and a real local-agent result. See [website notes](docs/website.md) and
+[RUNNING.md](RUNNING.md) for build/run commands and the differences between editions.
+The original Unit 9 measurement tables below describe their recorded revisions.
+
 ## Unit 9 - Budget-Aware Outfit Builder (build and AI-assisted test cycle complete)
 
 This branch extends the original FitFindr agent. Try `python app.py ask 'casual outfit under $100'` after following [RUNNING.md](RUNNING.md).

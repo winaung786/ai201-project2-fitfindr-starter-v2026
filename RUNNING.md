@@ -1,5 +1,28 @@
 # Running FitFindr v2
 
+## Website
+
+Open the hosted edition at [FitFindr](https://fitfindr-style-budget.winaung.chatgpt.site).
+It uses the original sample catalog and runs deterministic budget selection in the
+browser. Saved looks stay in that browser; the hosted site starts owner-private.
+Prices and availability are not live.
+
+For the website connected to the original Python agent, follow the environment setup
+below, run `python serve.py`, and open `http://localhost:5000` in your browser.
+The page calls the same `/ask` endpoint as the CLI agent and writes the existing logs.
+
+To build or test the hosted companion with Node.js (tested on 22.16.0):
+
+```powershell
+node --test tests/web-engine.test.mjs
+node scripts/build-web.mjs
+python -m http.server 5173 --bind 127.0.0.1 --directory dist
+```
+
+Open `http://localhost:5173`. No frontend dependency installation is needed. The full
+Python test suite now also runs the 33-scenario JavaScript/Python parity check and
+therefore needs Node on PATH. [Website notes](docs/website.md) describe both paths.
+
 This is the Unit 9 local-with-logs path. The original setup guide is preserved in [docs/unit3-running-original.md](docs/unit3-running-original.md).
 
 ## Clean checkout and environment
