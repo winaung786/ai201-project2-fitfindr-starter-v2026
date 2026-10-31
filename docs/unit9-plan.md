@@ -30,3 +30,16 @@ are build checks, not the student's acceptance results. After the criteria
 commit: run each criterion three times, preserve raw outputs, diagnose all
 misses, commit one improvement, and repeat the full set three times.
 No formal before/after verdicts or capstone completion claims exist yet.
+
+
+## Follow-up technical cycle completed
+
+The user subsequently requested the testing and write-up. A separate,
+explicitly AI-assisted five-check plan was committed before the technical
+baseline: [unit9-validation-plan.md](unit9-validation-plan.md). All checks
+were run three times before and three times after one parser improvement;
+both raw result sets, diagnoses and verdicts are now in the README/results.
+This completes that technical request without changing or claiming authorship
+of the original criteria. Student-authored criteria and a personal reflection
+remain the student's submission responsibility. Earlier pending-work notes
+above describe the build checkpoint, before this follow-up.

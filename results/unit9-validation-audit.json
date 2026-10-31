@@ -1,0 +1,115 @@
+{
+  "authorship": "AI-assisted technical evaluation; no claim of student authorship",
+  "before_revision": "c50126304a3da7c8123cc29fd67241f7e3b766e7",
+  "after_revision": "7f5db41e72340c91ee185340dbb61d702a5f4993",
+  "same_plan": true,
+  "same_runner": true,
+  "same_original_criteria": true,
+  "same_inputs_case_names_and_transports": true,
+  "changed_runtime_sources": [
+    "budget_agent.py"
+  ],
+  "same_catalog": true,
+  "recomputed_verdicts_match_saved_summaries": true,
+  "distinct_logged_response_ids_before": 33,
+  "distinct_logged_response_ids_after": 33,
+  "run_ids_disjoint": true,
+  "cases_per_phase": 63,
+  "baseline_failed_cases": [
+    {
+      "trial": 1,
+      "check": 2,
+      "case": "repeated dot",
+      "input": {
+        "query": "outfit under $100..",
+        "budget": null
+      }
+    },
+    {
+      "trial": 1,
+      "check": 2,
+      "case": "repeated comma",
+      "input": {
+        "query": "outfit under $100,,",
+        "budget": null
+      }
+    },
+    {
+      "trial": 1,
+      "check": 2,
+      "case": "mixed punctuation",
+      "input": {
+        "query": "outfit under $100.,",
+        "budget": null
+      }
+    },
+    {
+      "trial": 2,
+      "check": 2,
+      "case": "repeated dot",
+      "input": {
+        "query": "outfit under $100..",
+        "budget": null
+      }
+    },
+    {
+      "trial": 2,
+      "check": 2,
+      "case": "repeated comma",
+      "input": {
+        "query": "outfit under $100,,",
+        "budget": null
+      }
+    },
+    {
+      "trial": 2,
+      "check": 2,
+      "case": "mixed punctuation",
+      "input": {
+        "query": "outfit under $100.,",
+        "budget": null
+      }
+    },
+    {
+      "trial": 3,
+      "check": 2,
+      "case": "repeated dot",
+      "input": {
+        "query": "outfit under $100..",
+        "budget": null
+      }
+    },
+    {
+      "trial": 3,
+      "check": 2,
+      "case": "repeated comma",
+      "input": {
+        "query": "outfit under $100,,",
+        "budget": null
+      }
+    },
+    {
+      "trial": 3,
+      "check": 2,
+      "case": "mixed punctuation",
+      "input": {
+        "query": "outfit under $100.,",
+        "budget": null
+      }
+    }
+  ],
+  "after_failed_cases": [],
+  "report_sha256_newline_normalized": {
+    "before": "c8ff9b5c9899f855cdcecff22d540e3d95748e639b4b4f5b845fda95a89c0d40",
+    "after": "4fa166313680e9a13cbf5839c5e6948868c7f721f3f1926c971ee2b2f0f0d560"
+  },
+  "plan_sha256": "7f0879b4f6071f7b747bdfaed832f5909d41a51b3eb1166f032bf7a095c843c6",
+  "runner_sha256": "04450585c9cb717a574be96e5bfe8c44ccc9d9076af6cd3e810f2931681ffc8d",
+  "regression_suite": {
+    "command": "python -m unittest discover -s tests -v",
+    "tests": 19,
+    "result": "OK",
+    "reported_seconds": 0.144
+  },
+  "limits": "Verdicts recomputed from recorded per-case checks. No live marketplace or Gemini quality evaluation. Injected fixtures and real-MCP cases are labeled; three deterministic trials are not a reliability probability estimate."
+}

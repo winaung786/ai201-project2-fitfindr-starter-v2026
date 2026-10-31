@@ -73,3 +73,22 @@ The regression suite uses in-process replacements for MCP transport and does not
 The committed build evidence is separate from the student-authored capstone acceptance results. Write/commit Unit 9 criteria before the formal acceptance baseline; the original `criteria.md` is still the Unit 3/4 file. Follow [docs/unit9-plan.md](docs/unit9-plan.md) to complete that part later.
 
 Logs use UTC timestamps and allowlisted fields. Query text is replaced by its SHA256 and length; wardrobe contents and credentials are omitted. Review evidence before committing. Local log files are not rotated automatically; remove or archive `logs/` when appropriate. If a log file cannot be written, stderr remains the log sink.
+
+
+## Three-trial technical validation evidence
+
+The five AI-assisted checks in `docs/unit9-validation-plan.md` have been run
+three times before and three times after the one parser fix. Read both tables
+in the README; the raw records and comparison audit are under `results/`.
+The original `criteria.md` is still the student-owned Unit 3/4 file.
+
+`scripts/validate_budget.py` refuses to overwrite saved evidence. To reproduce
+the baseline, use a separate clean checkout of commit `c501263`, install the
+same pinned environment, then run `python scripts/validate_budget.py --label before`.
+To reproduce the retest, use another clean checkout of commit `7f5db41`, install
+the same dependencies, then run `python scripts/validate_budget.py --label after`.
+Those historical commits contain the runner before the respective result
+file existed. Run from each checkout root. The runner records all fixtures
+and transport types; only the catalog and size groups use real MCP. No API
+key or live model call is needed. Do not replace archived evidence with a
+new run and claim it has the old timestamp.
