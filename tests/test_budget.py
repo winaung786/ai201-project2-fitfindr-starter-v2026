@@ -76,6 +76,14 @@ class BudgetTests(unittest.TestCase):
         with self.assertRaises(BudgetError):
             parse_request("outfit", 100, {"head": "XL"})
 
+    def test_budget_punctuation_is_not_silently_repaired(self):
+        for amount in ("$100..", "$100,,", "$100.,", "$100,."):
+            with self.subTest(amount=amount), self.assertRaises(BudgetError):
+                parse_request("casual outfit under " + amount)
+        for amount in ("$100.", "$100,", "$100.00.", "$100.00,"):
+            with self.subTest(amount=amount):
+                self.assertEqual(parse_request("casual outfit under " + amount)["budget"], "100.00")
+
 
 if __name__ == "__main__":
     unittest.main()
