@@ -14,6 +14,7 @@ env/
 
 # Cached model responses
 .cache/
+logs/
 
 # OS noise
 .DS_Store

@@ -165,7 +165,7 @@ def _run_legacy(query: str, wardrobe: dict) -> dict:
     return session
 
 
-def run_agent(query: str, wardrobe: dict, budget=None, sizes=None) -> dict:
+def _run_agent(query: str, wardrobe: dict, budget=None, sizes=None) -> dict:
     """Route outfit budgets through deterministic validation; retain item search."""
     from budget_agent import is_outfit_request, run_budget
     if is_outfit_request(query, budget):
@@ -175,3 +175,17 @@ def run_agent(query: str, wardrobe: dict, budget=None, sizes=None) -> dict:
         session.update(error="Send a clothing request of 1 to 2000 characters.", error_type="invalid_input")
         return session
     return _run_legacy(query, wardrobe)
+
+
+def run_agent(query: str, wardrobe: dict, budget=None, sizes=None) -> dict:
+    """Record successful and failed executions, including unexpected failures."""
+    from telemetry import clocks, record_run
+    started = clocks()
+    try:
+        session = _run_agent(query, wardrobe, budget, sizes)
+    except Exception as exc:
+        session = new_session("", {})
+        session.update(error="FitFindr could not complete this request. Please retry.",
+                       error_type=type(exc).__name__)
+    record_run(query, session, started)
+    return session

@@ -63,7 +63,7 @@ def call_tool(name: str, arguments: dict):
         MCPError, with something readable in it.
     """
     try:
-        return asyncio.run(_call(name, arguments))
+        return asyncio.run(_bounded_call(name, arguments))
     except MCPError:
         raise
     except Exception as exc:  # noqa: BLE001 — re-raised readably below
@@ -73,6 +73,12 @@ def call_tool(name: str, arguments: dict):
             f"    python mcp_server.py\n"
             f"If it exits immediately with an error, fix that before coming back here."
         ) from exc
+
+
+async def _bounded_call(name: str, arguments: dict):
+    # Includes server startup, handshake, and tool execution; cancellation closes stdio.
+    async with asyncio.timeout(30):
+        return await _call(name, arguments)
 
 
 async def _call(name: str, arguments: dict):
