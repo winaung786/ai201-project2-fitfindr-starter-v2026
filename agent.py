@@ -42,7 +42,7 @@ def _parse_query(query: str) -> dict:
     }
 
 
-def run_agent(query: str, wardrobe: dict) -> dict:
+def _run_legacy(query: str, wardrobe: dict) -> dict:
     """Choose each next tool from the current session and stop after three stages."""
     session = new_session(query, wardrobe)
     if not query or not query.strip():
@@ -163,3 +163,15 @@ def run_agent(query: str, wardrobe: dict) -> dict:
             session["error"] = "The agent reached an unknown step."
             break
     return session
+
+
+def run_agent(query: str, wardrobe: dict, budget=None, sizes=None) -> dict:
+    """Route outfit budgets through deterministic validation; retain item search."""
+    from budget_agent import is_outfit_request, run_budget
+    if is_outfit_request(query, budget):
+        return run_budget(new_session(query, wardrobe), budget, sizes, call_tool, create_fit_card)
+    if not isinstance(query, str) or len(query) > 2000:
+        session = new_session("", wardrobe)
+        session.update(error="Send a clothing request of 1 to 2000 characters.", error_type="invalid_input")
+        return session
+    return _run_legacy(query, wardrobe)
