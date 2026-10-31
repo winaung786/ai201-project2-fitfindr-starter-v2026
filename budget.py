@@ -104,7 +104,8 @@ def select_outfit(candidates: dict[str, list[dict]], budget) -> dict:
         items = [row[1] for row in combination]
         if len({i["id"] for i in items}) != 3:
             continue
-        tags = [set(i.get("style_tags", [])) for i in items]
+        tags = [set(tag for tag in i.get("style_tags", []) if isinstance(tag, str))
+                if isinstance(i.get("style_tags", []), list) else set() for i in items]
         shared = sum(len(tags[a] & tags[b]) for a, b in ((0, 1), (0, 2), (1, 2)))
         score = (sum(row[0] for row in combination) - shared, sum(row[2] for row in combination), tuple(i["id"] for i in items))
         feasible.append((score, items))

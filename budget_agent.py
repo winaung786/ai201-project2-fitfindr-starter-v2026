@@ -22,7 +22,7 @@ def parse_request(query, budget=None, sizes=None):
     ):
         raise BudgetError("invalid_input", "Sizes must map tops, bottoms, or shoes to short size strings.")
     matches = list(re.finditer(r"\b(?:under|below|max(?:imum)?|budget(?:\s+of)?)\s*\$?\s*([^\s;!?]+)", query, re.I))
-    amounts = [cents(m.group(1).rstrip(",")) for m in matches]
+    amounts = [cents(m.group(1).rstrip(".,")) for m in matches]
     if budget is not None:
         amounts.append(cents(budget))
     if not amounts:

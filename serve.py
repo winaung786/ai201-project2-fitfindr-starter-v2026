@@ -22,15 +22,12 @@ Two routes:
 same keys you print from the command line, including `error`. Read
 `session["error"]` first, exactly as you do everywhere else.
 
-It runs **one request at a time**, and one route is deliberately slower than a
-web server has to be. The reason is worth reading before you deploy: see the
+It runs **one request at a time**. The reason is worth reading before you deploy: see the
 note above `_one_at_a_time` below — it also decides which gunicorn worker you
 can use.
 
-⚠️ There is deliberately NO logging, NO timing and NO request counting in this
-file. That is unit 9's follow-along: you instrument this yourself, first, and
-then deploy it. A structured log you were handed teaches you nothing about
-what belongs in one — and the timing field is the one everybody skips.
+Agent runs and rejected requests write sanitized JSON records through
+telemetry.py. Budget outfits accept a total budget and category-specific sizes.
 """
 
 import os

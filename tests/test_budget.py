@@ -64,6 +64,7 @@ class BudgetTests(unittest.TestCase):
     def test_budget_parser(self):
         self.assertEqual(parse_request("find a casual outfit under $100")["budget"], "100.00")
         self.assertEqual(parse_request("classic outfit", "95.50")["budget"], "95.50")
+        self.assertEqual(parse_request("casual outfit under $100.")["budget"], "100.00")
         self.assertEqual(parse_request("outfit under $100", 100, {"shoes": "US 9"})["sizes"], {"shoes": "US 9"})
 
     def test_bad_budget_queries(self):

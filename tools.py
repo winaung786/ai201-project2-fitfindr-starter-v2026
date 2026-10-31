@@ -3,6 +3,7 @@
 import re
 
 import config
+from budget import BudgetError, cents, priced_item
 from generate import ModelUnavailable, generate
 from utils.data_loader import load_listings
 
@@ -35,7 +36,6 @@ def search_listings(
         return []
     scored = []
     for listing in load_listings():
-        from budget import BudgetError, cents, priced_item
         try:
             checked = priced_item(listing)
         except BudgetError:
