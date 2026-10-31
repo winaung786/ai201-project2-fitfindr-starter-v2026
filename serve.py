@@ -44,9 +44,11 @@ import config  # noqa: F401
 from flask import Flask, jsonify, request
 
 from agent import run_agent
+from telemetry import clocks, record_run
 from utils.data_loader import get_example_wardrobe
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 32 * 1024
 
 
 # ── one request at a time ─────────────────────────────────────────────────────
@@ -107,16 +109,31 @@ def ask():
                                                 example wardrobe the CLI uses.
     Out:  the session dict from run_agent(), as JSON.
     """
-    payload = request.get_json(silent=True) or {}
-    query = (payload.get("query") or "").strip()
-    if not query:
-        # 400 rather than a stack trace: the caller can act on this one.
-        return jsonify({"error": "Send JSON with a 'query' field, e.g. "
-                                 '{"query": "vintage graphic tee under $30"}'}), 400
+    started = clocks()
+
+    def reject(message):
+        failure = {"error": message, "error_type": "invalid_input"}
+        record_run(None, failure, started, surface="http")
+        return jsonify(failure), 400
+
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return reject("Send a JSON object with a query field.")
+    query = payload.get("query")
+    if not isinstance(query, str) or not query.strip() or len(query) > 2000:
+        return reject("Send a query string of 1 to 2000 characters.")
+    query = query.strip()
+    if "budget" in payload and payload["budget"] is None:
+        return reject("Budget must be a positive USD amount.")
 
     wardrobe = payload.get("wardrobe")
-    if not isinstance(wardrobe, dict):
+    if "wardrobe" not in payload:
         wardrobe = get_example_wardrobe()
+    elif not isinstance(wardrobe, dict) or not isinstance(wardrobe.get("items"), list) or len(wardrobe["items"]) > 100 or any(
+        not isinstance(i, dict) or any(not isinstance(i.get(k), str) for k in ("name", "category"))
+        for i in wardrobe["items"]
+    ):
+        return reject("Wardrobe must contain an items list of clothing objects with name and category strings.")
 
     # A queued request should look like a queued request. Without this the
     # second caller just sits there, and "slow" and "waiting its turn" are
@@ -136,20 +153,21 @@ def ask():
             flush=True,
         )
 
-    failure = None
-    session = None
     with _one_at_a_time:
-        try:
-            session = run_agent(query, wardrobe)
-        except Exception as exc:  # noqa: BLE001 — a 500 with a sentence beats a hang
-            failure = f"{type(exc).__name__}: {exc}"
+        session = run_agent(query, wardrobe, budget=payload.get("budget"), sizes=payload.get("sizes"))
 
     # Outside the lock: building a response is not work the next caller should
     # be waiting on.
-    if failure is not None:
-        return jsonify({"error": failure}), 500
+    code = session.get("error_type")
+    status = 400 if code in {"invalid_input", "invalid_price", "budget_required", "conflicting_budget", "ambiguous_size"} else 422 if code in {"no_valid_products", "over_budget"} else 503 if code else 200
+    return jsonify(session), status
 
-    return jsonify(session)
+
+@app.errorhandler(413)
+def too_large(_error):
+    failure = {"error": "Request exceeds the 32 KB limit.", "error_type": "invalid_input"}
+    record_run(None, failure, clocks(), surface="http")
+    return jsonify(failure), 413
 
 
 if __name__ == "__main__":

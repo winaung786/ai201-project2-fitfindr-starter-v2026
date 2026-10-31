@@ -104,20 +104,23 @@ def cmd_examples(args):
     )
 
 
-def _ask_one(query, wardrobe, use_trace):
+def _ask_one(query, wardrobe, use_trace, budget=None):
     from agent import run_agent
     import trace as trace_module
 
     if use_trace:
         trace_module.start_trace()
 
-    session = run_agent(query, wardrobe)
+    session = run_agent(query, wardrobe, budget=budget)
 
     print()
     if session.get("notice"):
         print(f"  {session['notice']}")
     if session["error"]:
         print(f"  {session['error']}")
+    elif session.get("budget_result"):
+        print(f"  {session['outfit_suggestion']}")
+        print(f"\n  {session['fit_card']}")
     else:
         item = session["selected_item"] or {}
         print(f"  Found:    {item.get('title')} — ${item.get('price')} on {item.get('platform')}")
@@ -147,7 +150,7 @@ def cmd_ask(args):
 
     try:
         if args.query:
-            _ask_one(args.query, wardrobe, args.trace)
+            _ask_one(args.query, wardrobe, args.trace, args.budget)
         else:
             print("Ask for something, or press Enter on an empty line to quit.\n")
             while True:
@@ -158,7 +161,7 @@ def cmd_ask(args):
                     break
                 if not query:
                     break
-                _ask_one(query, wardrobe, args.trace)
+                _ask_one(query, wardrobe, args.trace, args.budget)
     finally:
         print(generate.usage())
 
@@ -185,6 +188,7 @@ def build_parser():
 
     p_ask = sub.add_parser("ask", help="run the agent")
     p_ask.add_argument("query", nargs="?")
+    p_ask.add_argument("--budget", help="Total USD merchandise budget; enables a top/bottom/shoes outfit preview")
     p_ask.add_argument("--trace", action="store_true", help="print the loop step by step")
     p_ask.add_argument(
         "--empty-wardrobe",
