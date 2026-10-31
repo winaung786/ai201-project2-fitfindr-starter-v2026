@@ -1,0 +1,625 @@
+{
+  "purpose": "build cost and instrumentation measurement, not student acceptance results",
+  "timestamp": "2026-10-31T19:04:43.371908+00:00",
+  "python": "3.13.3 (tags/v3.13.3:6280bb5, Apr  8 2025, 14:47:33) [MSC v.1943 64 bit (AMD64)]",
+  "revision": "bd4e7a72ec53f0077b6920cbbc8f922920448ab7",
+  "source_sha256": {
+    "agent.py": "6b388813f3ee3ce51d1922570dd20e27db81b2efd2e1edcc0520da11dc17b27c",
+    "budget.py": "0c4e9df579521d54777471bf2ba179a9a0b8635f842a38eddcbe277f2078a4fe",
+    "budget_agent.py": "ac6b1b16997cd26f4ea91be02b8b3306305567f627b765baf5addbf3f58763ca",
+    "tools.py": "fc94a02d27397f78eedca996cd05fc9c690c588cf353edc203aa6a16cc1132bf",
+    "mcp_client.py": "5149e9f62cb4d85c9b7db1623d68a20806e84c9f0ab1c034af6968a1d00bacf7",
+    "mcp_server.py": "32157173ea7cff656d8affcf63fe631801c649b7c7aa94f044c605b268ec6322",
+    "listings.json": "8328bc3273ae3335ae959fc8552a022438facdf4b8a6e44f0690261eb5e18b74"
+  },
+  "transport": "real stdio MCP, new subprocess per tool call, no model/cache calls",
+  "runs": [
+    {
+      "trial": 1,
+      "run_id": "5e6f55cd254947bd80c9985d5ad72b6a",
+      "metrics": {
+        "duration_ms": 9610.222,
+        "parent_cpu_ms": 687.5,
+        "usage": {
+          "model_calls": 0,
+          "prompt_tokens": 0,
+          "output_tokens": 0,
+          "scope": "complete deterministic budget path"
+        }
+      },
+      "budget_result": {
+        "items": [
+          {
+            "id": "lst_020",
+            "title": "Henley Long Sleeve — Washed Burgundy",
+            "category": "tops",
+            "size": "M",
+            "platform": "thredUp",
+            "price_cents": 1600,
+            "price": "16.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_001",
+            "title": "Vintage Levi's 501 Jeans — Medium Wash",
+            "category": "bottoms",
+            "size": "W30 L30",
+            "platform": "depop",
+            "price_cents": 3800,
+            "price": "38.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_035",
+            "title": "Low-Top Canvas Sneakers — Off-White",
+            "category": "shoes",
+            "size": "US 9",
+            "platform": "poshmark",
+            "price_cents": 2000,
+            "price": "20.00",
+            "currency": "USD"
+          }
+        ],
+        "currency": "USD",
+        "budget_cents": 10000,
+        "total_cents": 7400,
+        "remaining_cents": 2600,
+        "budget": "100.00",
+        "total": "74.00",
+        "remaining": "26.00",
+        "within_budget": true,
+        "source": "bundled_sample_catalog",
+        "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying."
+      }
+    },
+    {
+      "trial": 2,
+      "run_id": "897b9f1001dd416f98812cbf89254155",
+      "metrics": {
+        "duration_ms": 4197.974,
+        "parent_cpu_ms": 62.5,
+        "usage": {
+          "model_calls": 0,
+          "prompt_tokens": 0,
+          "output_tokens": 0,
+          "scope": "complete deterministic budget path"
+        }
+      },
+      "budget_result": {
+        "items": [
+          {
+            "id": "lst_020",
+            "title": "Henley Long Sleeve — Washed Burgundy",
+            "category": "tops",
+            "size": "M",
+            "platform": "thredUp",
+            "price_cents": 1600,
+            "price": "16.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_001",
+            "title": "Vintage Levi's 501 Jeans — Medium Wash",
+            "category": "bottoms",
+            "size": "W30 L30",
+            "platform": "depop",
+            "price_cents": 3800,
+            "price": "38.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_035",
+            "title": "Low-Top Canvas Sneakers — Off-White",
+            "category": "shoes",
+            "size": "US 9",
+            "platform": "poshmark",
+            "price_cents": 2000,
+            "price": "20.00",
+            "currency": "USD"
+          }
+        ],
+        "currency": "USD",
+        "budget_cents": 10000,
+        "total_cents": 7400,
+        "remaining_cents": 2600,
+        "budget": "100.00",
+        "total": "74.00",
+        "remaining": "26.00",
+        "within_budget": true,
+        "source": "bundled_sample_catalog",
+        "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying."
+      }
+    },
+    {
+      "trial": 3,
+      "run_id": "4027f37f090542e8b34acc1dfc865835",
+      "metrics": {
+        "duration_ms": 4202.239,
+        "parent_cpu_ms": 31.25,
+        "usage": {
+          "model_calls": 0,
+          "prompt_tokens": 0,
+          "output_tokens": 0,
+          "scope": "complete deterministic budget path"
+        }
+      },
+      "budget_result": {
+        "items": [
+          {
+            "id": "lst_020",
+            "title": "Henley Long Sleeve — Washed Burgundy",
+            "category": "tops",
+            "size": "M",
+            "platform": "thredUp",
+            "price_cents": 1600,
+            "price": "16.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_001",
+            "title": "Vintage Levi's 501 Jeans — Medium Wash",
+            "category": "bottoms",
+            "size": "W30 L30",
+            "platform": "depop",
+            "price_cents": 3800,
+            "price": "38.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_035",
+            "title": "Low-Top Canvas Sneakers — Off-White",
+            "category": "shoes",
+            "size": "US 9",
+            "platform": "poshmark",
+            "price_cents": 2000,
+            "price": "20.00",
+            "currency": "USD"
+          }
+        ],
+        "currency": "USD",
+        "budget_cents": 10000,
+        "total_cents": 7400,
+        "remaining_cents": 2600,
+        "budget": "100.00",
+        "total": "74.00",
+        "remaining": "26.00",
+        "within_budget": true,
+        "source": "bundled_sample_catalog",
+        "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying."
+      }
+    },
+    {
+      "trial": 4,
+      "run_id": "c800ca8ed9f04f85bf7689e1976d5782",
+      "metrics": {
+        "duration_ms": 4276.334,
+        "parent_cpu_ms": 62.5,
+        "usage": {
+          "model_calls": 0,
+          "prompt_tokens": 0,
+          "output_tokens": 0,
+          "scope": "complete deterministic budget path"
+        }
+      },
+      "budget_result": {
+        "items": [
+          {
+            "id": "lst_020",
+            "title": "Henley Long Sleeve — Washed Burgundy",
+            "category": "tops",
+            "size": "M",
+            "platform": "thredUp",
+            "price_cents": 1600,
+            "price": "16.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_001",
+            "title": "Vintage Levi's 501 Jeans — Medium Wash",
+            "category": "bottoms",
+            "size": "W30 L30",
+            "platform": "depop",
+            "price_cents": 3800,
+            "price": "38.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_035",
+            "title": "Low-Top Canvas Sneakers — Off-White",
+            "category": "shoes",
+            "size": "US 9",
+            "platform": "poshmark",
+            "price_cents": 2000,
+            "price": "20.00",
+            "currency": "USD"
+          }
+        ],
+        "currency": "USD",
+        "budget_cents": 10000,
+        "total_cents": 7400,
+        "remaining_cents": 2600,
+        "budget": "100.00",
+        "total": "74.00",
+        "remaining": "26.00",
+        "within_budget": true,
+        "source": "bundled_sample_catalog",
+        "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying."
+      }
+    },
+    {
+      "trial": 5,
+      "run_id": "0d4049d58bdf4dc3a6a337949764bea5",
+      "metrics": {
+        "duration_ms": 4274.273,
+        "parent_cpu_ms": 78.125,
+        "usage": {
+          "model_calls": 0,
+          "prompt_tokens": 0,
+          "output_tokens": 0,
+          "scope": "complete deterministic budget path"
+        }
+      },
+      "budget_result": {
+        "items": [
+          {
+            "id": "lst_020",
+            "title": "Henley Long Sleeve — Washed Burgundy",
+            "category": "tops",
+            "size": "M",
+            "platform": "thredUp",
+            "price_cents": 1600,
+            "price": "16.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_001",
+            "title": "Vintage Levi's 501 Jeans — Medium Wash",
+            "category": "bottoms",
+            "size": "W30 L30",
+            "platform": "depop",
+            "price_cents": 3800,
+            "price": "38.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_035",
+            "title": "Low-Top Canvas Sneakers — Off-White",
+            "category": "shoes",
+            "size": "US 9",
+            "platform": "poshmark",
+            "price_cents": 2000,
+            "price": "20.00",
+            "currency": "USD"
+          }
+        ],
+        "currency": "USD",
+        "budget_cents": 10000,
+        "total_cents": 7400,
+        "remaining_cents": 2600,
+        "budget": "100.00",
+        "total": "74.00",
+        "remaining": "26.00",
+        "within_budget": true,
+        "source": "bundled_sample_catalog",
+        "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying."
+      }
+    },
+    {
+      "trial": 6,
+      "run_id": "04ddb99118aa4eaeb77b6257d6efa632",
+      "metrics": {
+        "duration_ms": 4340.148,
+        "parent_cpu_ms": 78.125,
+        "usage": {
+          "model_calls": 0,
+          "prompt_tokens": 0,
+          "output_tokens": 0,
+          "scope": "complete deterministic budget path"
+        }
+      },
+      "budget_result": {
+        "items": [
+          {
+            "id": "lst_020",
+            "title": "Henley Long Sleeve — Washed Burgundy",
+            "category": "tops",
+            "size": "M",
+            "platform": "thredUp",
+            "price_cents": 1600,
+            "price": "16.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_001",
+            "title": "Vintage Levi's 501 Jeans — Medium Wash",
+            "category": "bottoms",
+            "size": "W30 L30",
+            "platform": "depop",
+            "price_cents": 3800,
+            "price": "38.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_035",
+            "title": "Low-Top Canvas Sneakers — Off-White",
+            "category": "shoes",
+            "size": "US 9",
+            "platform": "poshmark",
+            "price_cents": 2000,
+            "price": "20.00",
+            "currency": "USD"
+          }
+        ],
+        "currency": "USD",
+        "budget_cents": 10000,
+        "total_cents": 7400,
+        "remaining_cents": 2600,
+        "budget": "100.00",
+        "total": "74.00",
+        "remaining": "26.00",
+        "within_budget": true,
+        "source": "bundled_sample_catalog",
+        "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying."
+      }
+    },
+    {
+      "trial": 7,
+      "run_id": "4f398f94c0144ae6b280ce49d6f685c3",
+      "metrics": {
+        "duration_ms": 4740.809,
+        "parent_cpu_ms": 46.875,
+        "usage": {
+          "model_calls": 0,
+          "prompt_tokens": 0,
+          "output_tokens": 0,
+          "scope": "complete deterministic budget path"
+        }
+      },
+      "budget_result": {
+        "items": [
+          {
+            "id": "lst_020",
+            "title": "Henley Long Sleeve — Washed Burgundy",
+            "category": "tops",
+            "size": "M",
+            "platform": "thredUp",
+            "price_cents": 1600,
+            "price": "16.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_001",
+            "title": "Vintage Levi's 501 Jeans — Medium Wash",
+            "category": "bottoms",
+            "size": "W30 L30",
+            "platform": "depop",
+            "price_cents": 3800,
+            "price": "38.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_035",
+            "title": "Low-Top Canvas Sneakers — Off-White",
+            "category": "shoes",
+            "size": "US 9",
+            "platform": "poshmark",
+            "price_cents": 2000,
+            "price": "20.00",
+            "currency": "USD"
+          }
+        ],
+        "currency": "USD",
+        "budget_cents": 10000,
+        "total_cents": 7400,
+        "remaining_cents": 2600,
+        "budget": "100.00",
+        "total": "74.00",
+        "remaining": "26.00",
+        "within_budget": true,
+        "source": "bundled_sample_catalog",
+        "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying."
+      }
+    },
+    {
+      "trial": 8,
+      "run_id": "24eb5badb4cb436f870fcee0c3b3cbbf",
+      "metrics": {
+        "duration_ms": 7878.981,
+        "parent_cpu_ms": 171.875,
+        "usage": {
+          "model_calls": 0,
+          "prompt_tokens": 0,
+          "output_tokens": 0,
+          "scope": "complete deterministic budget path"
+        }
+      },
+      "budget_result": {
+        "items": [
+          {
+            "id": "lst_020",
+            "title": "Henley Long Sleeve — Washed Burgundy",
+            "category": "tops",
+            "size": "M",
+            "platform": "thredUp",
+            "price_cents": 1600,
+            "price": "16.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_001",
+            "title": "Vintage Levi's 501 Jeans — Medium Wash",
+            "category": "bottoms",
+            "size": "W30 L30",
+            "platform": "depop",
+            "price_cents": 3800,
+            "price": "38.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_035",
+            "title": "Low-Top Canvas Sneakers — Off-White",
+            "category": "shoes",
+            "size": "US 9",
+            "platform": "poshmark",
+            "price_cents": 2000,
+            "price": "20.00",
+            "currency": "USD"
+          }
+        ],
+        "currency": "USD",
+        "budget_cents": 10000,
+        "total_cents": 7400,
+        "remaining_cents": 2600,
+        "budget": "100.00",
+        "total": "74.00",
+        "remaining": "26.00",
+        "within_budget": true,
+        "source": "bundled_sample_catalog",
+        "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying."
+      }
+    },
+    {
+      "trial": 9,
+      "run_id": "1431a8033a6e44afb84cd5b6bdbb6c02",
+      "metrics": {
+        "duration_ms": 5955.935,
+        "parent_cpu_ms": 62.5,
+        "usage": {
+          "model_calls": 0,
+          "prompt_tokens": 0,
+          "output_tokens": 0,
+          "scope": "complete deterministic budget path"
+        }
+      },
+      "budget_result": {
+        "items": [
+          {
+            "id": "lst_020",
+            "title": "Henley Long Sleeve — Washed Burgundy",
+            "category": "tops",
+            "size": "M",
+            "platform": "thredUp",
+            "price_cents": 1600,
+            "price": "16.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_001",
+            "title": "Vintage Levi's 501 Jeans — Medium Wash",
+            "category": "bottoms",
+            "size": "W30 L30",
+            "platform": "depop",
+            "price_cents": 3800,
+            "price": "38.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_035",
+            "title": "Low-Top Canvas Sneakers — Off-White",
+            "category": "shoes",
+            "size": "US 9",
+            "platform": "poshmark",
+            "price_cents": 2000,
+            "price": "20.00",
+            "currency": "USD"
+          }
+        ],
+        "currency": "USD",
+        "budget_cents": 10000,
+        "total_cents": 7400,
+        "remaining_cents": 2600,
+        "budget": "100.00",
+        "total": "74.00",
+        "remaining": "26.00",
+        "within_budget": true,
+        "source": "bundled_sample_catalog",
+        "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying."
+      }
+    },
+    {
+      "trial": 10,
+      "run_id": "ec376b9fc78f4344b5d15ebc7f3a2662",
+      "metrics": {
+        "duration_ms": 6050.654,
+        "parent_cpu_ms": 31.25,
+        "usage": {
+          "model_calls": 0,
+          "prompt_tokens": 0,
+          "output_tokens": 0,
+          "scope": "complete deterministic budget path"
+        }
+      },
+      "budget_result": {
+        "items": [
+          {
+            "id": "lst_020",
+            "title": "Henley Long Sleeve — Washed Burgundy",
+            "category": "tops",
+            "size": "M",
+            "platform": "thredUp",
+            "price_cents": 1600,
+            "price": "16.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_001",
+            "title": "Vintage Levi's 501 Jeans — Medium Wash",
+            "category": "bottoms",
+            "size": "W30 L30",
+            "platform": "depop",
+            "price_cents": 3800,
+            "price": "38.00",
+            "currency": "USD"
+          },
+          {
+            "id": "lst_035",
+            "title": "Low-Top Canvas Sneakers — Off-White",
+            "category": "shoes",
+            "size": "US 9",
+            "platform": "poshmark",
+            "price_cents": 2000,
+            "price": "20.00",
+            "currency": "USD"
+          }
+        ],
+        "currency": "USD",
+        "budget_cents": 10000,
+        "total_cents": 7400,
+        "remaining_cents": 2600,
+        "budget": "100.00",
+        "total": "74.00",
+        "remaining": "26.00",
+        "within_budget": true,
+        "source": "bundled_sample_catalog",
+        "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying."
+      }
+    }
+  ],
+  "summary": {
+    "count": 10,
+    "mean_wall_ms": 5552.757,
+    "mean_parent_cpu_ms": 131.25,
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "metered_model_cost_usd": 0,
+    "wall_seconds_per_100_runs": 555.276,
+    "compute_cost_usd": null,
+    "limitations": "Wall time includes MCP startup/waiting; parent CPU excludes subprocess CPU. No hosting tariff or energy measurement supplied, so compute dollars are unknown. This does not measure legacy Gemini cost."
+  },
+  "failure_probe": {
+    "run_id": "e58120f5e128433eaa266ecfd38f7dd5",
+    "error": "Use a positive USD amount with at most two decimals.",
+    "error_type": "invalid_price",
+    "metrics": {
+      "duration_ms": 0.096,
+      "parent_cpu_ms": 0.0,
+      "usage": {
+        "model_calls": 0,
+        "prompt_tokens": 0,
+        "output_tokens": 0,
+        "scope": "complete deterministic budget path"
+      }
+    }
+  }
+}

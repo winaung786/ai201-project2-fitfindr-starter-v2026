@@ -1,0 +1,803 @@
+{
+  "purpose": "clean-checkout development smoke; not student acceptance results",
+  "start_command": "python serve.py",
+  "setup": "fresh venv; pip install -r requirements-lock.txt",
+  "health": {
+    "status": 200,
+    "body": {
+      "status": "ok"
+    }
+  },
+  "budget": {
+    "status": 200,
+    "body": {
+      "budget_result": {
+        "budget": "100.00",
+        "budget_cents": 10000,
+        "currency": "USD",
+        "items": [
+          {
+            "category": "tops",
+            "currency": "USD",
+            "id": "lst_020",
+            "platform": "thredUp",
+            "price": "16.00",
+            "price_cents": 1600,
+            "size": "M",
+            "title": "Henley Long Sleeve — Washed Burgundy"
+          },
+          {
+            "category": "bottoms",
+            "currency": "USD",
+            "id": "lst_001",
+            "platform": "depop",
+            "price": "38.00",
+            "price_cents": 3800,
+            "size": "W30 L30",
+            "title": "Vintage Levi's 501 Jeans — Medium Wash"
+          },
+          {
+            "category": "shoes",
+            "currency": "USD",
+            "id": "lst_035",
+            "platform": "poshmark",
+            "price": "20.00",
+            "price_cents": 2000,
+            "size": "US 9",
+            "title": "Low-Top Canvas Sneakers — Off-White"
+          }
+        ],
+        "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying.",
+        "remaining": "26.00",
+        "remaining_cents": 2600,
+        "source": "bundled_sample_catalog",
+        "total": "74.00",
+        "total_cents": 7400,
+        "within_budget": true
+      },
+      "error": null,
+      "fit_card": "Outfit subtotal: $74.00 / $100.00 USD. Budget remaining: $26.00. Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying.",
+      "metrics": {
+        "duration_ms": 5762.588,
+        "parent_cpu_ms": 1125.0,
+        "usage": {
+          "model_calls": 0,
+          "output_tokens": 0,
+          "prompt_tokens": 0,
+          "scope": "complete deterministic budget path"
+        }
+      },
+      "mode": "budget_outfit",
+      "notice": "Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying.",
+      "outfit_suggestion": "tops: Henley Long Sleeve — Washed Burgundy ($16.00; size M)\nbottoms: Vintage Levi's 501 Jeans — Medium Wash ($38.00; size W30 L30)\nshoes: Low-Top Canvas Sneakers — Off-White ($20.00; size US 9)",
+      "parsed": {
+        "budget": "100.00",
+        "description": "classic basics streetwear",
+        "sizes": {}
+      },
+      "query": "casual outfit",
+      "run_id": "b0b8de83ffe64adba74ec4bdf1062905",
+      "search_results": [
+        {
+          "brand": null,
+          "category": "tops",
+          "colors": [
+            "burgundy",
+            "wine"
+          ],
+          "condition": "excellent",
+          "description": "Soft washed henley in a rich burgundy. Three-button placket. Slightly shrunken/cropped fit. 100% cotton.",
+          "id": "lst_020",
+          "platform": "thredUp",
+          "price": 16.0,
+          "size": "M",
+          "style_tags": [
+            "vintage",
+            "basics",
+            "earth tones",
+            "classic"
+          ],
+          "title": "Henley Long Sleeve — Washed Burgundy"
+        },
+        {
+          "brand": null,
+          "category": "tops",
+          "colors": [
+            "navy"
+          ],
+          "condition": "good",
+          "description": "Perfectly faded navy crewneck. Genuinely vintage — not manufactured distressed. Ribbed cuffs and hem. No graphics, clean.",
+          "id": "lst_012",
+          "platform": "thredUp",
+          "price": 20.0,
+          "size": "XL (fits oversized)",
+          "style_tags": [
+            "vintage",
+            "basics",
+            "oversized",
+            "classic"
+          ],
+          "title": "Oversized Crewneck Sweatshirt — Vintage Navy"
+        },
+        {
+          "brand": "Ralph Lauren",
+          "category": "tops",
+          "colors": [
+            "green",
+            "forest green"
+          ],
+          "condition": "good",
+          "description": "Classic polo in forest green. Short sleeve, ribbed collar. Slightly boxy. The kind of piece that goes with everything.",
+          "id": "lst_024",
+          "platform": "thredUp",
+          "price": 18.0,
+          "size": "M",
+          "style_tags": [
+            "vintage",
+            "preppy",
+            "classic",
+            "earth tones"
+          ],
+          "title": "Vintage Polo Shirt — Forest Green"
+        },
+        {
+          "brand": null,
+          "category": "tops",
+          "colors": [
+            "red",
+            "faded red"
+          ],
+          "condition": "good",
+          "description": "Classic college-style crewneck in a beautifully faded red. No school name — just a plain athletic crewneck. Roomy fit.",
+          "id": "lst_027",
+          "platform": "thredUp",
+          "price": 21.0,
+          "size": "XL",
+          "style_tags": [
+            "vintage",
+            "athletic",
+            "oversized",
+            "classic"
+          ],
+          "title": "Oversized College Crewneck — Faded Red"
+        },
+        {
+          "brand": "Woolrich",
+          "category": "tops",
+          "colors": [
+            "red",
+            "black"
+          ],
+          "condition": "good",
+          "description": "Classic oversized flannel. Great layering piece. A few tiny pulls in the fabric but nothing visible when worn.",
+          "id": "lst_003",
+          "platform": "thredUp",
+          "price": 22.0,
+          "size": "XL (oversized)",
+          "style_tags": [
+            "grunge",
+            "vintage",
+            "flannel",
+            "streetwear",
+            "layering"
+          ],
+          "title": "Oversized Flannel Shirt — Plaid Red/Black"
+        },
+        {
+          "brand": null,
+          "category": "tops",
+          "colors": [
+            "pink",
+            "lavender",
+            "mint"
+          ],
+          "condition": "excellent",
+          "description": "Hand tie-dyed long sleeve in soft pastel hues — pink, lavender, and mint. Oversized unisex fit. 100% cotton.",
+          "id": "lst_040",
+          "platform": "depop",
+          "price": 17.0,
+          "size": "L/XL",
+          "style_tags": [
+            "tie-dye",
+            "cottagecore",
+            "colorful",
+            "streetwear"
+          ],
+          "title": "Tie-Dye Long Sleeve — Pastel"
+        },
+        {
+          "brand": null,
+          "category": "tops",
+          "colors": [
+            "grey",
+            "charcoal"
+          ],
+          "condition": "fair",
+          "description": "Faded grey band-style tee with distressed graphic. Crew neck. Fits boxy. Well-loved but no holes or major damage.",
+          "id": "lst_033",
+          "platform": "depop",
+          "price": 19.0,
+          "size": "L",
+          "style_tags": [
+            "vintage",
+            "grunge",
+            "band tee",
+            "graphic tee",
+            "streetwear"
+          ],
+          "title": "Vintage Band Tee — Faded Grey"
+        },
+        {
+          "brand": null,
+          "category": "tops",
+          "colors": [
+            "black"
+          ],
+          "condition": "good",
+          "description": "Vintage-style bootleg tee with faded graphic. Slightly boxy fit. 100% cotton, soft and worn-in.",
+          "id": "lst_006",
+          "platform": "depop",
+          "price": 24.0,
+          "size": "L",
+          "style_tags": [
+            "graphic tee",
+            "vintage",
+            "grunge",
+            "streetwear",
+            "band tee"
+          ],
+          "title": "Graphic Tee — 2003 Tour Bootleg Style"
+        },
+        {
+          "brand": null,
+          "category": "tops",
+          "colors": [
+            "black",
+            "charcoal"
+          ],
+          "condition": "fair",
+          "description": "Faded black pullover hoodie with barely-visible vintage graphic on the chest. Cozy interior. Some pilling but adds to the worn-in look.",
+          "id": "lst_015",
+          "platform": "depop",
+          "price": 26.0,
+          "size": "L",
+          "style_tags": [
+            "vintage",
+            "grunge",
+            "graphic",
+            "streetwear"
+          ],
+          "title": "Vintage Graphic Hoodie — Faded Black"
+        },
+        {
+          "brand": null,
+          "category": "tops",
+          "colors": [
+            "brown",
+            "cream",
+            "tan"
+          ],
+          "condition": "good",
+          "description": "Classic argyle knit vest in brown and cream. Fits medium. V-neck. Ideal for the dark academia or preppy vintage aesthetic.",
+          "id": "lst_030",
+          "platform": "thredUp",
+          "price": 25.0,
+          "size": "M",
+          "style_tags": [
+            "vintage",
+            "preppy",
+            "knitwear",
+            "dark academia",
+            "earth tones"
+          ],
+          "title": "Vintage Knit Vest — Argyle Brown/Cream"
+        },
+        {
+          "brand": "Levi's",
+          "category": "bottoms",
+          "colors": [
+            "blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Classic 501s in a perfect medium wash. Some light fading at the knees which adds to the vintage look. No rips or stains.",
+          "id": "lst_001",
+          "platform": "depop",
+          "price": 38.0,
+          "size": "W30 L30",
+          "style_tags": [
+            "vintage",
+            "classic",
+            "denim",
+            "streetwear"
+          ],
+          "title": "Vintage Levi's 501 Jeans — Medium Wash"
+        },
+        {
+          "brand": "Levi's",
+          "category": "bottoms",
+          "colors": [
+            "black",
+            "faded black"
+          ],
+          "condition": "good",
+          "description": "Faded black straight-leg jeans. Sits at the hips, classic fit. Slightly cropped length. No rips, just natural fading.",
+          "id": "lst_037",
+          "platform": "thredUp",
+          "price": 30.0,
+          "size": "W28",
+          "style_tags": [
+            "vintage",
+            "classic",
+            "grunge",
+            "denim"
+          ],
+          "title": "Straight Leg Black Jeans — Faded"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "black"
+          ],
+          "condition": "excellent",
+          "description": "Shiny black biker shorts in a slightly glossy material. High-waisted. Y2K-coded. Can be styled athletic or fashion.",
+          "id": "lst_026",
+          "platform": "depop",
+          "price": 14.0,
+          "size": "S",
+          "style_tags": [
+            "y2k",
+            "athletic",
+            "streetwear",
+            "2000s"
+          ],
+          "title": "Biker Shorts — Black, Shiny"
+        },
+        {
+          "brand": "Levi's",
+          "category": "bottoms",
+          "colors": [
+            "light blue",
+            "blue"
+          ],
+          "condition": "good",
+          "description": "DIY cutoff denim shorts from Levi's 501s. Raw hem, slightly frayed. High-waisted. Perfect summer length.",
+          "id": "lst_016",
+          "platform": "poshmark",
+          "price": 24.0,
+          "size": "W27",
+          "style_tags": [
+            "vintage",
+            "denim",
+            "summer",
+            "classic"
+          ],
+          "title": "High-Waisted Denim Shorts — Cutoff"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "khaki",
+            "tan"
+          ],
+          "condition": "fair",
+          "description": "Y2K era low-rise cargo pants. Lots of pockets. Khaki color, slightly distressed at the hems. Great for layering with a long tee.",
+          "id": "lst_011",
+          "platform": "poshmark",
+          "price": 27.0,
+          "size": "W29",
+          "style_tags": [
+            "y2k",
+            "cargo",
+            "2000s",
+            "streetwear"
+          ],
+          "title": "Low-Rise Cargo Pants — Khaki"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "olive",
+            "green"
+          ],
+          "condition": "excellent",
+          "description": "Olive straight-leg trousers. High-waisted, with a center crease. Lightweight material, great for transitional weather.",
+          "id": "lst_021",
+          "platform": "poshmark",
+          "price": 29.0,
+          "size": "W30",
+          "style_tags": [
+            "earth tones",
+            "classic",
+            "minimal",
+            "vintage"
+          ],
+          "title": "Straight Leg Khaki Trousers — Olive"
+        },
+        {
+          "brand": null,
+          "category": "bottoms",
+          "colors": [
+            "dark blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Baggy carpenter jeans with hammer loop on the side. Dark wash. Sits at the waist. Major 90s workwear vibes.",
+          "id": "lst_031",
+          "platform": "depop",
+          "price": 36.0,
+          "size": "W32",
+          "style_tags": [
+            "90s",
+            "vintage",
+            "streetwear",
+            "baggy",
+            "workwear"
+          ],
+          "title": "Baggy Carpenter Jeans — Dark Wash"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "off-white",
+            "cream"
+          ],
+          "condition": "good",
+          "description": "Classic low-top canvas sneakers in off-white. Very minimal. Some light yellowing on the sole edges from age. Size 9.",
+          "id": "lst_035",
+          "platform": "poshmark",
+          "price": 20.0,
+          "size": "US 9",
+          "style_tags": [
+            "classic",
+            "minimal",
+            "streetwear",
+            "basics"
+          ],
+          "title": "Low-Top Canvas Sneakers — Off-White"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "tan",
+            "camel"
+          ],
+          "condition": "fair",
+          "description": "Tan suede Chelsea boots with elastic side panels. Stacked heel. Some scuffing on the toe — can be brushed out with suede cleaner.",
+          "id": "lst_028",
+          "platform": "poshmark",
+          "price": 44.0,
+          "size": "US 8.5",
+          "style_tags": [
+            "vintage",
+            "classic",
+            "western",
+            "earth tones"
+          ],
+          "title": "Suede Chelsea Boots — Tan"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "white"
+          ],
+          "condition": "good",
+          "description": "White chunky platform sneakers. Very late 90s / early 2000s energy. Velcro straps. True to size. Some sole yellowing.",
+          "id": "lst_019",
+          "platform": "poshmark",
+          "price": 48.0,
+          "size": "US 8",
+          "style_tags": [
+            "y2k",
+            "platform",
+            "90s",
+            "streetwear"
+          ],
+          "title": "Platform Sneakers — White Chunky Sole"
+        }
+      ],
+      "selected_item": {
+        "brand": null,
+        "category": "tops",
+        "colors": [
+          "burgundy",
+          "wine"
+        ],
+        "condition": "excellent",
+        "description": "Soft washed henley in a rich burgundy. Three-button placket. Slightly shrunken/cropped fit. 100% cotton.",
+        "id": "lst_020",
+        "platform": "thredUp",
+        "price": 16.0,
+        "size": "M",
+        "style_tags": [
+          "vintage",
+          "basics",
+          "earth tones",
+          "classic"
+        ],
+        "title": "Henley Long Sleeve — Washed Burgundy"
+      },
+      "selected_items": [
+        {
+          "brand": null,
+          "category": "tops",
+          "colors": [
+            "burgundy",
+            "wine"
+          ],
+          "condition": "excellent",
+          "description": "Soft washed henley in a rich burgundy. Three-button placket. Slightly shrunken/cropped fit. 100% cotton.",
+          "id": "lst_020",
+          "platform": "thredUp",
+          "price": 16.0,
+          "size": "M",
+          "style_tags": [
+            "vintage",
+            "basics",
+            "earth tones",
+            "classic"
+          ],
+          "title": "Henley Long Sleeve — Washed Burgundy"
+        },
+        {
+          "brand": "Levi's",
+          "category": "bottoms",
+          "colors": [
+            "blue",
+            "indigo"
+          ],
+          "condition": "good",
+          "description": "Classic 501s in a perfect medium wash. Some light fading at the knees which adds to the vintage look. No rips or stains.",
+          "id": "lst_001",
+          "platform": "depop",
+          "price": 38.0,
+          "size": "W30 L30",
+          "style_tags": [
+            "vintage",
+            "classic",
+            "denim",
+            "streetwear"
+          ],
+          "title": "Vintage Levi's 501 Jeans — Medium Wash"
+        },
+        {
+          "brand": null,
+          "category": "shoes",
+          "colors": [
+            "off-white",
+            "cream"
+          ],
+          "condition": "good",
+          "description": "Classic low-top canvas sneakers in off-white. Very minimal. Some light yellowing on the sole edges from age. Size 9.",
+          "id": "lst_035",
+          "platform": "poshmark",
+          "price": 20.0,
+          "size": "US 9",
+          "style_tags": [
+            "classic",
+            "minimal",
+            "streetwear",
+            "basics"
+          ],
+          "title": "Low-Top Canvas Sneakers — Off-White"
+        }
+      ],
+      "tool_calls": [
+        {
+          "inputs": {
+            "category": "tops",
+            "description": "classic basics streetwear",
+            "max_price": 100.0,
+            "size": null
+          },
+          "tool": "search_listings"
+        },
+        {
+          "inputs": {
+            "category": "bottoms",
+            "description": "classic basics streetwear",
+            "max_price": 100.0,
+            "size": null
+          },
+          "tool": "search_listings"
+        },
+        {
+          "inputs": {
+            "category": "shoes",
+            "description": "classic basics streetwear",
+            "max_price": 100.0,
+            "size": null
+          },
+          "tool": "search_listings"
+        },
+        {
+          "item_ids": [
+            "lst_001",
+            "lst_020",
+            "lst_035"
+          ],
+          "tool": "suggest_outfit"
+        },
+        {
+          "item_ids": [
+            "lst_001",
+            "lst_020",
+            "lst_035"
+          ],
+          "tool": "create_fit_card"
+        }
+      ],
+      "wardrobe": {
+        "items": [
+          {
+            "category": "bottoms",
+            "colors": [
+              "dark blue",
+              "indigo"
+            ],
+            "id": "w_001",
+            "name": "Baggy straight-leg jeans, dark wash",
+            "notes": "High-waisted, sits above the hip",
+            "style_tags": [
+              "denim",
+              "streetwear",
+              "baggy"
+            ]
+          },
+          {
+            "category": "bottoms",
+            "colors": [
+              "khaki",
+              "tan"
+            ],
+            "id": "w_002",
+            "name": "Wide-leg khaki trousers",
+            "notes": null,
+            "style_tags": [
+              "earth tones",
+              "minimal",
+              "wide-leg"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "white"
+            ],
+            "id": "w_003",
+            "name": "White ribbed tank top",
+            "notes": "Goes with everything",
+            "style_tags": [
+              "basics",
+              "minimal",
+              "fitted"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "grey",
+              "charcoal"
+            ],
+            "id": "w_004",
+            "name": "Oversized grey crewneck sweatshirt",
+            "notes": "Really oversized — drops below the hip",
+            "style_tags": [
+              "oversized",
+              "basics",
+              "cozy"
+            ]
+          },
+          {
+            "category": "tops",
+            "colors": [
+              "black"
+            ],
+            "id": "w_005",
+            "name": "Black cropped zip hoodie",
+            "notes": null,
+            "style_tags": [
+              "athletic",
+              "streetwear",
+              "cropped"
+            ]
+          },
+          {
+            "category": "outerwear",
+            "colors": [
+              "black"
+            ],
+            "id": "w_006",
+            "name": "Vintage black denim jacket",
+            "notes": "Slightly cropped",
+            "style_tags": [
+              "denim",
+              "vintage",
+              "classic"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "white"
+            ],
+            "id": "w_007",
+            "name": "Chunky white sneakers",
+            "notes": null,
+            "style_tags": [
+              "sneakers",
+              "chunky",
+              "streetwear"
+            ]
+          },
+          {
+            "category": "shoes",
+            "colors": [
+              "black"
+            ],
+            "id": "w_008",
+            "name": "Black combat boots",
+            "notes": "Lace-up, mid-ankle height",
+            "style_tags": [
+              "boots",
+              "grunge",
+              "classic"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "brown"
+            ],
+            "id": "w_009",
+            "name": "Brown leather belt",
+            "notes": null,
+            "style_tags": [
+              "classic",
+              "earth tones",
+              "accessories"
+            ]
+          },
+          {
+            "category": "accessories",
+            "colors": [
+              "black"
+            ],
+            "id": "w_010",
+            "name": "Black crossbody bag",
+            "notes": null,
+            "style_tags": [
+              "minimal",
+              "accessories",
+              "everyday"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "bad_input": {
+    "status": 400,
+    "body": {
+      "error": "Send a query string of 1 to 2000 characters.",
+      "error_type": "invalid_input",
+      "metrics": {
+        "duration_ms": 0.139,
+        "parent_cpu_ms": 0.0,
+        "usage": {
+          "model_calls": null,
+          "output_tokens": null,
+          "prompt_tokens": null,
+          "scope": "not collected for legacy MCP model path"
+        }
+      },
+      "run_id": "a88e5347be074c4a8bac4467bff86481"
+    }
+  }
+}

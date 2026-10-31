@@ -4,7 +4,7 @@ This is the Unit 9 local-with-logs path. The original setup guide is preserved i
 
 ## Clean checkout and environment
 
-Tested on Windows with Python 3.13.3. Python 3.11-3.13 is the original supported range; other OS/Python combinations have not been verified in this change. No local model weights are used. Both JSON data files are tracked in `data/`; there is no database or separate catalog download.
+Tested on Windows with Python 3.13.3. Python 3.11-3.13 is the original supported range; other OS/Python combinations have not been verified in this change. No local model weights are used. Both JSON data files are tracked in `data/`; there is no database or separate catalog download. Tracked data: `listings.json` (19,171 bytes), `wardrobe_schema.json` (3,381 bytes).
 
 ```powershell
 git clone --branch codex/unit9-budget-outfits https://github.com/winaung786/ai201-project2-fitfindr-starter-v2026.git
