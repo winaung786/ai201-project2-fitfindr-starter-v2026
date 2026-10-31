@@ -1,5 +1,339 @@
 # FitFindr
 
+## FitFindr website
+
+[Open the FitFindr website](https://fitfindr-style-budget.winaung.chatgpt.site)
+
+A responsive, accessible interface with a simple top navigation, one outfit form,
+optional category sizes, illustrated item cards, visible subtotal/remaining budget,
+and browser-local saved outfits. There is no navigation sidebar or account setup.
+The sample-catalog label, excluded tax/shipping, and illustrative artwork are visible
+in the interface; no live product photos, availability or missing links are invented.
+
+The hosted edition runs deterministic selection in the browser against the original
+catalog. The same interface at `python serve.py` calls the existing Python agent
+through `/ask`. It adds a browser companion; it does not replace the original
+CLI, MCP tools, test evidence or criteria. Neither budget path needs a model key.
+Browser and Python selections agree on **33 style/budget/size scenarios**.
+
+Website validation: **21 Python tests** and **5 Node test groups** passed. Manual
+browser checks covered a low-budget failure, size filters, saving/reloading/viewing
+looks, copying a summary, the help dialog, a 390px phone layout with no horizontal
+overflow, and a real local-agent result. See [website notes](docs/website.md) and
+[RUNNING.md](RUNNING.md) for build/run commands and the differences between editions.
+The original Unit 9 measurement tables below describe their recorded revisions.
+
+## Unit 9 - Budget-Aware Outfit Builder (build and AI-assisted test cycle complete)
+
+This branch extends the original FitFindr agent. Try `python app.py ask 'casual outfit under $100'` after following [RUNNING.md](RUNNING.md).
+
+**Technical status:** The requested three-trial test/diagnose/fix/retest cycle is complete, with real outputs and before/after verdicts below. The five-check plan and technical reflection are disclosed as AI-assisted. The original `criteria.md` and Unit 4 evidence remain unchanged; the course requirement for criteria authored independently by the student is not claimed as fulfilled.
+
+### What This Extends
+
+The original Unit 3/4 agent searches for one secondhand item, styles it using a wardrobe, and writes a caption. The extension adds a separate full-outfit path: three category searches over MCP, one deterministic budget validation/selection step, `suggest_outfit` over MCP, and `create_fit_card`. It selects one top, one bottom, and shoes. Single-item requests such as `vintage graphic tee under $30` retain the original path.
+
+Prices come from `data/listings.json`, which is a bundled **sample catalog**, not live shopping data. The new path never fabricates prices, stock, or URLs. The original catalog has no product links; the output omits them. If a future catalog supplies an HTTPS product URL, validation preserves it without synthesizing a shop link.
+
+### The Shape
+
+**C - Extend one capability.** The feature is budget-aware outfit selection; instrumentation and local running support it. Accounts, wardrobe management, weather, live marketplace integration, and a professional website redesign are out of scope. See [the scoped build plan](docs/unit9-plan.md).
+
+An explicit `budget` field or the word `outfit` enables the new path. A total budget is required. Amounts are positive USD values with at most two decimals. `under` is treated as an inclusive cap (at or below). Query and parameter budgets must agree. Amounts are converted to integer cents before comparison and addition; the model never calculates totals. All returned category combinations are considered, ranked by search position and shared style tags, with price and listing ID breaking ties. This is a bounded heuristic, not a claim of expert fashion judgment.
+
+### Running It
+
+**Path B - local with logs.** [RUNNING.md](RUNNING.md) gives a clean-checkout setup, exact dependencies, CLI/HTTP commands, required environment, and verification commands. Budget previews require no API key, downloads of model weights, or external search service. The legacy wording path requires a private Gemini key for actual model responses; this change has not re-evaluated live Gemini output.
+
+### Instrumentation
+
+`telemetry.py::record_run` records UTC timestamp, unique run ID, query hash/length, sanitized output totals/item count, elapsed milliseconds, parent-process CPU time, tool count, success/failure, error type, and usage scope. Neither raw requests nor wardrobe content, credentials, exception messages, or generated text enter these logs. Responses retain the outfit preview for the caller. Hashes remain linkable metadata; review logs before sharing.
+
+JSONL goes to stderr and optionally `FITFINDR_LOG_PATH`. HTTP rejections also produce records; agent runs produce one record each. The optional local log file falls back to stderr if unwritable. `logs/` is ignored by Git; only reviewed evidence under `results/` is committed. MCP calls have a 30-second execution/startup timeout. The service serializes agent runs; health checks and input rejection do not wait on the agent lock.
+
+Ten actual successful budget run records plus one deliberate invalid-budget record appear below. They are build/cost evidence, separate from the student acceptance evaluation. Full records: [JSONL](results/unit9-build-cost.jsonl); structured outputs and source hashes: [measurement JSON](results/unit9-build-cost.json).
+
+```jsonl
+{"timestamp": "2026-10-31T19:03:57.450489+00:00", "run_id": "5e6f55cd254947bd80c9985d5ad72b6a", "surface": "agent", "mode": "budget_outfit", "input": {"query_sha256": "3d8b3dd5d0e0a46b59203e691237e766d5f90cdc33991cc0e5f05e0e2d98d5a2", "query_length": 24}, "output": {"item_count": 3, "budget_cents": 10000, "total_cents": 7400, "remaining_cents": 2600, "has_fit_card": true}, "duration_ms": 9610.222, "parent_cpu_ms": 687.5, "cpu_scope": "parent process only; excludes MCP subprocesses", "status": "success", "error_type": null, "tool_count": 5, "usage": {"model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "scope": "complete deterministic budget path"}}
+{"timestamp": "2026-10-31T19:04:01.649297+00:00", "run_id": "897b9f1001dd416f98812cbf89254155", "surface": "agent", "mode": "budget_outfit", "input": {"query_sha256": "3d8b3dd5d0e0a46b59203e691237e766d5f90cdc33991cc0e5f05e0e2d98d5a2", "query_length": 24}, "output": {"item_count": 3, "budget_cents": 10000, "total_cents": 7400, "remaining_cents": 2600, "has_fit_card": true}, "duration_ms": 4197.974, "parent_cpu_ms": 62.5, "cpu_scope": "parent process only; excludes MCP subprocesses", "status": "success", "error_type": null, "tool_count": 5, "usage": {"model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "scope": "complete deterministic budget path"}}
+{"timestamp": "2026-10-31T19:04:05.851925+00:00", "run_id": "4027f37f090542e8b34acc1dfc865835", "surface": "agent", "mode": "budget_outfit", "input": {"query_sha256": "3d8b3dd5d0e0a46b59203e691237e766d5f90cdc33991cc0e5f05e0e2d98d5a2", "query_length": 24}, "output": {"item_count": 3, "budget_cents": 10000, "total_cents": 7400, "remaining_cents": 2600, "has_fit_card": true}, "duration_ms": 4202.239, "parent_cpu_ms": 31.25, "cpu_scope": "parent process only; excludes MCP subprocesses", "status": "success", "error_type": null, "tool_count": 5, "usage": {"model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "scope": "complete deterministic budget path"}}
+{"timestamp": "2026-10-31T19:04:10.128556+00:00", "run_id": "c800ca8ed9f04f85bf7689e1976d5782", "surface": "agent", "mode": "budget_outfit", "input": {"query_sha256": "3d8b3dd5d0e0a46b59203e691237e766d5f90cdc33991cc0e5f05e0e2d98d5a2", "query_length": 24}, "output": {"item_count": 3, "budget_cents": 10000, "total_cents": 7400, "remaining_cents": 2600, "has_fit_card": true}, "duration_ms": 4276.334, "parent_cpu_ms": 62.5, "cpu_scope": "parent process only; excludes MCP subprocesses", "status": "success", "error_type": null, "tool_count": 5, "usage": {"model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "scope": "complete deterministic budget path"}}
+{"timestamp": "2026-10-31T19:04:14.403147+00:00", "run_id": "0d4049d58bdf4dc3a6a337949764bea5", "surface": "agent", "mode": "budget_outfit", "input": {"query_sha256": "3d8b3dd5d0e0a46b59203e691237e766d5f90cdc33991cc0e5f05e0e2d98d5a2", "query_length": 24}, "output": {"item_count": 3, "budget_cents": 10000, "total_cents": 7400, "remaining_cents": 2600, "has_fit_card": true}, "duration_ms": 4274.273, "parent_cpu_ms": 78.125, "cpu_scope": "parent process only; excludes MCP subprocesses", "status": "success", "error_type": null, "tool_count": 5, "usage": {"model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "scope": "complete deterministic budget path"}}
+{"timestamp": "2026-10-31T19:04:18.743420+00:00", "run_id": "04ddb99118aa4eaeb77b6257d6efa632", "surface": "agent", "mode": "budget_outfit", "input": {"query_sha256": "3d8b3dd5d0e0a46b59203e691237e766d5f90cdc33991cc0e5f05e0e2d98d5a2", "query_length": 24}, "output": {"item_count": 3, "budget_cents": 10000, "total_cents": 7400, "remaining_cents": 2600, "has_fit_card": true}, "duration_ms": 4340.148, "parent_cpu_ms": 78.125, "cpu_scope": "parent process only; excludes MCP subprocesses", "status": "success", "error_type": null, "tool_count": 5, "usage": {"model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "scope": "complete deterministic budget path"}}
+{"timestamp": "2026-10-31T19:04:23.484649+00:00", "run_id": "4f398f94c0144ae6b280ce49d6f685c3", "surface": "agent", "mode": "budget_outfit", "input": {"query_sha256": "3d8b3dd5d0e0a46b59203e691237e766d5f90cdc33991cc0e5f05e0e2d98d5a2", "query_length": 24}, "output": {"item_count": 3, "budget_cents": 10000, "total_cents": 7400, "remaining_cents": 2600, "has_fit_card": true}, "duration_ms": 4740.809, "parent_cpu_ms": 46.875, "cpu_scope": "parent process only; excludes MCP subprocesses", "status": "success", "error_type": null, "tool_count": 5, "usage": {"model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "scope": "complete deterministic budget path"}}
+{"timestamp": "2026-10-31T19:04:31.363927+00:00", "run_id": "24eb5badb4cb436f870fcee0c3b3cbbf", "surface": "agent", "mode": "budget_outfit", "input": {"query_sha256": "3d8b3dd5d0e0a46b59203e691237e766d5f90cdc33991cc0e5f05e0e2d98d5a2", "query_length": 24}, "output": {"item_count": 3, "budget_cents": 10000, "total_cents": 7400, "remaining_cents": 2600, "has_fit_card": true}, "duration_ms": 7878.981, "parent_cpu_ms": 171.875, "cpu_scope": "parent process only; excludes MCP subprocesses", "status": "success", "error_type": null, "tool_count": 5, "usage": {"model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "scope": "complete deterministic budget path"}}
+{"timestamp": "2026-10-31T19:04:37.320111+00:00", "run_id": "1431a8033a6e44afb84cd5b6bdbb6c02", "surface": "agent", "mode": "budget_outfit", "input": {"query_sha256": "3d8b3dd5d0e0a46b59203e691237e766d5f90cdc33991cc0e5f05e0e2d98d5a2", "query_length": 24}, "output": {"item_count": 3, "budget_cents": 10000, "total_cents": 7400, "remaining_cents": 2600, "has_fit_card": true}, "duration_ms": 5955.935, "parent_cpu_ms": 62.5, "cpu_scope": "parent process only; excludes MCP subprocesses", "status": "success", "error_type": null, "tool_count": 5, "usage": {"model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "scope": "complete deterministic budget path"}}
+{"timestamp": "2026-10-31T19:04:43.371037+00:00", "run_id": "ec376b9fc78f4344b5d15ebc7f3a2662", "surface": "agent", "mode": "budget_outfit", "input": {"query_sha256": "3d8b3dd5d0e0a46b59203e691237e766d5f90cdc33991cc0e5f05e0e2d98d5a2", "query_length": 24}, "output": {"item_count": 3, "budget_cents": 10000, "total_cents": 7400, "remaining_cents": 2600, "has_fit_card": true}, "duration_ms": 6050.654, "parent_cpu_ms": 31.25, "cpu_scope": "parent process only; excludes MCP subprocesses", "status": "success", "error_type": null, "tool_count": 5, "usage": {"model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "scope": "complete deterministic budget path"}}
+{"timestamp": "2026-10-31T19:04:43.371329+00:00", "run_id": "e58120f5e128433eaa266ecfd38f7dd5", "surface": "agent", "mode": "budget_outfit", "input": {"query_sha256": "485652c79aa6f0fecc42f00d5fc2431176874ea4cc6e7253b4ca81abf4f70b5f", "query_length": 16}, "output": {"item_count": 0, "budget_cents": null, "total_cents": null, "remaining_cents": null, "has_fit_card": false}, "duration_ms": 0.096, "parent_cpu_ms": 0.0, "cpu_scope": "parent process only; excludes MCP subprocesses", "status": "failure", "error_type": "invalid_price", "tool_count": 0, "usage": {"model_calls": 0, "prompt_tokens": 0, "output_tokens": 0, "scope": "complete deterministic budget path"}}
+```
+
+### What It Costs
+
+Measured from a clean local clone of revision `bd4e7a7` on Windows / Python 3.13.3 using `python scripts/measure_budget.py`: ten complete runs over real stdio MCP, no mocks and no response-cache/model calls. The mean elapsed time was **5.552757 seconds per outfit**; mean parent-process CPU was **131.25 ms**. Individual timings and outputs are in the linked JSON. The deliberately invalid eleventh run is excluded from the average.
+
+The deterministic budget path made **0 model calls, consumed 0 API tokens, and incurred $0 metered model fees**. This is not a zero-cost claim for the legacy Gemini path or the computer running the app. No hosting/energy tariff was supplied, so compute dollars remain unknown; parent CPU excludes MCP subprocess CPU and elapsed time includes waiting/startup. If a host charges `r` dollars per compute-hour, an elapsed-time allocation would be `(5.552757 / 3600) * r` dollars per run, separate from idle hosting fees; it is an estimate, not a measured invoice.
+
+At one outfit for each of 100 people per day: `100 * $0 = $0/day` in model fees for this path, and `100 * 5.552757 = 555.276` seconds of serial elapsed work per day (about 9.25 minutes). The worker still runs requests one at a time. This ten-run measurement supports the build/cost section; it is not the capstone acceptance run log.
+
+The clean clone installed `requirements-lock.txt`, passed all **18 developer regression tests**, and started with `python serve.py`. Real HTTP requests returned `/health` 200, a complete budget preview 200, and malformed input 400. Actual responses are preserved in [the clean HTTP record](results/unit9-clean-http.json). No API key or local model files were needed.
+
+### Run Log and Verdicts
+
+The user requested the test/diagnose/fix/retest cycle after the build. Since no new student-authored criteria were supplied, this evaluation uses the five **AI-assisted technical checks** in [the committed plan](docs/unit9-validation-plan.md). The original `criteria.md` remains the Unit 3/4 criteria. These results must not be presented as criteria the student wrote alone.
+
+The plan and fixed runner were committed as `c501263` before the baseline. `python scripts/validate_budget.py --label before` ran every check three times: 21 cases per trial, **63 cases total**, of which 54 passed. Targets stayed unchanged throughout. Each verdict below requires the target in **all three** trials.
+
+| Check | Target per trial | Trial 1 | Trial 2 | Trial 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Catalog-grounded complete outfit | 1/1 | 1/1 | 1/1 | 1/1 | MET |
+| 2. Exact money and input rejection | 10/10 | 7/10 | 7/10 | 7/10 | MISSED |
+| 3. Product/tool failures stop cleanly | 6/6 | 6/6 | 6/6 | 6/6 | MET |
+| 4. Category-specific sizes retained | 1/1 | 1/1 | 1/1 | 1/1 | MET |
+| 5. Complete sanitized logs | 3/3 | 3/3 | 3/3 | 3/3 | MET |
+
+Checks 1 and 4 use fresh real stdio MCP calls; check 4 enters through the Flask request handler. Check 2 directly tests the parser/cent validator, while checks 3 and 5 deliberately inject catalog/transport fixtures into the real agent or reject malformed HTTP input. Synthetic fixture prices are test inputs, not shopping recommendations. The budget path is deterministic, so identical outputs across trials do not indicate a cached model response. The saved reports contain transport labels, actual outputs, timestamps, run IDs, cases, scoring checks and source hashes.
+
+Baseline evidence: [raw results](results/unit9-validation-before.json), [JSONL run records](results/unit9-validation-before.jsonl), and [diagnosis committed before the fix](results/unit9-validation-diagnosis.md). Check 5's captured log records are inside its raw JSON results because the privacy test captures stderr separately.
+
+**Diagnosis of every miss:** All nine failed cases occurred in `budget_agent.py::parse_request`. The original `.rstrip(".,")` removes any number of trailing dots/commas before validating the amount. Thus `$100..`, `$100,,`, and `$100.,` each became a valid `$100` in every trial. The money validator never saw the malformed original token. These are three symptoms of one normalization mechanism; search and sum arithmetic did not cause the failure. No other check missed its declared target.
+
+Actual output excerpts from baseline trial 1, captured by `scripts/validate_budget.py` (unabridged case outputs for all trials are in the raw JSON):
+
+**Check 1 - `agent.py::run_agent` / `tools.py::create_fit_card`**
+
+```json
+{
+  "run_id": "b7e7f73398a24926b48c852bf62a1e50",
+  "fit_card": "Outfit subtotal: $74.00 / $100.00 USD. Budget remaining: $26.00. Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying.",
+  "total_cents": 7400,
+  "remaining_cents": 2600
+}
+```
+
+**Check 2 - `budget_agent.py::parse_request`, input `outfit under $100..`**
+
+```json
+{
+  "description": "classic vintage basics streetwear",
+  "budget": "100.00",
+  "sizes": {}
+}
+```
+
+**Check 3 - `budget_agent.py::run_budget`, missing-price fixture**
+
+```json
+{
+  "error": "No priced, suitable shoes found. Try another style or size; missing prices cannot be estimated.",
+  "error_type": "no_valid_products",
+  "selected_item": null,
+  "outfit_suggestion": null,
+  "fit_card": null
+}
+```
+
+**Check 4 - `serve.py::ask` / `budget_agent.py::run_budget`**
+
+```json
+{
+  "http_status": 200,
+  "run_id": "4ac39e65668e4fccb58c27ea87dbd49e",
+  "sizes": [
+    {
+      "id": "lst_020",
+      "category": "tops",
+      "size": "M"
+    },
+    {
+      "id": "lst_021",
+      "category": "bottoms",
+      "size": "W30"
+    },
+    {
+      "id": "lst_035",
+      "category": "shoes",
+      "size": "US 9"
+    }
+  ]
+}
+```
+
+**Check 5 - `telemetry.py::record_run`**
+
+```json
+{
+  "timestamp": "2026-10-31T19:11:18.927288+00:00",
+  "run_id": "0e8616b631404caea83159022a6fa8fc",
+  "surface": "agent",
+  "mode": "budget_outfit",
+  "input": {
+    "query_sha256": "2ab201edf9c6685fab9182fa7fe154f106ad131a7d21224eff4af96b64c535fa",
+    "query_length": 52
+  },
+  "output": {
+    "item_count": 3,
+    "budget_cents": 10000,
+    "total_cents": 6000,
+    "remaining_cents": 4000,
+    "has_fit_card": true
+  },
+  "duration_ms": 0.598,
+  "parent_cpu_ms": 0.0,
+  "cpu_scope": "parent process only; excludes MCP subprocesses",
+  "status": "success",
+  "error_type": null,
+  "tool_count": 5,
+  "usage": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "scope": "complete deterministic budget path"
+  }
+}
+```
+
+### The Improvement
+
+**One change:** In `budget_agent.py::parse_request`, replace unrestricted trailing-punctuation stripping with removal of **at most one** terminal period or comma, then run the unchanged strict cent validator. Normal `$100.` still parses, while repeated/mixed punctuation returns `invalid_price`. No search, selection, catalog, tool/model configuration, targets or evaluation scenarios changed. A regression test covers the three failures, the opposite punctuation order, and ordinary punctuation after integer/two-decimal amounts.
+
+The baseline and diagnosis were committed as `bbe6809` before implementation. The parser fix plus regression test were committed as `7f5db41`; [the runtime diff](results/unit9-validation-improvement.diff) contains the exact change. Then `python scripts/validate_budget.py --label after` repeated the **entire unchanged set three times**: 63/63 cases passed. `python -m unittest discover -s tests -v` also passed all **19 regression tests**.
+
+| Check | Target per trial | Trial 1 | Trial 2 | Trial 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Catalog-grounded complete outfit | 1/1 | 1/1 | 1/1 | 1/1 | MET |
+| 2. Exact money and input rejection | 10/10 | 10/10 | 10/10 | 10/10 | MET |
+| 3. Product/tool failures stop cleanly | 6/6 | 6/6 | 6/6 | 6/6 | MET |
+| 4. Category-specific sizes retained | 1/1 | 1/1 | 1/1 | 1/1 | MET |
+| 5. Complete sanitized logs | 3/3 | 3/3 | 3/3 | 3/3 | MET |
+
+| Check | Before, three trials | After, three trials |
+|---|---|---|
+| 1. Catalog-grounded outfit | MET: 1/1, 1/1, 1/1 | MET: 1/1, 1/1, 1/1 |
+| 2. Exact money/input rejection | MISSED: 7/10, 7/10, 7/10 | MET: 10/10, 10/10, 10/10 |
+| 3. Clean failure handling | MET: 6/6, 6/6, 6/6 | MET: 6/6, 6/6, 6/6 |
+| 4. Size constraints | MET: 1/1, 1/1, 1/1 | MET: 1/1, 1/1, 1/1 |
+| 5. Sanitized logs | MET: 3/3, 3/3, 3/3 | MET: 3/3, 3/3, 3/3 |
+
+**Did it help?** Yes for the measured parsing error: invalid-token acceptance fell from 9/9 to 0/9 across the three repeated malformed inputs. Check 2 improved from 7/10 to 10/10 in every trial, with no observed score regression in the other four checks. The tradeoff is that an amount followed by an ellipsis or mixed punctuation must now be entered as a plain amount or with one sentence-ending mark. This small, fixed test set does not establish a general reliability rate or universal natural-language understanding.
+
+After evidence: [raw results](results/unit9-validation-after.json), [JSONL records](results/unit9-validation-after.jsonl), and [comparison audit](results/unit9-validation-audit.json). The audit recomputes saved verdicts and confirms unchanged plan, runner, original criteria, scenarios and catalog; `budget_agent.py` is the only changed runtime source. The 33 logged response IDs in each phase are distinct and the two phases share none. The regression test addition is separate from runtime code.
+
+Actual output excerpts from after trial 1:
+
+**Check 1 - `agent.py::run_agent` / `tools.py::create_fit_card`**
+
+```json
+{
+  "run_id": "19b4cefb9d4c4464bd6ca1d632f617b1",
+  "fit_card": "Outfit subtotal: $74.00 / $100.00 USD. Budget remaining: $26.00. Sample catalog preview; prices and availability are not live. Merchandise subtotal only; tax and shipping are excluded. Check listing sizes before buying.",
+  "total_cents": 7400,
+  "remaining_cents": 2600
+}
+```
+
+**Check 2 - `budget_agent.py::parse_request`, input `outfit under $100..`**
+
+```json
+{
+  "error_type": "invalid_price",
+  "error": "Use a positive USD amount with at most two decimals."
+}
+```
+
+**Check 3 - `budget_agent.py::run_budget`, missing-price fixture**
+
+```json
+{
+  "error": "No priced, suitable shoes found. Try another style or size; missing prices cannot be estimated.",
+  "error_type": "no_valid_products",
+  "selected_item": null,
+  "outfit_suggestion": null,
+  "fit_card": null
+}
+```
+
+**Check 4 - `serve.py::ask` / `budget_agent.py::run_budget`**
+
+```json
+{
+  "http_status": 200,
+  "run_id": "266885e97cfc4eafa70dc9be68ac6fe3",
+  "sizes": [
+    {
+      "id": "lst_020",
+      "category": "tops",
+      "size": "M"
+    },
+    {
+      "id": "lst_021",
+      "category": "bottoms",
+      "size": "W30"
+    },
+    {
+      "id": "lst_035",
+      "category": "shoes",
+      "size": "US 9"
+    }
+  ]
+}
+```
+
+**Check 5 - `telemetry.py::record_run`**
+
+```json
+{
+  "timestamp": "2026-10-31T19:12:47.757784+00:00",
+  "run_id": "b8dbb2145c624fb3aa5358025a86bee8",
+  "surface": "agent",
+  "mode": "budget_outfit",
+  "input": {
+    "query_sha256": "2ab201edf9c6685fab9182fa7fe154f106ad131a7d21224eff4af96b64c535fa",
+    "query_length": 52
+  },
+  "output": {
+    "item_count": 3,
+    "budget_cents": 10000,
+    "total_cents": 6000,
+    "remaining_cents": 4000,
+    "has_fit_card": true
+  },
+  "duration_ms": 1.259,
+  "parent_cpu_ms": 0.0,
+  "cpu_scope": "parent process only; excludes MCP subprocesses",
+  "status": "success",
+  "error_type": null,
+  "tool_count": 5,
+  "usage": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "scope": "complete deterministic budget path"
+  }
+}
+```
+
+**Technical reflection (AI-assisted):** Correct integer arithmetic was necessary but did not prevent the input parser from silently accepting malformed money. Testing the stage before arithmetic exposed that mechanism, and a narrow normalization change corrected it without changing the budget or selection rules. Repeating all five checks showed that the measured gain did not come from relaxing a target or sacrificing the size/failure/logging checks; the bounded scenarios and injected fixtures still limit what can be concluded.
+
+### What's Still Broken
+
+No AI-assisted technical check remains MISSED after the improvement. All five met their fixed targets in all three trials. The student-authored criteria requirement remains a separate submission issue: the plan in this change was AI-assisted, and the original `criteria.md` has not been relabeled or replaced. Personal learning claims must be reviewed and written by the student; the reflection above reports technical evidence only.
+
+Live stock, checkout tax/shipping, and product links are absent from the source catalog. The displayed amount is a merchandise subtotal, not a guaranteed checkout total. The feature excludes invalid/unavailable listings and fails clearly if any category is missing or no returned combination fits. Category-specific HTTP sizes are retained without a looser retry, and all selected sizes are displayed. A single ambiguous outfit size is rejected.
+
+Search considers at most ten results per category and uses the original keyword ranker. `casual` maps to classic/basics/streetwear; other descriptions use keyword matching. The test set does not establish fashion quality or adherence to every free-form preference. A feasible outfit outside the returned candidates can be missed. MCP startup adds seconds, logs have no automatic rotation, parent CPU excludes child CPU, and compute dollars remain unmeasured. The strict punctuation fix intentionally rejects conversational ellipses in amount tokens.
+
+Work stopped after the one diagnosed parser improvement to keep its before/after effect attributable. No live catalog credentials or new marketplace service were provided, and testing live model wording is outside this deterministic budget extension. The first next product step would be a real catalog adapter with explicit currency, price freshness, and stock/link provenance, because these facts determine whether the preview is useful for shopping. Its first evaluation should check the same budget invariants against fresh listings before adding more features.
+
+### How I Used AI
+
+The implementation, validation plan, test execution, diagnosis and technical reflection in this change were AI-assisted; they are not claimed as unaided student work. Two concrete moments are recorded here. First, the user asked Codex to add total-budget outfit selection, and the resulting implementation kept the existing search/styling tools while moving monetary checks into integer-cent code and rendering grounded budget text. That choice made the totals independently checkable and avoided fabricated model prices.
+
+Second, the user asked Codex to run the checks three times, diagnose failures, make one improvement and repeat them. The baseline showed that unrestricted punctuation stripping accepted malformed amounts; Codex narrowed that one parser operation, added a regression test and reran the identical plan. The README reports the observed 7/10 to 10/10 improvement, labels all fixture-backed cases, and retains the failing baseline rather than claiming the first version already passed. The student's own criteria and personal learning reflection still require their review before a course submission.
+
+---
+
+## Original Unit 3/4 record
+
 Read [RUNNING.md](RUNNING.md) for setup and commands. Unit 3 build notes and Unit 4 test evidence are recorded below.
 
 

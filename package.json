@@ -1,0 +1,8 @@
+{
+  "name": "fitfindr-web",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-web.mjs",
+    "test:web": "node --test tests/web-engine.test.mjs"
+  }
+}

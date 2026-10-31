@@ -1,0 +1,14 @@
+diff --git a/budget_agent.py b/budget_agent.py
+index c3dfb49..9a7c7f8 100644
+--- a/budget_agent.py
++++ b/budget_agent.py
+@@ -22,7 +22,8 @@ def parse_request(query, budget=None, sizes=None):
+     ):
+         raise BudgetError("invalid_input", "Sizes must map tops, bottoms, or shoes to short size strings.")
+     matches = list(re.finditer(r"\b(?:under|below|max(?:imum)?|budget(?:\s+of)?)\s*\$?\s*([^\s;!?]+)", query, re.I))
+-    amounts = [cents(m.group(1).rstrip(".,")) for m in matches]
++    # Permit one sentence-ending mark, never normalize repeated/mixed marks.
++    amounts = [cents(re.sub(r"[.,]$", "", m.group(1))) for m in matches]
+     if budget is not None:
+         amounts.append(cents(budget))
+     if not amounts:

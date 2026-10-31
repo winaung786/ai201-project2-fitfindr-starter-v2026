@@ -22,15 +22,12 @@ Two routes:
 same keys you print from the command line, including `error`. Read
 `session["error"]` first, exactly as you do everywhere else.
 
-It runs **one request at a time**, and one route is deliberately slower than a
-web server has to be. The reason is worth reading before you deploy: see the
+It runs **one request at a time**. The reason is worth reading before you deploy: see the
 note above `_one_at_a_time` below — it also decides which gunicorn worker you
 can use.
 
-⚠️ There is deliberately NO logging, NO timing and NO request counting in this
-file. That is unit 9's follow-along: you instrument this yourself, first, and
-then deploy it. A structured log you were handed teaches you nothing about
-what belongs in one — and the timing field is the one everybody skips.
+Agent runs and rejected requests write sanitized JSON records through
+telemetry.py. Budget outfits accept a total budget and category-specific sizes.
 """
 
 import os
@@ -41,12 +38,34 @@ import threading
 # and fixes the Windows console encoding for every module that imports it.
 import config  # noqa: F401
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
+from pathlib import Path
 
 from agent import run_agent
-from utils.data_loader import get_example_wardrobe
+from telemetry import clocks, record_run
+from utils.data_loader import get_example_wardrobe, load_listings
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 32 * 1024
+WEB_ROOT = Path(__file__).resolve().parent / "web"
+
+
+@app.get("/")
+def website():
+    """The same web UI, connected to the existing agent when running locally."""
+    return (WEB_ROOT / "index.html").read_text(encoding="utf-8").replace(
+        'data-transport="browser"', 'data-transport="api"'
+    )
+
+
+@app.get("/assets/<path:filename>")
+def website_asset(filename):
+    return send_from_directory(WEB_ROOT / "assets", filename)
+
+
+@app.get("/catalog.json")
+def website_catalog():
+    return jsonify(load_listings())
 
 
 # ── one request at a time ─────────────────────────────────────────────────────
@@ -107,16 +126,31 @@ def ask():
                                                 example wardrobe the CLI uses.
     Out:  the session dict from run_agent(), as JSON.
     """
-    payload = request.get_json(silent=True) or {}
-    query = (payload.get("query") or "").strip()
-    if not query:
-        # 400 rather than a stack trace: the caller can act on this one.
-        return jsonify({"error": "Send JSON with a 'query' field, e.g. "
-                                 '{"query": "vintage graphic tee under $30"}'}), 400
+    started = clocks()
+
+    def reject(message):
+        failure = {"error": message, "error_type": "invalid_input"}
+        record_run(None, failure, started, surface="http")
+        return jsonify(failure), 400
+
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return reject("Send a JSON object with a query field.")
+    query = payload.get("query")
+    if not isinstance(query, str) or not query.strip() or len(query) > 2000:
+        return reject("Send a query string of 1 to 2000 characters.")
+    query = query.strip()
+    if "budget" in payload and payload["budget"] is None:
+        return reject("Budget must be a positive USD amount.")
 
     wardrobe = payload.get("wardrobe")
-    if not isinstance(wardrobe, dict):
+    if "wardrobe" not in payload:
         wardrobe = get_example_wardrobe()
+    elif not isinstance(wardrobe, dict) or not isinstance(wardrobe.get("items"), list) or len(wardrobe["items"]) > 100 or any(
+        not isinstance(i, dict) or any(not isinstance(i.get(k), str) for k in ("name", "category"))
+        for i in wardrobe["items"]
+    ):
+        return reject("Wardrobe must contain an items list of clothing objects with name and category strings.")
 
     # A queued request should look like a queued request. Without this the
     # second caller just sits there, and "slow" and "waiting its turn" are
@@ -136,20 +170,21 @@ def ask():
             flush=True,
         )
 
-    failure = None
-    session = None
     with _one_at_a_time:
-        try:
-            session = run_agent(query, wardrobe)
-        except Exception as exc:  # noqa: BLE001 — a 500 with a sentence beats a hang
-            failure = f"{type(exc).__name__}: {exc}"
+        session = run_agent(query, wardrobe, budget=payload.get("budget"), sizes=payload.get("sizes"))
 
     # Outside the lock: building a response is not work the next caller should
     # be waiting on.
-    if failure is not None:
-        return jsonify({"error": failure}), 500
+    code = session.get("error_type")
+    status = 400 if code in {"invalid_input", "invalid_price", "budget_required", "conflicting_budget", "ambiguous_size"} else 422 if code in {"no_valid_products", "over_budget"} else 503 if code else 200
+    return jsonify(session), status
 
-    return jsonify(session)
+
+@app.errorhandler(413)
+def too_large(_error):
+    failure = {"error": "Request exceeds the 32 KB limit.", "error_type": "invalid_input"}
+    record_run(None, failure, clocks(), surface="http")
+    return jsonify(failure), 413
 
 
 if __name__ == "__main__":

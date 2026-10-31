@@ -1,248 +1,117 @@
-# Running FitFindr
+# Running FitFindr v2
 
-Everything about how the starter works and how to use it.
+## Website
 
----
+Open the hosted edition at [FitFindr](https://fitfindr-style-budget.winaung.chatgpt.site).
+It uses the original sample catalog and runs deterministic budget selection in the
+browser. Saved looks stay in that browser; the hosted site starts owner-private.
+Prices and availability are not live.
 
-## Before your first class
+For the website connected to the original Python agent, follow the environment setup
+below, run `python serve.py`, and open `http://localhost:5000` in your browser.
+The page calls the same `/ask` endpoint as the CLI agent and writes the existing logs.
 
-Setup happens **before class**. The [environment setup page](../pages/ide_setup)
-has the per-operating-system commands and the exact versions.
-
-**Same API key you set up in unit 1.** Nothing new to sign up for. There is one
-new package — the MCP SDK, for unit 4 — and it installs with everything else.
-
-From inside this repo after you've forked and cloned it:
-
-**macOS / Linux**
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env          # then paste your key into .env
-python test.py
-```
-
-**Windows (PowerShell)**
+To build or test the hosted companion with Node.js (tested on 22.16.0):
 
 ```powershell
-python -m venv .venv
+node --test tests/web-engine.test.mjs
+node scripts/build-web.mjs
+python -m http.server 5173 --bind 127.0.0.1 --directory dist
+```
+
+Open `http://localhost:5173`. No frontend dependency installation is needed. The full
+Python test suite now also runs the 33-scenario JavaScript/Python parity check and
+therefore needs Node on PATH. [Website notes](docs/website.md) describe both paths.
+
+This is the Unit 9 local-with-logs path. The original setup guide is preserved in [docs/unit3-running-original.md](docs/unit3-running-original.md).
+
+## Clean checkout and environment
+
+Tested on Windows with Python 3.13.3. Python 3.11-3.13 is the original supported range; other OS/Python combinations have not been verified in this change. No local model weights are used. Both JSON data files are tracked in `data/`; there is no database or separate catalog download. Tracked data: `listings.json` (19,171 bytes), `wardrobe_schema.json` (3,381 bytes).
+
+```powershell
+git clone --branch codex/unit9-budget-outfits https://github.com/winaung786/ai201-project2-fitfindr-starter-v2026.git
+cd ai201-project2-fitfindr-starter-v2026
+py -3.13 -m venv .venv
 .venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-copy .env.example .env         # then paste your key into .env
-python test.py
+python -m pip install -r requirements-lock.txt
 ```
 
-**You're ready when `python test.py` passes.**
+On macOS/Linux, use `python3 -m venv .venv` and `source .venv/bin/activate`, then the same install command. `requirements-lock.txt` pins the versions installed for this build; the Windows-only package has a platform marker. The original bounded dependency declarations remain in `requirements.txt`. Do not upgrade packages while reproducing measurements.
 
-If it doesn't and you've made one honest attempt at the error, post the
-**whole** output in the help channel.
+Budget previews need **no environment variables or API key**. The existing single-item model path loads a private `GEMINI_API_KEY` from `.env` if provided (copy `.env.example` and edit locally). Never commit that file. Without a key the original text tools provide local fallbacks; a fallback run is not a live model evaluation.
 
-> Activate the virtual environment every time you open a new terminal. You
-> should see `(.venv)` at the start of your prompt.
+## Start command
 
----
+From the repository root with the environment activated:
 
-## Your first five minutes
-
-Start with the data. Your tools will only be as good as your understanding of
-what they're reading, and ten minutes here saves an hour of confused debugging.
-
-```bash
-python app.py fields                    # what a listing and a wardrobe item hold
-python app.py listings --full -n 6      # read six listings all the way through
-python app.py examples                  # queries worth trying
-python app.py ask 'vintage graphic tee under $30'
-```
-
-> **Quote your queries with single quotes**, on every operating system. In
-> PowerShell, `"vintage graphic tee under $30"` in double quotes silently
-> becomes `vintage graphic tee under ` — PowerShell reads `$30` as a variable
-> and substitutes nothing. You get results with no price ceiling and no error
-> saying so. Single quotes are literal in PowerShell, bash and zsh alike.
-
-That last one runs the loop. All three tools are stubs, so it will tell you the
-loop isn't built yet. **That's the correct starting position** — it runs, and it
-does nothing.
-
----
-
-## Every command
-
-| Command | What it does |
-|---|---|
-| `python test.py` | Checks your environment. Run it whenever something feels off |
-| `python app.py fields` | The fields a listing and a wardrobe item have — **Milestone 1** |
-| `python app.py listings` | Browse the data. `--full` for whole records, `-n` for how many |
-| `python app.py examples` | Queries worth trying, including one that matches nothing |
-| `python app.py ask '...'` | Run the agent on one query — **single quotes** |
-| `python app.py ask` | Keep asking until you press Enter on an empty line |
-| `python agent.py` | Runs both example paths — one that matches, one that can't |
-| `python mcp_server.py` | Starts your MCP server — **unit 4** |
-| `python mcp_client.py` | Asks the server what it offers — **unit 4** |
-| `python run_eval.py --label before` | Runs every scenario five times and writes the run log — **unit 4** |
-| `python serve.py` | Serves the agent over HTTP instead of exiting — **unit 9** |
-
-Useful flags on `ask`:
-
-| Flag | What it does |
-|---|---|
-| `--trace` | Print the loop step by step, once you've added the trace calls |
-| `--empty-wardrobe` | Run as a user with nothing saved — one of unit 4's failure modes |
-
----
-
-## Which command goes with which milestone
-
-### Unit 3 — the build
-
-| Milestone | What you're doing | Where |
-|---|---|---|
-| 1 | Read the data, run the starter | `app.py fields`, `app.py listings --full`, `app.py ask` |
-| 2 | Spec your three tools | README, **Tool Inventory** |
-| 3 | Write your acceptance criteria | `criteria.md` |
-| 4 | Build the three tools | `tools.py`, tested one at a time from a terminal |
-| 5 | Wire the loop and the state | `agent.py::run_agent` |
-| 6 | Write it up | README |
-
-### Unit 4 — the test
-
-| Milestone | What you're doing | Where |
-|---|---|---|
-| 1 | Move one tool onto MCP | `mcp_server.py`, then `mcp_client.call_tool` in `run_agent` |
-| 2 | Break it on purpose, then trace it | `trace.py`, `app.py ask --trace` |
-| 3 | Run your test | `scenarios.py`, then `run_eval.py --label before` |
-| 4 | Call each criterion, diagnose the misses | README |
-| 5 | Fix one thing and re-run | `run_eval.py --label after` |
-| 6 | Say what's still broken | README |
-
----
-
-## Running it somewhere else — **unit 9**
-
-Everything above exits when the command finishes. A host has nothing to keep
-running, so before you can deploy this you need something that stays up.
-`serve.py` is that: the same `run_agent()`, behind two HTTP routes.
-
-On your machine:
-
-```bash
+```powershell
+$env:FITFINDR_LOG_PATH = 'logs/runs.jsonl'
 python serve.py
-curl -X POST http://localhost:5000/ask \
-  -H 'Content-Type: application/json' \
-  -d '{"query": "vintage graphic tee under $30"}'
 ```
 
-On a host, the start command is:
+It listens on `http://localhost:5000`, binds `0.0.0.0`, and writes JSON logs to stderr and the optional local file. `PORT` changes the port. `AI201_DEBUG` is off by default. Keep it off for shared machines. Stop with Ctrl+C. On Linux hosting, use one synchronous worker: `gunicorn --workers 1 --timeout 150 serve:app`. Async workers are incompatible with the existing MCP client. The app is designed for local use; public deployment would require authentication and request/rate controls.
 
-```bash
-gunicorn serve:app
+In another PowerShell terminal:
+
+```powershell
+Invoke-RestMethod http://localhost:5000/health
+$body = '{"query":"Find me a casual outfit under $100"}'
+$result = Invoke-RestMethod http://localhost:5000/ask -Method Post -ContentType 'application/json' -Body $body
+$result.budget_result
+$result.outfit_suggestion
+$result.fit_card
 ```
 
-| Thing | What it means |
-|---|---|
-| `PORT` | The host tells your app which port to listen on by setting this. Both `serve.py` and `gunicorn` read it, and `serve.py` falls back to `5000` on your machine. Don't hard-code a port |
-| `POST /ask` | `{"query": "...", "wardrobe": {...}}` — wardrobe optional. Returns the session dict, `error` and all |
-| `GET /health` | Says `ok` if the app is awake |
-| It answers one request at a time | On purpose. A second request waits for the first to finish, and prints `[serve] another request is still running` while it waits. An MCP tool call starts a whole second Python process, and the free tier's 512 MB has no room for two of those at once — and `generate.py`'s rate-limit counting assumes one caller. The reasoning is written out in `serve.py` |
-| `gunicorn serve:app`, exactly | Not `-k gevent`, not `-k eventlet`, not wrapped for uvicorn. `mcp_client.call_tool` uses `asyncio.run()`, which won't start inside a running event loop, so an async worker breaks **every** MCP call — and only once you've deployed it |
-| The first request is slow | The free tier puts your app to sleep after about fifteen minutes of nothing. The next request wakes it up and waits for it — around a minute. Not a bug, and worth knowing before you demo it |
+To supply the total separately and filter each clothing category:
 
-`serve.py` ships with **no logging and no timing in it**, on purpose. You add
-that yourself in the follow-along, before you deploy — instrumenting first is
-the point of the session.
+```json
+{"query":"casual outfit","budget":"100.00","sizes":{"tops":"M","bottoms":"W30","shoes":"US 9"}}
+```
 
----
+The `sizes` object is optional. One size cannot describe all three categories; `outfit size M` is rejected with a category-size instruction. Budget searches never drop a size filter. The existing single-item route retains its disclosed one-time size retry.
 
-## Where everything lives
+HTTP statuses: 200 for a successful budget preview; 400 for bad input or an invalid/absent/conflicting budget; 422 for no complete valid outfit in the returned candidates; 503 for a failed budget tool; 413 for a body above 32 KB. The legacy route retains its session `error` contract; always inspect it. Logs and response metrics share a run ID.
 
-| File | What it does |
-|---|---|
-| `config.py` | Every setting worth changing — **TEMPERATURE and the cache are at the top** |
-| `tools.py` | Your three tools. **Stubs — you build these** |
-| `agent.py` | The planning loop and the session. **Stub — you build this** |
-| `generate.py` | The only thing that calls out to a service. Handles pacing and quota |
-| `trace.py` | The trace helper, and the loop's stop condition |
-| `app.py` | The command line |
-| `serve.py` | The same agent over HTTP, for deploying — **unit 9** |
-| `mcp_server.py` | Your MCP server — **unit 4, you register the tool** |
-| `mcp_client.py` | Calling an MCP tool from your agent. Given to you |
-| `scenarios.py` | What your test runs. **You fill this in** |
-| `run_eval.py` | Runs the scenarios repeatedly and writes the run log |
-| `criteria.md` | Your five acceptance criteria. **You fill this in** |
-| `data/` | 40 listings and the wardrobe schema |
-| `utils/data_loader.py` | Loading the data. Use this rather than reading the files yourself |
-| `results/` | Run logs. **Commit these** — they're your evidence |
+## Command-line preview
 
----
+```powershell
+python app.py ask 'Find me a casual outfit under $100' --trace
+python app.py ask 'casual outfit' --budget 100
+python app.py ask 'casual outfit under $1'
+python app.py ask 'vintage graphic tee under $30, size M'
+```
 
-## The two settings people go looking for
+Use single quotes so PowerShell does not expand the dollar amount. Whole-outfit budgets are positive USD merchandise subtotals, with at most two decimals, and an inclusive cap. Taxes/shipping are excluded. The sample catalog has no live availability or product links; the preview states that limitation. Missing/invalid prices, unavailable items and non-USD currencies are excluded rather than estimated. A low budget produces a clear error and no partial fit card. Wardrobe costs are not used in the budget preview: all three selected pieces come from listings.
 
-Both are at the top of `config.py`, and the brief points at them by name.
+## Verification and measurements
 
-If your fit cards come out **word-for-word identical** every time, it is one of:
+```powershell
+python -m unittest discover -s tests -v
+python scripts/measure_budget.py
+```
 
-- **`CACHE_ENABLED`** — while you build, identical prompts reuse the answer
-  already received. That's deliberate; it makes debugging free. `run_eval.py`
-  turns it off automatically.
-- **`TEMPERATURE`** — at `0.0` the model gives you the same words every time.
-  It ships at `0.9`.
+The regression suite uses in-process replacements for MCP transport and does not call a model. It covers exact/over-budget boundaries, missing prices, unavailable items, alternate combinations, HTTP rejection and log privacy. The measurement command performs ten separate real-MCP outfit runs plus one deliberate invalid-budget failure, writing `results/unit9-build-cost.json` and `.jsonl`; rerunning intentionally replaces these build measurement files. Use `--output logs/my-cost.json` to preserve committed evidence. No model/cache calls occur in the budget path. Parent CPU excludes MCP child processes; elapsed time includes startup and waiting. Without a compute tariff, CPU/elapsed time cannot be converted to dollars.
 
----
+The committed build evidence is separate from the student-authored capstone acceptance results. Write/commit Unit 9 criteria before the formal acceptance baseline; the original `criteria.md` is still the Unit 3/4 file. Follow [docs/unit9-plan.md](docs/unit9-plan.md) to complete that part later.
 
-## About rate limits
+Logs use UTC timestamps and allowlisted fields. Query text is replaced by its SHA256 and length; wardrobe contents and credentials are omitted. Review evidence before committing. Local log files are not rotated automatically; remove or archive `logs/` when appropriate. If a log file cannot be written, stderr remains the log sink.
 
-**This is the heaviest pair in the course for call volume.** Two of your three
-tools call the model, so one agent run is several requests, and a few runs back
-to back while debugging can cross the per-minute limit.
 
-`generate.py` handles it:
+## Three-trial technical validation evidence
 
-- **It paces itself** and says when it's waiting. **A pause is the starter
-  doing its job, not a bug.**
-- **It reuses answers** to prompts already sent, while you build.
-- **It stops** if a session makes an unreasonable number of calls, rather than
-  draining your day's allowance. For an agent, that usually means a loop isn't
-  ending — look for that before raising the number.
-- **It counts your calls** and prints the total when you exit.
+The five AI-assisted checks in `docs/unit9-validation-plan.md` have been run
+three times before and three times after the one parser fix. Read both tables
+in the README; the raw records and comparison audit are under `results/`.
+The original `criteria.md` is still the student-owned Unit 3/4 file.
 
-`config.MAX_ITERATIONS` is the loop's own stop condition. Your loop this unit
-is short enough that you may never hit it. Keep it — a missing stop condition
-is the most common architectural failure in production agents.
-
----
-
-## When something goes wrong
-
-| What you see | What it means |
-|---|---|
-| `The planning loop isn't built yet` | Correct, at the start. That's the TODO in `agent.py` |
-| `No GEMINI_API_KEY found` | No `.env`, or the key wasn't pasted in. On Windows check it didn't save as `.env.txt` |
-| A message saying the model couldn't be reached | Usually a bad key. This is also **exactly what unit 4 Milestone 2 asks you to trigger on purpose** |
-| `[rate limit] ... Waiting 34s` | Working as intended. Leave it |
-| `[serve] another request is still running` | Also working as intended. `serve.py` answers one request at a time; yours is queued behind one that's mid-run |
-| `QuotaGuard: This session has made 300 requests` | A loop isn't ending. Find it before raising the budget |
-| `The loop ran 11 times, past MAX_ITERATIONS` | Same thing, caught earlier |
-| `The server doesn't offer a tool called '...'` | Nothing registered in `mcp_server.py` yet, or the name doesn't match |
-| MCP returns a string where you expected a list | You're not going through `mcp_client.call_tool`, which unwraps it |
-| Fit cards identical every run | `CACHE_ENABLED` or `TEMPERATURE`. See above |
-| `--trace` prints nothing | You haven't added `trace.step()` calls yet — unit 4, Milestone 2 |
-| `IncompleteFieldDefinitionWarning: Field 'lifespan'` | Harmless noise from the MCP library's dependencies. Not your code, not an error. Ignore it |
-| A price ceiling you typed is being ignored | You used double quotes in PowerShell. `$30` vanished. Use single quotes |
-| `UnicodeEncodeError: 'charmap' codec can't encode` | Shouldn't happen — `config.py` sets the console to UTF-8. If you see it, you're running a file that doesn't import `config` |
-
-Still stuck after one honest attempt? Post in the help channel with the full
-error, what you ran, and what you expected.
-
----
-
-## A note on committing
-
-At least four new commits in unit 3, at least four more in unit 4. Your commit
-history is what shows your criteria existed before your results did.
-
-**Do not delete and recreate this repository.** You submit the same URL both
-units.
-
-`results/` is deliberately **not** in `.gitignore`.
+`scripts/validate_budget.py` refuses to overwrite saved evidence. To reproduce
+the baseline, use a separate clean checkout of commit `c501263`, install the
+same pinned environment, then run `python scripts/validate_budget.py --label before`.
+To reproduce the retest, use another clean checkout of commit `7f5db41`, install
+the same dependencies, then run `python scripts/validate_budget.py --label after`.
+Those historical commits contain the runner before the respective result
+file existed. Run from each checkout root. The runner records all fixtures
+and transport types; only the catalog and size groups use real MCP. No API
+key or live model call is needed. Do not replace archived evidence with a
+new run and claim it has the old timestamp.

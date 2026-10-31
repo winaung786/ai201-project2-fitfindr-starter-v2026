@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#234c3d">
+  <meta name="description" content="Find a complete outfit within your budget. Choose your style, explore the FitFindr sample catalog, and save your favorite looks.">
+  <meta property="og:title" content="FitFindr — Your style, within reach">
+  <meta property="og:description" content="A top, bottoms, and shoes. One budget that works for you.">
+  <meta property="og:url" content="https://fitfindr-style-budget.winaung.chatgpt.site">
+  <title>FitFindr — Your style, within reach</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script type="module" src="/assets/app.mjs"></script>
+</head>
+<body data-transport="browser">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.6 5.6 0 0 0-7.9 0l-.9.9-.9-.9a5.6 5.6 0 0 0-7.9 7.9L12 21l8.8-8.5a5.6 5.6 0 0 0 0-7.9Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 4C9 2 2 8 5 15s16 7 15-11Zm-2 2L5 19m7-7v-5m0 5h5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></symbol>
+  </defs></svg>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#builder" class="brand" aria-label="FitFindr home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M11 10a5 5 0 0 1 10 0c0 3-5 3-5 6m0 0L5 23q-2 2 1 2h20q3 0 1-2L16 16Z"/></svg></span>
+        <span>FitFindr<span class="brand-period">.</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="#builder" id="nav-builder" aria-current="page">Outfit builder</a>
+        <a class="nav-link" href="#saved" id="nav-saved">Saved outfits<span class="saved-count" id="saved-count" hidden></span></a>
+      </nav>
+      <button class="header-help" id="about-button" aria-haspopup="dialog"><svg class="icon"><use href="#i-info"/></svg><span>How it works</span></button>
+    </div>
+  </header>
+
+  <main id="main" class="page-shell">
+    <section id="builder-view" aria-labelledby="page-title">
+      <div class="intro">
+        <p class="eyebrow"><span></span> GOOD STYLE. A LITTLE LESS GUESSWORK.</p>
+        <h1 id="page-title">Your style.<br class="mobile-break"> <em>Within reach.</em></h1>
+        <p class="intro-copy">A top, bottoms, and shoes. Find a look you love,<br class="desktop-break"> with a total that works for you.</p>
+      </div>
+
+      <div class="workspace">
+        <section class="form-card" aria-labelledby="form-title">
+          <div class="section-kicker"><span class="step-number">01</span> THE STARTING POINT</div>
+          <h2 id="form-title">Make it yours.</h2>
+          <p class="form-intro">A few choices. A whole outfit.</p>
+          <form id="outfit-form">
+            <div class="field">
+              <label for="budget">Your total budget</label>
+              <div class="budget-field"><span class="currency-prefix" aria-hidden="true">$</span><input id="budget" name="budget" type="number" inputmode="decimal" value="100" min="0.01" max="1000000" step="0.01" required aria-describedby="budget-hint"><span class="currency-suffix">USD</span></div>
+              <p class="field-hint" id="budget-hint">For all three pieces, before tax &amp; shipping.</p>
+            </div>
+            <div class="field style-field">
+              <label for="style">What's your style?</label>
+              <div class="select-wrap"><select id="style" name="style"><option value="casual">Casual &amp; everyday</option><option value="minimal">Clean &amp; minimal</option><option value="vintage">Vintage inspired</option><option value="streetwear">Streetwear</option><option value="y2k">A little Y2K</option><option value="earth tones">Warm &amp; earthy</option></select><svg class="icon"><use href="#i-chevron"/></svg></div>
+            </div>
+            <details class="size-options" id="size-options">
+              <summary><span>Your sizes <span class="optional">(optional)</span></span><svg class="icon"><use href="#i-chevron"/></svg></summary>
+              <p class="field-hint size-hint">Leave any size open to see more options.</p>
+              <div class="size-grid">
+                <div><label for="size-tops">Top</label><div class="select-wrap"><select id="size-tops" name="tops"><option value="">Any size</option><option>S</option><option>M</option><option>L</option><option>XL</option></select><svg class="icon"><use href="#i-chevron"/></svg></div></div>
+                <div><label for="size-bottoms">Bottoms</label><div class="select-wrap"><select id="size-bottoms" name="bottoms"><option value="">Any size</option><option>W27</option><option>W28</option><option>W29</option><option>W30</option><option>W32</option><option>M</option><option>L</option></select><svg class="icon"><use href="#i-chevron"/></svg></div></div>
+                <div><label for="size-shoes">Shoes</label><div class="select-wrap"><select id="size-shoes" name="shoes"><option value="">Any size</option><option>US 7</option><option>US 8</option><option>US 8.5</option><option>US 9</option></select><svg class="icon"><use href="#i-chevron"/></svg></div></div>
+              </div>
+            </details>
+            <div class="form-error" id="form-error" role="alert" hidden></div>
+            <button class="primary-button build-button" id="build-button" type="submit"><span class="button-label">Build my outfit</span><svg class="icon"><use href="#i-arrow"/></svg><span class="spinner" hidden></span></button>
+          </form>
+          <div class="form-reassurance"><svg class="icon"><use href="#i-check"/></svg><span>One complete look. Always within budget.</span></div>
+        </section>
+
+        <section class="result-panel" id="result-panel" aria-labelledby="result-title" aria-busy="true">
+          <div class="results-header"><div><div class="section-kicker"><span class="step-number">02</span> YOUR NEXT LOOK</div><h2 id="result-title" tabindex="-1">Easy on the eyes.<br>And on your budget.</h2></div><span class="sample-label"><span></span> Sample catalog</span></div>
+          <div id="loading-state" class="loading-state" role="status"><span class="spinner"></span><h3>Finding your fit…</h3><p>Bringing three pieces together, within your budget.</p></div>
+          <div class="empty-result" id="empty-result" hidden><div class="empty-symbol"><svg class="icon"><use href="#i-leaf"/></svg></div><h3>A fresh start for your next look.</h3><p>Adjust your budget, style, or sizes, then build your outfit again.</p></div>
+          <div id="outfit-content" hidden>
+            <div class="outfit-grid" id="outfit-grid"></div>
+            <div class="budget-summary">
+              <div class="total-row"><div><p class="summary-label">Your outfit total</p><div class="total-price"><span id="outfit-total">$0</span><span class="of-budget" id="of-budget"></span></div></div><div class="remaining-pill"><svg class="icon"><use href="#i-check"/></svg><span id="budget-remaining"></span></div></div>
+              <div class="budget-meter" role="img" id="budget-meter"><div id="budget-fill"></div></div>
+              <div class="summary-bottom"><span>Top + bottoms + shoes</span><span>Within your budget <svg class="icon"><use href="#i-check"/></svg></span></div>
+            </div>
+            <div class="result-actions"><p class="result-note">Illustrated sample listings.<br>Tax, shipping, and live stock aren't included.</p><div class="action-buttons"><button class="quiet-button copy-button" id="copy-button"><svg class="icon"><use href="#i-copy"/></svg><span>Copy look</span></button><button class="save-button" id="save-button"><svg class="icon"><use href="#i-heart"/></svg><span>Save outfit</span></button></div></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="thoughtful-note"><div class="leaf-circle"><svg class="icon"><use href="#i-leaf"/></svg></div><div><strong>A little intention goes a long way.</strong><p>Good outfits start with what feels like you. Your budget is part of that.</p></div></div>
+    </section>
+
+    <section id="saved-view" aria-labelledby="saved-title" hidden>
+      <div class="intro saved-intro"><p class="eyebrow"><span></span> YOUR LITTLE COLLECTION</p><h1 id="saved-title">Good looks.<br class="mobile-break"> <em>Kept close.</em></h1><p class="intro-copy">Your favorite combinations, ready when you are.<br class="desktop-break"> Saved in this browser, just for you.</p></div>
+      <div id="saved-empty" class="saved-empty"><div class="empty-symbol"><svg class="icon"><use href="#i-heart"/></svg></div><h2>A space for your favorites.</h2><p>Find a look you love, then tap “Save outfit”.<br>It will be right here when you need it.</p><a href="#builder" class="primary-button">Build an outfit <svg class="icon"><use href="#i-arrow"/></svg></a></div>
+      <div class="saved-grid" id="saved-grid"></div>
+      <p class="saved-privacy" id="saved-privacy" hidden>Saved on this device. Clearing your browser data removes these looks. Prices come from the sample catalog.</p>
+    </section>
+    <noscript><p class="form-error">Turn on JavaScript to use the outfit builder. You can also run FitFindr from the command line using the repository instructions.</p></noscript>
+  </main>
+
+  <footer class="site-footer"><a href="#builder" class="footer-brand">FitFindr.</a><p>Less guesswork. More your style.</p><span>A thoughtful little wardrobe tool.</span></footer>
+  <p id="live-status" class="sr-only" role="status" aria-live="polite"></p>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <dialog id="about-dialog" aria-labelledby="about-title"><button class="dialog-close quiet-button" id="close-dialog" aria-label="Close explanation"><svg class="icon"><use href="#i-close"/></svg></button><div class="dialog-leaf"><svg class="icon"><use href="#i-leaf"/></svg></div><p class="eyebrow">A SIMPLE WAY TO FIND YOUR FIT</p><h2 id="about-title">Three pieces.<br>One thoughtful total.</h2><p>Choose your budget and a style you like. FitFindr looks for a top, bottoms, and shoes that work together without going over your merchandise budget.</p><p>Add separate sizes if you want a closer fit. If nothing matches, we'll tell you. Your budget and size choices stay in place.</p><div class="dialog-note"><strong>About the preview</strong><p>This version uses a sample catalog and garment illustrations. Prices and stock aren't live, and tax and shipping are extra. Product links appear only when the catalog supplies one.</p></div><p class="dialog-privacy">Saved looks stay in your browser. No account needed.</p><button class="primary-button" id="got-it">Got it <svg class="icon"><use href="#i-check"/></svg></button></dialog>
+</body>
+</html>
