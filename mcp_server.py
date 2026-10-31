@@ -19,13 +19,14 @@ def search_listings(
     description: str,
     size: str | None = None,
     max_price: float | None = None,
+    category: str | None = None,
 ) -> list[dict]:
     """Search secondhand listings by description (string), optional size (string), and optional inclusive max_price (number in US dollars); return ranked listing dictionaries, or [] when nothing matches."""
-    return _search_listings_impl(description, size, max_price)
+    return _search_listings_impl(description, size, max_price, category)
 
 
 @mcp.tool()
-def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
+def suggest_outfit(new_item: dict, wardrobe: dict, budget_result: dict | None = None) -> str:
     """Suggest two outfits for a listing and a wardrobe; return general ideas for an empty wardrobe."""
     # A stdio MCP server reserves stdout for protocol messages. The styling
     # tool's helpful diagnostic prints therefore go to stderr.
@@ -55,7 +56,7 @@ def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
         tools.generate = recorded_generate
     try:
         with contextlib.redirect_stdout(sys.stderr):
-            return _suggest_outfit_impl(new_item, wardrobe)
+            return _suggest_outfit_impl(new_item, wardrobe, budget_result)
     finally:
         tools.generate = original_generate
 

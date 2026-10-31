@@ -26,7 +26,8 @@ def _size_matches(wanted: str, actual: str) -> bool:
 
 
 def search_listings(
-    description: str, size: str | None = None, max_price: float | None = None
+    description: str, size: str | None = None, max_price: float | None = None,
+    category: str | None = None,
 ) -> list[dict]:
     """Return relevant listing dictionaries satisfying optional size and price limits."""
     query_words = _words(description)
@@ -34,7 +35,14 @@ def search_listings(
         return []
     scored = []
     for listing in load_listings():
-        if max_price is not None and float(listing["price"]) > max_price:
+        from budget import BudgetError, cents, priced_item
+        try:
+            checked = priced_item(listing)
+        except BudgetError:
+            continue
+        if category is not None and listing["category"] != category:
+            continue
+        if max_price is not None and checked["price_cents"] > cents(max_price):
             continue
         if size and not _size_matches(size, listing["size"]):
             continue
@@ -52,7 +60,7 @@ def search_listings(
         score = 3 * len(query_words & title_words) + 2 * len(query_words & tag_words) + len(query_words & other_words)
         if score:
             scored.append((score, listing))
-    scored.sort(key=lambda pair: (-pair[0], pair[1]["price"], pair[1]["id"]))
+    scored.sort(key=lambda pair: (-pair[0], cents(pair[1]["price"]), pair[1]["id"]))
     return [listing for _, listing in scored[:config.SEARCH_RESULT_LIMIT]]
 
 
@@ -87,8 +95,11 @@ def _fallback_outfit(new_item: dict, wardrobe_items: list[dict]) -> str:
     )
 
 
-def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
+def suggest_outfit(new_item: dict, wardrobe: dict, budget_result: dict | None = None) -> str:
     """Suggest two outfits, labeling general ideas when no wardrobe is saved."""
+    if budget_result is not None:
+        from budget import render_outfit, validate_outfit
+        return render_outfit(validate_outfit(budget_result["items"], budget_result["budget"]))
     items = wardrobe.get("items", [])
     names = [item["name"] for item in items]
     if names:
@@ -131,8 +142,11 @@ def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
         return _fallback_outfit(new_item, items)
 
 
-def create_fit_card(outfit: str, new_item: dict) -> str:
+def create_fit_card(outfit: str, new_item: dict, budget_result: dict | None = None) -> str:
     """Write a short caption for the selected listing and outfit."""
+    if budget_result is not None:
+        from budget import render_card, validate_outfit
+        return render_card(validate_outfit(budget_result["items"], budget_result["budget"]))
     if not outfit or not outfit.strip():
         return "Cannot create a fit card without an outfit suggestion."
     title = new_item["title"]
