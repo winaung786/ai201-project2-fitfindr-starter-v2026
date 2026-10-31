@@ -1,5 +1,67 @@
 # FitFindr
 
+## Unit 9 - Budget-Aware Outfit Builder (build ready; acceptance work pending)
+
+This branch extends the original FitFindr agent. Try `python app.py ask 'casual outfit under $100'` after following [RUNNING.md](RUNNING.md).
+
+**Submission status:** The student will write the five Unit 9 acceptance criteria later. The existing `criteria.md` and Unit 4 results are preserved. This is a working build with developer checks and measured instrumentation/cost evidence, not a completed Unit 9 submission. No Unit 9 acceptance verdicts or before/after scores have been invented.
+
+### What This Extends
+
+The original Unit 3/4 agent searches for one secondhand item, styles it using a wardrobe, and writes a caption. The extension adds a separate full-outfit path: three category searches over MCP, one deterministic budget validation/selection step, `suggest_outfit` over MCP, and `create_fit_card`. It selects one top, one bottom, and shoes. Single-item requests such as `vintage graphic tee under $30` retain the original path.
+
+Prices come from `data/listings.json`, which is a bundled **sample catalog**, not live shopping data. The new path never fabricates prices, stock, or URLs. The original catalog has no product links; the output omits them. If a future catalog supplies an HTTPS product URL, validation preserves it without synthesizing a shop link.
+
+### The Shape
+
+**C - Extend one capability.** The feature is budget-aware outfit selection; instrumentation and local running support it. Accounts, wardrobe management, weather, live marketplace integration, and a professional website redesign are out of scope. See [the scoped build plan](docs/unit9-plan.md).
+
+An explicit `budget` field or the word `outfit` enables the new path. A total budget is required. Amounts are positive USD values with at most two decimals. `under` is treated as an inclusive cap (at or below). Query and parameter budgets must agree. Amounts are converted to integer cents before comparison and addition; the model never calculates totals. All returned category combinations are considered, ranked by search position and shared style tags, with price and listing ID breaking ties. This is a bounded heuristic, not a claim of expert fashion judgment.
+
+### Running It
+
+**Path B - local with logs.** [RUNNING.md](RUNNING.md) gives a clean-checkout setup, exact dependencies, CLI/HTTP commands, required environment, and verification commands. Budget previews require no API key, downloads of model weights, or external search service. The legacy wording path requires a private Gemini key for actual model responses; this change has not re-evaluated live Gemini output.
+
+### Instrumentation
+
+`telemetry.py::record_run` records UTC timestamp, unique run ID, query hash/length, sanitized output totals/item count, elapsed milliseconds, parent-process CPU time, tool count, success/failure, error type, and usage scope. Neither raw requests nor wardrobe content, credentials, exception messages, or generated text enter these logs. Responses retain the outfit preview for the caller. Hashes remain linkable metadata; review logs before sharing.
+
+JSONL goes to stderr and optionally `FITFINDR_LOG_PATH`. HTTP rejections also produce records; agent runs produce one record each. The optional local log file falls back to stderr if unwritable. `logs/` is ignored by Git; only reviewed evidence under `results/` is committed. MCP calls have a 30-second execution/startup timeout. The service serializes agent runs; health checks and input rejection do not wait on the agent lock.
+
+Ten actual successful budget run records plus one deliberate invalid-budget record appear below. They are build/cost evidence, separate from the student acceptance evaluation. Full records: [JSONL](results/unit9-build-cost.jsonl); structured outputs and source hashes: [measurement JSON](results/unit9-build-cost.json).
+
+<!-- UNIT9_LOGS -->
+
+### What It Costs
+
+<!-- UNIT9_COST -->
+
+### Run Log and Verdicts
+
+**Pending student-authored Unit 9 criteria.** There is no Unit 9 acceptance score yet. `tests/` contains developer regression checks, including decimal boundaries, invalid/missing prices, no suitable products, alternative combinations, transport failures, malformed HTTP bodies, privacy, and the original single-item route. These tests replace MCP transport with in-process tools; the ten-run build measurement separately uses real MCP subprocesses.
+
+After the student authors five numbered criteria with targets and reasons, archive the original `criteria.md` under `docs/`, commit the new criteria with a message naming them, and only then run/commit the formal baseline: three unchanged trials per criterion, actual outputs, MET/MISSED verdicts, and a stage/mechanism diagnosis for every miss. At least three criteria must cover the extension and at least one must cover a failure path. Preserve both the targets and any revisions.
+
+### The Improvement
+
+**Pending the acceptance baseline.** Choose one change based on a diagnosed miss, commit it separately, then repeat all five criteria three times. Put both tables and raw output excerpts here. Developer fixes during this build do not stand in for that measured capstone improvement.
+
+### What's Still Broken
+
+Live stock, checkout tax/shipping, and product links are absent from the source catalog. The displayed amount is a merchandise subtotal and is not a guaranteed checkout total. The feature excludes invalid/unavailable listings and fails clearly if any category is missing or the budget cannot be met; it never fills the gap with fictional products. Category-specific size filters are supported over HTTP, retained without retrying more loosely, and all selected sizes are displayed. A single ambiguous outfit size is rejected.
+
+Search considers at most ten results per category and uses the original keyword ranker. `casual` maps to classic/basics/streetwear; other descriptions use keyword matching. Wardrobe ownership, fashion quality, and all free-form preference constraints are not independently validated on this path. A feasible outfit outside the returned candidates can be missed. MCP startup adds several seconds per run. Parent CPU measurement excludes child CPU, and no compute-dollar estimate is available without a tariff.
+
+Acceptance criteria, baseline, diagnosis, measured improvement, retest, and the student's own final reflection remain unfinished because the student chose to author criteria later. If this were developed further, the first product step would be a real catalog adapter with explicit currency, price freshness, and stock/link provenance; those facts determine whether a budget preview is useful for shopping. The adapter should retain deterministic validation and be evaluated against fresh listings before adding more features.
+
+### How I Used AI
+
+Build assistance in this change is disclosed here, rather than attributed to the student as personal work. First, Codex was asked to extend FitFindr with a budget feature; it retained the original repository/tools and implemented integer-cent selection with deterministic budget text instead of relying on free-form arithmetic. Second, Codex was asked to provide observability and evidence; it added allowlisted logs, regression tests, and a ten-run real-MCP measurement while leaving student-authored criteria and formal verdicts pending. The student should review the implementation and add their own two specific learning moments before submission.
+
+---
+
+## Original Unit 3/4 record
+
 Read [RUNNING.md](RUNNING.md) for setup and commands. Unit 3 build notes and Unit 4 test evidence are recorded below.
 
 
