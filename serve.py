@@ -27,10 +27,9 @@ web server has to be. The reason is worth reading before you deploy: see the
 note above `_one_at_a_time` below — it also decides which gunicorn worker you
 can use.
 
-⚠️ There is deliberately NO logging, NO timing and NO request counting in this
-file. That is unit 9's follow-along: you instrument this yourself, first, and
-then deploy it. A structured log you were handed teaches you nothing about
-what belongs in one — and the timing field is the one everybody skips.
+Unit 9 telemetry: the @instrument_http decorator appends one structured JSONL
+record per POST /ask (including failures), with duration, safe input/output
+summaries, and local + MCP subprocess token counts.
 """
 
 import os
@@ -43,6 +42,7 @@ import config  # noqa: F401
 
 from flask import Flask, jsonify, request
 
+from capstone_logging import instrument_http
 from agent import run_agent
 from utils.data_loader import get_example_wardrobe
 
@@ -98,6 +98,7 @@ def health():
 
 
 @app.post("/ask")
+@instrument_http
 def ask():
     """
     Run the agent on one query.
