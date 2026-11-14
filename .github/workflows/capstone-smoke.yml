@@ -1,0 +1,45 @@
+name: FitFindr Unit 9 operational smoke
+
+on:
+  push:
+    paths:
+      - "capstone_logging.py"
+      - "serve.py"
+      - "mcp_server.py"
+      - "mcp_client.py"
+      - "scripts/capstone_smoke.py"
+      - ".github/workflows/capstone-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  local-with-logs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Clean checkout
+        uses: actions/checkout@v4
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install unchanged pinned dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run real Flask/MCP paths without a model key
+        env:
+          AI201_CACHE: "0"
+          GEMINI_API_KEY: ""
+        run: python scripts/capstone_smoke.py
+      - name: Preserve real run evidence in the same repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/capstone-smoke.jsonl results/capstone-smoke-summary.json results/capstone-smoke-extract.md
+          if git diff --cached --quiet; then
+            echo "Evidence already matches the current run"
+          else
+            git commit -m "Capstone operational evidence: record 10 real requests and rejected input"
+            git push
+          fi
