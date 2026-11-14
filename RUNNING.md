@@ -1,5 +1,44 @@
 # Running FitFindr
 
+## Unit 9 Capstone — local-with-logs (Path B)
+
+This is the **same FitFindr agent** from Units 3–4. Unit 9 extends its existing Flask server with **structured JSONL request logs**, end-to-end elapsed time, and measured model usage from both the HTTP process and MCP styling subprocess.
+
+**Reproduce from a clean checkout** (Python **3.11–3.13**; requirements are version-bounded in `requirements.txt`; no local model files are downloaded):
+
+```bash
+git clone https://github.com/winaung786/ai201-project2-fitfindr-starter-v2026.git
+cd ai201-project2-fitfindr-starter-v2026
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+cp .env.example .env
+# Optional: add your private GEMINI_API_KEY to .env; NEVER commit the file.
+python serve.py
+```
+
+On Windows PowerShell, replace activation with `.venv\Scripts\Activate.ps1` and `cp` with `copy`. The **single start command** after installation is `python serve.py`. In another terminal:
+
+```bash
+curl -X POST http://127.0.0.1:5000/ask -H 'Content-Type: application/json' -d '{"query":"vintage graphic tee under $30, size M"}'
+curl -X POST http://127.0.0.1:5000/ask -H 'Content-Type: application/json' -d '{}'
+```
+
+The first request exercises the real search → styling → card path; the second exercises the rejected-input path (HTTP 400). Every `POST /ask` appends **one JSON object per line** to `results/capstone-requests.jsonl`. Optionally set `FITFINDR_LOG_PATH` to an alternative path. Each record includes UTC `timestamp`, `run_id`, `input` (query clipped to 180 characters and wardrobe count, not entire wardrobe), `output` (selected listing ID, short caption/error/notice), `http_status`, `duration_ms`, `model_calls`, and measured `model_tokens` (prompt/output/total). MCP subprocess calls are counted using a temporary per-request metrics file, then deleted; no private key is logged.
+
+**Cost method:** send 10 full queries (without response caching if measuring real model use), read the ten `duration_ms` and `model_tokens.total` values, compute their averages, and report seconds per run and tokens per run. Multiply average seconds by 100 to show one hundred runs/day; model pricing is NOT inferred from a webpage. A missing or bad API key triggers FitFindr's local styling/card fallbacks and normally measures **zero provider tokens**, not successful live-model output.
+
+**Repeatable smoke and evidence** (runs the actual Flask test client plus MCP subprocess, with the model unavailable intentionally):
+
+```bash
+python scripts/capstone_smoke.py
+```
+
+This produces `results/capstone-smoke.jsonl` (10 valid requests + one HTTP-400 failure), `results/capstone-smoke-extract.md` (the actual log lines as text), and `results/capstone-smoke-summary.json` (average observed seconds). GitHub Actions can also run this from a clean Python 3.12 checkout via `.github/workflows/capstone-smoke.yml`. These are **operational smoke measurements, not a replacement for five student-written capstone criteria, or the three-trial before/after evaluation**. The final graded capstone testing depends on the student first committing the five criteria.
+
+---
+
+
 Everything about how the starter works and how to use it.
 
 ---
@@ -62,9 +101,7 @@ python app.py ask 'vintage graphic tee under $30'
 > and substitutes nothing. You get results with no price ceiling and no error
 > saying so. Single quotes are literal in PowerShell, bash and zsh alike.
 
-That last one runs the loop. All three tools are stubs, so it will tell you the
-loop isn't built yet. **That's the correct starting position** — it runs, and it
-does nothing.
+That last command now runs the implemented FitFindr agent. Its MCP and fallback paths were completed in Units 3–4.
 
 ---
 
