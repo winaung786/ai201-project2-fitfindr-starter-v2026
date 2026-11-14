@@ -510,3 +510,23 @@ Unit 4 commits follow the milestone order: MCP registration/equality evidence; f
 ---
 
 📖 **How to run this project: [RUNNING.md](RUNNING.md)**
+
+## Capstone
+
+**What This Extends**
+
+This is the same FitFindr agent built in Units 3 and 4, including MCP-based listing search and outfit suggestions and the fit-card tool. The Unit 9 extension adds an observable, repeatable run path around the existing Flask `POST /ask` endpoint. The agent's shopping and styling logic is retained, rather than rebuilt.
+
+**The Shape**
+
+**A — Deploy and instrument.** Chosen run path: **Path B, local with logs** (equivalent credit to a hosted deployment). Scope is structured JSONL records for each HTTP `/ask` request, including invalid or failed requests; elapsed time; output summary; and actual per-request model-call/token counters. The local server already exists in `serve.py`, so the extension is the operational layer.
+
+**Out of scope:** No new shopping platforms or Amazon integration; no image/face swap; no redesign of the AI prompts or search ranking; no second agent or hosted signup. No extra model or private API key will be committed.
+
+**Running It**
+
+Use the existing `serve.py` Flask server. Complete local-with-logs setup and exact commands will be added to `RUNNING.md`. This paragraph records the deployment choice before implementation; it is **not** a claim that a clean-checkout trial has already succeeded.
+
+**Assessment order and student-owned criteria**
+
+The five Unit 9 acceptance criteria must be **written by the student alone**. They will be added as a clearly labeled Capstone section in `criteria.md`, with measurable targets and reasons, and committed **before** the first Unit 9 evaluation results. AI assistance may *review* them for testability, not author the five standards. The Unit 3/4 criteria remain intact. No pre/post scores will be claimed before those criteria and actual trials exist.
