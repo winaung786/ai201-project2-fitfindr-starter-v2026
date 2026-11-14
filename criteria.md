@@ -16,3 +16,9 @@ These targets were set before implementation testing. A try means one fresh call
 
 5. Across **5** runs of `vintage graphic tee under $30, size M` with `get_empty_wardrobe()` and the response cache off, at least **4** sessions must have no error and a nonempty `outfit_suggestion` that names the selected item's exact `title` and suggests at least one other clothing or shoe type (for example, jeans or sneakers). The suggestion must not say the user owns a specific piece. A missing item or suggestion fails that try.
    **Why this target:** I chose a **4 out of 5** target because FitFindr should still name the selected item and suggest a clothing or shoe pairing when the user has no saved wardrobe items, without claiming the user owns specific clothing. One imperfect model response is acceptable, but repeated failures would make this user path unreliable.
+
+## Unit 9 Capstone — new acceptance criteria (student authored)
+
+**Not authored or committed yet.** The five numbered criteria above belong to Units 3–4 and are preserved verbatim. They cannot substitute for Unit 9 criteria because they do not measure the new instrumentation extension.
+
+For Unit 9, the student must personally write five numbered, measurable acceptance criteria here, each with a target and an explanation of why that target is appropriate. At least three must evaluate the new operational/instrumentation layer, and at least one must address a failure path. The student must commit those criteria **before** any Unit 9 three-trial acceptance evaluation. AI can check the student's sentences for testability and ambiguity but should not supply the five criteria or quietly loosen targets after results appear.
