@@ -12,6 +12,7 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import threading
 import time
 from uuid import uuid4
 
@@ -74,55 +75,63 @@ def append_log(record: dict) -> Path:
     return target
 
 
+_telemetry_lock = threading.Lock()
+
+
 def instrument_http(handler):
-    """Measure every /ask HTTP call, including invalid input and exceptions."""
+    """Serialize telemetry environment changes across overlapping HTTP requests."""
     @wraps(handler)
     def wrapped(*args, **kwargs):
-        request_id = uuid4().hex[:12]
-        started = time.perf_counter()
-        timestamp = datetime.now(timezone.utc).isoformat()
-        payload = request.get_json(silent=True)
-        local_calls_before = generate.call_count()
-        local_tokens_before = generate.token_counts()
-
-        # The agent is serialised by serve.py's lock. This temporary environment
-        # variable is scoped to the request, not persisted as a server setting.
-        with tempfile.TemporaryDirectory(prefix="fitfindr-capstone-") as tempdir:
-            metrics_path = Path(tempdir) / "mcp-usage.jsonl"
-            previous = os.environ.get("FITFINDR_MCP_METRICS_LOG")
-            os.environ["FITFINDR_MCP_METRICS_LOG"] = str(metrics_path)
-            try:
-                try:
-                    response = make_response(handler(*args, **kwargs))
-                except Exception:
-                    # Avoid leaking provider details or secrets to the user/log.
-                    response = make_response(jsonify({"error": "Internal server error; retry or inspect the local log."}), 500)
-            finally:
-                if previous is None:
-                    os.environ.pop("FITFINDR_MCP_METRICS_LOG", None)
-                else:
-                    os.environ["FITFINDR_MCP_METRICS_LOG"] = previous
-            try:
-                remote_calls, remote_tokens = _mcp_usage(metrics_path)
-            except (OSError, ValueError, TypeError):
-                remote_calls, remote_tokens = 0, {"prompt": 0, "output": 0, "total": 0}
-
-        local_tokens = _tokens_delta(generate.token_counts(), local_tokens_before)
-        total_tokens = {key: local_tokens[key] + remote_tokens[key] for key in local_tokens}
-        body = response.get_json(silent=True) if response.is_json else None
-        record = {
-            "timestamp": timestamp,
-            "run_id": request_id,
-            "route": "/ask",
-            "input": _input_summary(payload),
-            "output": _output_summary(body),
-            "http_status": response.status_code,
-            "duration_ms": round((time.perf_counter() - started) * 1000, 2),
-            "model_calls": max(0, generate.call_count() - local_calls_before) + remote_calls,
-            "model_tokens": total_tokens,
-            "token_measurement": "Observed provider usage; zero means no billed model calls were recorded.",
-        }
-        append_log(record)
-        response.headers["X-FitFindr-Run-ID"] = request_id
-        return response
+        with _telemetry_lock:
+            return _measure_one(handler, *args, **kwargs)
     return wrapped
+
+
+def _measure_one(handler, *args, **kwargs):
+    request_id = uuid4().hex[:12]
+    started = time.perf_counter()
+    timestamp = datetime.now(timezone.utc).isoformat()
+    payload = request.get_json(silent=True)
+    local_calls_before = generate.call_count()
+    local_tokens_before = generate.token_counts()
+
+    # The agent is serialised by serve.py's lock. This temporary environment
+    # variable is scoped to the request, not persisted as a server setting.
+    with tempfile.TemporaryDirectory(prefix="fitfindr-capstone-") as tempdir:
+        metrics_path = Path(tempdir) / "mcp-usage.jsonl"
+        previous = os.environ.get("FITFINDR_MCP_METRICS_LOG")
+        os.environ["FITFINDR_MCP_METRICS_LOG"] = str(metrics_path)
+        try:
+            try:
+                response = make_response(handler(*args, **kwargs))
+            except Exception:
+                # Avoid leaking provider details or secrets to the user/log.
+                response = make_response(jsonify({"error": "Internal server error; retry or inspect the local log."}), 500)
+        finally:
+            if previous is None:
+                os.environ.pop("FITFINDR_MCP_METRICS_LOG", None)
+            else:
+                os.environ["FITFINDR_MCP_METRICS_LOG"] = previous
+        try:
+            remote_calls, remote_tokens = _mcp_usage(metrics_path)
+        except (OSError, ValueError, TypeError):
+            remote_calls, remote_tokens = 0, {"prompt": 0, "output": 0, "total": 0}
+
+    local_tokens = _tokens_delta(generate.token_counts(), local_tokens_before)
+    total_tokens = {key: local_tokens[key] + remote_tokens[key] for key in local_tokens}
+    body = response.get_json(silent=True) if response.is_json else None
+    record = {
+        "timestamp": timestamp,
+        "run_id": request_id,
+        "route": "/ask",
+        "input": _input_summary(payload),
+        "output": _output_summary(body),
+        "http_status": response.status_code,
+        "duration_ms": round((time.perf_counter() - started) * 1000, 2),
+        "model_calls": max(0, generate.call_count() - local_calls_before) + remote_calls,
+        "model_tokens": total_tokens,
+        "token_measurement": "Observed provider usage; zero means no billed model calls were recorded.",
+    }
+    append_log(record)
+    response.headers["X-FitFindr-Run-ID"] = request_id
+    return response
