@@ -30,6 +30,7 @@ def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
     # A stdio MCP server reserves stdout for protocol messages. The styling
     # tool's helpful diagnostic prints therefore go to stderr.
     log_path = os.environ.get("FITFINDR_MCP_MODEL_LOG")
+    metrics_path = os.environ.get("FITFINDR_MCP_METRICS_LOG")
     original_generate = tools.generate
 
     def recorded_generate(prompt, *args, **kwargs):
@@ -48,10 +49,16 @@ def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
             entry["tokens"] = {
                 key: after_tokens[key] - value for key, value in before_tokens.items()
             }
-            with open(log_path, "a", encoding="utf-8") as log:
-                log.write(json.dumps(entry, ensure_ascii=False) + "\n")
+            if log_path:
+                with open(log_path, "a", encoding="utf-8") as log:
+                    log.write(json.dumps(entry, ensure_ascii=False) + "\n")
+            if metrics_path:
+                summary = {"model_calls": entry["model_calls"], "tokens": entry["tokens"],
+                           "error_type": entry.get("error_type")}
+                with open(metrics_path, "a", encoding="utf-8") as log:
+                    log.write(json.dumps(summary) + "\n")
 
-    if log_path:
+    if log_path or metrics_path:
         tools.generate = recorded_generate
     try:
         with contextlib.redirect_stdout(sys.stderr):
