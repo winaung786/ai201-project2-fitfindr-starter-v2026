@@ -7,10 +7,12 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from pathlib import Path
 from statistics import mean
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))  # python scripts/foo.py otherwise cannot import root serve.py
 LOG = ROOT / "results" / "capstone-smoke.jsonl"
 os.environ["FITFINDR_LOG_PATH"] = str(LOG)
 os.environ["AI201_CACHE"] = "0"
