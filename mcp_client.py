@@ -37,7 +37,7 @@ SERVER = Path(__file__).parent / "mcp_server.py"
 
 def _server_environment() -> dict[str, str]:
     """Pass the model settings and evaluation recorder to the MCP subprocess."""
-    names = ("GEMINI_API_KEY", "AI201_CACHE", "AI201_MODEL", "FITFINDR_MCP_MODEL_LOG")
+    names = ("GEMINI_API_KEY", "AI201_CACHE", "AI201_MODEL", "FITFINDR_MCP_MODEL_LOG", "FITFINDR_MCP_METRICS_LOG")
     return {name: os.environ[name] for name in names if name in os.environ}
 
 
