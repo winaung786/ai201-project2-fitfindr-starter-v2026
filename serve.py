@@ -108,8 +108,9 @@ def ask():
                                                 example wardrobe the CLI uses.
     Out:  the session dict from run_agent(), as JSON.
     """
-    payload = request.get_json(silent=True) or {}
-    query = (payload.get("query") or "").strip()
+    payload = request.get_json(silent=True)
+    raw_query = payload.get("query") if isinstance(payload, dict) else None
+    query = raw_query.strip() if isinstance(raw_query, str) else ""
     if not query:
         # 400 rather than a stack trace: the caller can act on this one.
         return jsonify({"error": "Send JSON with a 'query' field, e.g. "
