@@ -1,0 +1,46 @@
+name: FitFindr Unit 9 repeated evaluation
+
+on:
+  push:
+    paths:
+      - "scripts/capstone_eval.py"
+      - "capstone_logging.py"
+      - ".github/workflows/capstone-eval.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Checkout unchanged FitFindr repo
+        uses: actions/checkout@v4
+      - name: Use Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing requirements
+        run: python -m pip install -r requirements.txt
+      - name: Select honest comparison phase
+        id: phase
+        run: |
+          if test -f results/capstone-before-trials.json; then
+            echo "phase=after" >> "$GITHUB_OUTPUT"
+          else
+            echo "phase=before" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Run five checks three times against real Flask/MCP
+        env:
+          AI201_CACHE: "0"
+          GEMINI_API_KEY: ""
+        run: python scripts/capstone_eval.py --phase "${{ steps.phase.outputs.phase }}"
+      - name: Commit real evaluation evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/capstone-${{ steps.phase.outputs.phase }}-trials.json results/capstone-${{ steps.phase.outputs.phase }}-table.md results/capstone-${{ steps.phase.outputs.phase }}-requests.jsonl
+          git commit -m "Unit 9: record ${{ steps.phase.outputs.phase }} three-trial evidence for five checks"
+          git push
