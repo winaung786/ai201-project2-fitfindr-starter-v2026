@@ -525,7 +525,7 @@ This is the same FitFindr agent built in Units 3 and 4, including MCP-based list
 
 **Running It**
 
-Use the existing `serve.py` Flask server. Complete local-with-logs setup and exact commands will be added to `RUNNING.md`. This paragraph records the deployment choice before implementation; it is **not** a claim that a clean-checkout trial has already succeeded.
+**Path B, local with logs.** Start the existing server using `python serve.py`, as documented with clean-checkout setup in [RUNNING.md](RUNNING.md). A GitHub Actions clean Python 3.12 checkout also executed the actual Flask/MCP path, with real saved `results/capstone-smoke.jsonl` evidence. The provider key was omitted for testing, so successful styling text came from fallback mode. Do not mistake this for hosted URL or keyed-model verification.
 
 **Assessment order and student-owned criteria**
 
@@ -561,17 +561,88 @@ Measured from ten valid end-to-end HTTP requests with `time.perf_counter` around
 
 **Run Log and Verdicts**
 
-**Not yet completed.** The five *new* Unit 9 acceptance criteria must first be written by the student in `criteria.md` and committed, with at least three about this instrumentation/operational extension and at least one bad path. No Unit 9 before/after 3-trial scores have been generated or claimed. The operational smoke session above must not be scored as an acceptance-criteria test.
+**Five AI-assisted provisional checks, three separate trials each, before one code improvement.** These are an instrumented technical rehearsal, **not** the professor-required five independently student-authored criteria. The provisional standards were saved in [capstone-provisional-criteria.md](capstone-provisional-criteria.md) and committed before results; they were not relaxed afterward. Test environment: clean Python 3.12 GitHub Actions checkout, actual Flask + MCP subprocess, no Gemini API key, caching off. `results/capstone-before-requests.jsonl` contains all 15 real log entries.
+
+| Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Structured successful request | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 2. Recover ordered tool path | 3/3 | FAIL | FAIL | FAIL | MISSED (0/3) |
+| 3. Rejected input logged | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 4. Size retry preserved | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 5. No-match logging and zero provider usage | 3/3 | PASS | PASS | PASS | MET (3/3) |
+
+**Diagnoses and verdicts:** Checks 1, 3, 4 and 5 were MET on 3/3 each; there was no miss for those checks to diagnose. Check 2 was MISSED on **all three trials**. The agent returned `tool_calls` in the correct three-step order, but `capstone_logging.py::_output_summary` discarded the tool names when making the reduced JSONL `output` summary. Thus `output.tool_sequence` was missing from every baseline log, so an operator could not reconstruct the agent sequence even though the agent itself completed. The stage is the **structured logger**, not the search or model.
+
+**Raw actual output from the first trial of each criterion** (one JSONL record per request, not invented output):
+
+**Criterion 1, trial 1 — actual recorded JSONL** (`scripts/capstone_eval.py::_trial` → `serve.py::ask` → `capstone_logging.py::_measure_one`):
+
+```json
+{"duration_ms":2801.31,"http_status":200,"input":{"json_object":true,"query":"vintage graphic tee under $30, size M","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":null,"fit_card":"Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.","retry_notice":null,"selected_item_id":"lst_002"},"route":"/ask","run_id":"65bd6859f122","timestamp":"2026-11-15T21:15:13.548363+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+```
+
+**Criterion 2, trial 1 — actual recorded JSONL** (`scripts/capstone_eval.py::_trial` → `serve.py::ask` → `capstone_logging.py::_measure_one`):
+
+```json
+{"duration_ms":1672.63,"http_status":200,"input":{"json_object":true,"query":"vintage graphic tee under $30, size M","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":null,"fit_card":"Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.","retry_notice":null,"selected_item_id":"lst_002"},"route":"/ask","run_id":"72092599e16b","timestamp":"2026-11-15T21:15:19.663293+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+```
+
+**Criterion 3, trial 1 — actual recorded JSONL** (`scripts/capstone_eval.py::_trial` → `serve.py::ask` → `capstone_logging.py::_measure_one`):
+
+```json
+{"duration_ms":0.37,"http_status":400,"input":{"json_object":true,"query":null,"wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":"Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}","fit_card":null,"retry_notice":null,"selected_item_id":null},"route":"/ask","run_id":"a13826f66114","timestamp":"2026-11-15T21:15:24.648863+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+```
+
+**Criterion 4, trial 1 — actual recorded JSONL** (`scripts/capstone_eval.py::_trial` → `serve.py::ask` → `capstone_logging.py::_measure_one`):
+
+```json
+{"duration_ms":2156.19,"http_status":200,"input":{"json_object":true,"query":"vintage graphic tee under $30, size XL","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":null,"fit_card":"Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.","retry_notice":"No matches in size XL; retried once without the size filter.","selected_item_id":"lst_006"},"route":"/ask","run_id":"554c329dc938","timestamp":"2026-11-15T21:15:24.651775+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+```
+
+**Criterion 5, trial 1 — actual recorded JSONL** (`scripts/capstone_eval.py::_trial` → `serve.py::ask` → `capstone_logging.py::_measure_one`):
+
+```json
+{"duration_ms":1011.72,"http_status":200,"input":{"json_object":true,"query":"designer ballgown size XXS under $5","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":"No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.","fit_card":null,"retry_notice":"No matches in size XXS; retried once without the size filter.","selected_item_id":null},"route":"/ask","run_id":"433724421b1e","timestamp":"2026-11-15T21:15:31.226488+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+```
+
+
+See [the complete before log and checks](results/capstone-before-table.md) and [machine-readable trial details](results/capstone-before-trials.json).
 
 **The Improvement**
 
-**Pending the student-authored criteria and first three-trial evaluation.** One specific improvement must be selected *after* seeing and diagnosing genuine baseline misses, then tested against the unchanged criteria in another three trials per criterion. Do not invent a MET/MISSED table before that evidence exists.
+**Exactly one targeted change:** In `capstone_logging.py::_output_summary`, add `tool_sequence`, extracting only the tool names from the existing agent `tool_calls` list. This follows the measured check-2 logger omission; no agent logic, search ranking, model prompt, MCP behavior, or target criteria were changed. It does not add raw tool arguments or wardrobe data to the new log field.
+
+**Rerun:** Three fresh independent real Flask requests per check, with the **same five AI-assisted provisional criteria**, same targets, Python version, no-key fallback mode and no response caching. All 15 after records are in `results/capstone-after-requests.jsonl`.
+
+| Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
+|---|---|---|---|---|---|
+| 1. Structured successful request | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 2. Recover ordered tool path | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 3. Rejected input logged | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 4. Size retry preserved | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 5. No-match logging and zero provider usage | 3/3 | PASS | PASS | PASS | MET (3/3) |
+
+**Did it help?** Yes. The tool-path observation rose from **0/3 MISSED → 3/3 MET**, while the other four stayed MET (3/3 each). Total individual passing trials rose from **12/15 → 15/15**. Both stages used 15 real HTTP requests, not simulations of log lines. The unchanged provisional criteria have identical SHA256 in both test artifacts; the instrumentation source hash differs.
+
+**Actual after-fix log output, check 2 trial 1** (created by `capstone_logging.py::_measure_one`):
+
+```json
+{"duration_ms":1731.16,"http_status":200,"input":{"json_object":true,"query":"vintage graphic tee under $30, size M","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":null,"fit_card":"Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.","retry_notice":null,"selected_item_id":"lst_002","tool_sequence":["search_listings","suggest_outfit","create_fit_card"]},"route":"/ask","run_id":"73ded3e28041","timestamp":"2026-11-15T21:17:49.099172+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+```
+
+Evidence: [after table with five real outputs](results/capstone-after-table.md), [full comparison and mechanism-level diagnosis](results/capstone-comparison.md), [before JSON](results/capstone-before-trials.json), and [after JSON](results/capstone-after-trials.json). The after result records **actual local fallback**, not paid Gemini inference.
 
 **What's Still Broken**
 
-The operational extension runs in clean-checkout fallback mode, but **live Gemini accuracy, keyed model cost and latency have not been measured for Unit 9**. The HTTP endpoint is limited to one concurrent agent request to protect the existing MCP/client behavior. The smoke exercise covers normal requests and a rejected empty query, not every malformed body or slow/failed provider response. The immediate next capstone requirement is to write and commit five independent acceptance criteria; then use baseline traces to choose one evidence-driven improvement. I have stopped short of invented criteria and test results because the course requires personal authorship and genuine repeated trials.
+All five **provisional** checks now meet their 3/3 targets, but the measured sample remains small and non-keyed. The first target I'd tighten is check 2: verify the new tool sequence on a failed/retried path, including both `search_listings` calls, in 3/3 runs. A model-keyed evaluation would be required to measure actual live Gemini latency and token usage; no claim about those is made here.
+
+**Course requirement still open:** The professor requires the student to write five fresh Unit 9 acceptance criteria independently. The AI-assisted check set in this repository **cannot honestly be presented as independently authored**. The original Unit 3/4 criteria in `criteria.md` do not fill this requirement. The student should write/commit their own five Unit 9 criteria (at least three about this instrumentation layer, one bad path) and rerun the evaluation against those standards before submitting the graded capstone.
+
+**Engineering next step if there were another unit:** Redact sensitive query content from structured logs before exposing the service publicly, then verify the redaction never deletes request correlation. I stopped after the single measured tool-path improvement so the before/after comparison isolates one code change. The system remains Path B local-with-logs, with no public hosted URL.
 
 **How I Used AI**
 
-1. For scope review, the request to extend FitFindr as a Unit 9 capstone led to an inspection of the existing Flask, MCP, and Unit 4 code. The result was the bounded **Shape A local-with-logs** scope rather than a new shopping agent or website; the existing core agent was kept.
-2. For coding and troubleshooting, AI assistance produced the JSONL telemetry wrapper, temporary MCP usage recorder, smoke script, CI workflow, and run instructions. The first clean-checkout workflow failed because the script could not import the repository-root `serve.py`; I corrected the smoke script's module path and reran it successfully. The failed attempt was not presented as a passing test. The five acceptance criteria must still be personally authored by the student, not the assistant.
+1. **Scope and observability:** I asked AI for implementation help extending the existing FitFindr server rather than writing a new agent. It reviewed the Flask/MCP run path, drafted a request-logging wrapper, and produced a clean-checkout GitHub Actions smoke test. I kept Shape A (local-with-logs), retained the original agent behavior, and fixed the smoke script import path after an initial failed checkout.
+2. **Test execution and diagnosis:** I asked AI to automate three repeated trials for each of five observable behaviors and compare a single targeted fix. AI-assisted provisional checks were committed before the baseline, which revealed `output.tool_sequence` was absent in 0/3 runs. The logger was changed to record only tool names; 15 fresh requests then measured that check at 3/3. These checks are **AI-assisted drafts**, so the professor's independent student-authorship requirement is not claimed as fulfilled.
+
+See [full measured before/after evidence](results/capstone-comparison.md).
