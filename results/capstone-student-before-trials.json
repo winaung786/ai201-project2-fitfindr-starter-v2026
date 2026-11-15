@@ -1,0 +1,3360 @@
+{
+  "phase": "before",
+  "timestamp_utc": "2026-11-15T21:33:20.184344+00:00",
+  "criteria_sha256": "214265cbf1709c7fce9f03e5c1e52483ea61d03f2dbb41fa61224cc4e4e1a854",
+  "http_calls": 21,
+  "mode": "Real Flask/MCP with local fallback; criterion 4 uses dummy invalid key; no live Gemini accuracy claims",
+  "rows": [
+    {
+      "criterion": 1,
+      "label": "Happy-path HTTP telemetry and correlation header",
+      "target": "3/3",
+      "count": 0,
+      "verdict": "MISSED",
+      "trials": [
+        {
+          "passed": false,
+          "checks": {
+            "one_log": true,
+            "header_hex12": true,
+            "correlation": true,
+            "http_200": true,
+            "log_200": true,
+            "elapsed_positive": true,
+            "listing_id": true,
+            "error_null": true,
+            "exact_user_title": false,
+            "exact_price": true,
+            "platform": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "4c15a2920b2d",
+              "body": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "notice": null,
+                "outfit_suggestion": "1) Wear the Y2K Baby Tee — Butterfly Print with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.\n2) Style the Y2K Baby Tee — Butterfly Print with Wide-leg khaki trousers and Black combat boots for a different look.",
+                "parsed": {
+                  "description": "vintage graphic tee",
+                  "max_price": 30.0,
+                  "size": "M"
+                },
+                "query": "vintage graphic tee under $30, size M",
+                "search_results": [
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "white",
+                      "pink",
+                      "purple"
+                    ],
+                    "condition": "excellent",
+                    "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                    "id": "lst_002",
+                    "platform": "depop",
+                    "price": 18.0,
+                    "size": "S/M",
+                    "style_tags": [
+                      "y2k",
+                      "vintage",
+                      "graphic tee",
+                      "cottagecore"
+                    ],
+                    "title": "Y2K Baby Tee — Butterfly Print"
+                  }
+                ],
+                "selected_item": {
+                  "brand": null,
+                  "category": "tops",
+                  "colors": [
+                    "white",
+                    "pink",
+                    "purple"
+                  ],
+                  "condition": "excellent",
+                  "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                  "id": "lst_002",
+                  "platform": "depop",
+                  "price": 18.0,
+                  "size": "S/M",
+                  "style_tags": [
+                    "y2k",
+                    "vintage",
+                    "graphic tee",
+                    "cottagecore"
+                  ],
+                  "title": "Y2K Baby Tee — Butterfly Print"
+                },
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": "M"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "suggest_outfit"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "create_fit_card"
+                  }
+                ],
+                "wardrobe": {
+                  "items": [
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "dark blue",
+                        "indigo"
+                      ],
+                      "id": "w_001",
+                      "name": "Baggy straight-leg jeans, dark wash",
+                      "notes": "High-waisted, sits above the hip",
+                      "style_tags": [
+                        "denim",
+                        "streetwear",
+                        "baggy"
+                      ]
+                    },
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "khaki",
+                        "tan"
+                      ],
+                      "id": "w_002",
+                      "name": "Wide-leg khaki trousers",
+                      "notes": null,
+                      "style_tags": [
+                        "earth tones",
+                        "minimal",
+                        "wide-leg"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_003",
+                      "name": "White ribbed tank top",
+                      "notes": "Goes with everything",
+                      "style_tags": [
+                        "basics",
+                        "minimal",
+                        "fitted"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "grey",
+                        "charcoal"
+                      ],
+                      "id": "w_004",
+                      "name": "Oversized grey crewneck sweatshirt",
+                      "notes": "Really oversized — drops below the hip",
+                      "style_tags": [
+                        "oversized",
+                        "basics",
+                        "cozy"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_005",
+                      "name": "Black cropped zip hoodie",
+                      "notes": null,
+                      "style_tags": [
+                        "athletic",
+                        "streetwear",
+                        "cropped"
+                      ]
+                    },
+                    {
+                      "category": "outerwear",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_006",
+                      "name": "Vintage black denim jacket",
+                      "notes": "Slightly cropped",
+                      "style_tags": [
+                        "denim",
+                        "vintage",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_007",
+                      "name": "Chunky white sneakers",
+                      "notes": null,
+                      "style_tags": [
+                        "sneakers",
+                        "chunky",
+                        "streetwear"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_008",
+                      "name": "Black combat boots",
+                      "notes": "Lace-up, mid-ankle height",
+                      "style_tags": [
+                        "boots",
+                        "grunge",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "brown"
+                      ],
+                      "id": "w_009",
+                      "name": "Brown leather belt",
+                      "notes": null,
+                      "style_tags": [
+                        "classic",
+                        "earth tones",
+                        "accessories"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_010",
+                      "name": "Black crossbody bag",
+                      "notes": null,
+                      "style_tags": [
+                        "minimal",
+                        "accessories",
+                        "everyday"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "record": {
+                "duration_ms": 2772.36,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "vintage graphic tee under $30, size M",
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": null,
+                  "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                  "retry_notice": null,
+                  "selected_item_id": "lst_002",
+                  "tool_sequence": [
+                    "search_listings",
+                    "suggest_outfit",
+                    "create_fit_card"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "4c15a2920b2d",
+                "timestamp": "2026-11-15T21:32:57.964934+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        },
+        {
+          "passed": false,
+          "checks": {
+            "one_log": true,
+            "header_hex12": true,
+            "correlation": true,
+            "http_200": true,
+            "log_200": true,
+            "elapsed_positive": true,
+            "listing_id": true,
+            "error_null": true,
+            "exact_user_title": false,
+            "exact_price": true,
+            "platform": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "f4b312e5f142",
+              "body": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "notice": null,
+                "outfit_suggestion": "1) Wear the Y2K Baby Tee — Butterfly Print with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.\n2) Style the Y2K Baby Tee — Butterfly Print with Wide-leg khaki trousers and Black combat boots for a different look.",
+                "parsed": {
+                  "description": "vintage graphic tee",
+                  "max_price": 30.0,
+                  "size": "M"
+                },
+                "query": "vintage graphic tee under $30, size M",
+                "search_results": [
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "white",
+                      "pink",
+                      "purple"
+                    ],
+                    "condition": "excellent",
+                    "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                    "id": "lst_002",
+                    "platform": "depop",
+                    "price": 18.0,
+                    "size": "S/M",
+                    "style_tags": [
+                      "y2k",
+                      "vintage",
+                      "graphic tee",
+                      "cottagecore"
+                    ],
+                    "title": "Y2K Baby Tee — Butterfly Print"
+                  }
+                ],
+                "selected_item": {
+                  "brand": null,
+                  "category": "tops",
+                  "colors": [
+                    "white",
+                    "pink",
+                    "purple"
+                  ],
+                  "condition": "excellent",
+                  "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                  "id": "lst_002",
+                  "platform": "depop",
+                  "price": 18.0,
+                  "size": "S/M",
+                  "style_tags": [
+                    "y2k",
+                    "vintage",
+                    "graphic tee",
+                    "cottagecore"
+                  ],
+                  "title": "Y2K Baby Tee — Butterfly Print"
+                },
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": "M"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "suggest_outfit"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "create_fit_card"
+                  }
+                ],
+                "wardrobe": {
+                  "items": [
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "dark blue",
+                        "indigo"
+                      ],
+                      "id": "w_001",
+                      "name": "Baggy straight-leg jeans, dark wash",
+                      "notes": "High-waisted, sits above the hip",
+                      "style_tags": [
+                        "denim",
+                        "streetwear",
+                        "baggy"
+                      ]
+                    },
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "khaki",
+                        "tan"
+                      ],
+                      "id": "w_002",
+                      "name": "Wide-leg khaki trousers",
+                      "notes": null,
+                      "style_tags": [
+                        "earth tones",
+                        "minimal",
+                        "wide-leg"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_003",
+                      "name": "White ribbed tank top",
+                      "notes": "Goes with everything",
+                      "style_tags": [
+                        "basics",
+                        "minimal",
+                        "fitted"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "grey",
+                        "charcoal"
+                      ],
+                      "id": "w_004",
+                      "name": "Oversized grey crewneck sweatshirt",
+                      "notes": "Really oversized — drops below the hip",
+                      "style_tags": [
+                        "oversized",
+                        "basics",
+                        "cozy"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_005",
+                      "name": "Black cropped zip hoodie",
+                      "notes": null,
+                      "style_tags": [
+                        "athletic",
+                        "streetwear",
+                        "cropped"
+                      ]
+                    },
+                    {
+                      "category": "outerwear",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_006",
+                      "name": "Vintage black denim jacket",
+                      "notes": "Slightly cropped",
+                      "style_tags": [
+                        "denim",
+                        "vintage",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_007",
+                      "name": "Chunky white sneakers",
+                      "notes": null,
+                      "style_tags": [
+                        "sneakers",
+                        "chunky",
+                        "streetwear"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_008",
+                      "name": "Black combat boots",
+                      "notes": "Lace-up, mid-ankle height",
+                      "style_tags": [
+                        "boots",
+                        "grunge",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "brown"
+                      ],
+                      "id": "w_009",
+                      "name": "Brown leather belt",
+                      "notes": null,
+                      "style_tags": [
+                        "classic",
+                        "earth tones",
+                        "accessories"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_010",
+                      "name": "Black crossbody bag",
+                      "notes": null,
+                      "style_tags": [
+                        "minimal",
+                        "accessories",
+                        "everyday"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "record": {
+                "duration_ms": 1761.42,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "vintage graphic tee under $30, size M",
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": null,
+                  "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                  "retry_notice": null,
+                  "selected_item_id": "lst_002",
+                  "tool_sequence": [
+                    "search_listings",
+                    "suggest_outfit",
+                    "create_fit_card"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "f4b312e5f142",
+                "timestamp": "2026-11-15T21:33:00.738582+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        },
+        {
+          "passed": false,
+          "checks": {
+            "one_log": true,
+            "header_hex12": true,
+            "correlation": true,
+            "http_200": true,
+            "log_200": true,
+            "elapsed_positive": true,
+            "listing_id": true,
+            "error_null": true,
+            "exact_user_title": false,
+            "exact_price": true,
+            "platform": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "e53bf3f6fff8",
+              "body": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "notice": null,
+                "outfit_suggestion": "1) Wear the Y2K Baby Tee — Butterfly Print with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.\n2) Style the Y2K Baby Tee — Butterfly Print with Wide-leg khaki trousers and Black combat boots for a different look.",
+                "parsed": {
+                  "description": "vintage graphic tee",
+                  "max_price": 30.0,
+                  "size": "M"
+                },
+                "query": "vintage graphic tee under $30, size M",
+                "search_results": [
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "white",
+                      "pink",
+                      "purple"
+                    ],
+                    "condition": "excellent",
+                    "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                    "id": "lst_002",
+                    "platform": "depop",
+                    "price": 18.0,
+                    "size": "S/M",
+                    "style_tags": [
+                      "y2k",
+                      "vintage",
+                      "graphic tee",
+                      "cottagecore"
+                    ],
+                    "title": "Y2K Baby Tee — Butterfly Print"
+                  }
+                ],
+                "selected_item": {
+                  "brand": null,
+                  "category": "tops",
+                  "colors": [
+                    "white",
+                    "pink",
+                    "purple"
+                  ],
+                  "condition": "excellent",
+                  "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                  "id": "lst_002",
+                  "platform": "depop",
+                  "price": 18.0,
+                  "size": "S/M",
+                  "style_tags": [
+                    "y2k",
+                    "vintage",
+                    "graphic tee",
+                    "cottagecore"
+                  ],
+                  "title": "Y2K Baby Tee — Butterfly Print"
+                },
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": "M"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "suggest_outfit"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "create_fit_card"
+                  }
+                ],
+                "wardrobe": {
+                  "items": [
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "dark blue",
+                        "indigo"
+                      ],
+                      "id": "w_001",
+                      "name": "Baggy straight-leg jeans, dark wash",
+                      "notes": "High-waisted, sits above the hip",
+                      "style_tags": [
+                        "denim",
+                        "streetwear",
+                        "baggy"
+                      ]
+                    },
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "khaki",
+                        "tan"
+                      ],
+                      "id": "w_002",
+                      "name": "Wide-leg khaki trousers",
+                      "notes": null,
+                      "style_tags": [
+                        "earth tones",
+                        "minimal",
+                        "wide-leg"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_003",
+                      "name": "White ribbed tank top",
+                      "notes": "Goes with everything",
+                      "style_tags": [
+                        "basics",
+                        "minimal",
+                        "fitted"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "grey",
+                        "charcoal"
+                      ],
+                      "id": "w_004",
+                      "name": "Oversized grey crewneck sweatshirt",
+                      "notes": "Really oversized — drops below the hip",
+                      "style_tags": [
+                        "oversized",
+                        "basics",
+                        "cozy"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_005",
+                      "name": "Black cropped zip hoodie",
+                      "notes": null,
+                      "style_tags": [
+                        "athletic",
+                        "streetwear",
+                        "cropped"
+                      ]
+                    },
+                    {
+                      "category": "outerwear",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_006",
+                      "name": "Vintage black denim jacket",
+                      "notes": "Slightly cropped",
+                      "style_tags": [
+                        "denim",
+                        "vintage",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_007",
+                      "name": "Chunky white sneakers",
+                      "notes": null,
+                      "style_tags": [
+                        "sneakers",
+                        "chunky",
+                        "streetwear"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_008",
+                      "name": "Black combat boots",
+                      "notes": "Lace-up, mid-ankle height",
+                      "style_tags": [
+                        "boots",
+                        "grunge",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "brown"
+                      ],
+                      "id": "w_009",
+                      "name": "Brown leather belt",
+                      "notes": null,
+                      "style_tags": [
+                        "classic",
+                        "earth tones",
+                        "accessories"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_010",
+                      "name": "Black crossbody bag",
+                      "notes": null,
+                      "style_tags": [
+                        "minimal",
+                        "accessories",
+                        "everyday"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "record": {
+                "duration_ms": 1735.15,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "vintage graphic tee under $30, size M",
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": null,
+                  "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                  "retry_notice": null,
+                  "selected_item_id": "lst_002",
+                  "tool_sequence": [
+                    "search_listings",
+                    "suggest_outfit",
+                    "create_fit_card"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "e53bf3f6fff8",
+                "timestamp": "2026-11-15T21:33:02.500858+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "criterion": 2,
+      "label": "Bounded size-retry and empty-search failure-path telemetry",
+      "target": "3/3",
+      "count": 3,
+      "verdict": "MET",
+      "trials": [
+        {
+          "passed": true,
+          "checks": {
+            "one_log": true,
+            "http_200": true,
+            "no_content": true,
+            "only_two_search_calls": true,
+            "retry_flag": true,
+            "dropped_constraint": true,
+            "log_selected_null": true,
+            "log_card_null": true,
+            "exact_retry_notice": true,
+            "error_prefix": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "1a911d7ed052",
+              "body": {
+                "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+                "fit_card": null,
+                "notice": "No matches in size XXS; retried once without the size filter.",
+                "outfit_suggestion": null,
+                "parsed": {
+                  "description": "designer ballgown",
+                  "max_price": 5.0,
+                  "size": "XXS"
+                },
+                "query": "designer ballgown size XXS under $5",
+                "search_results": [],
+                "selected_item": null,
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "designer ballgown",
+                      "max_price": 5.0,
+                      "size": "XXS"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "dropped_constraint": "size XXS",
+                    "inputs": {
+                      "description": "designer ballgown",
+                      "max_price": 5.0,
+                      "size": null
+                    },
+                    "retry": true,
+                    "tool": "search_listings"
+                  }
+                ],
+                "wardrobe": {
+                  "items": [
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "dark blue",
+                        "indigo"
+                      ],
+                      "id": "w_001",
+                      "name": "Baggy straight-leg jeans, dark wash",
+                      "notes": "High-waisted, sits above the hip",
+                      "style_tags": [
+                        "denim",
+                        "streetwear",
+                        "baggy"
+                      ]
+                    },
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "khaki",
+                        "tan"
+                      ],
+                      "id": "w_002",
+                      "name": "Wide-leg khaki trousers",
+                      "notes": null,
+                      "style_tags": [
+                        "earth tones",
+                        "minimal",
+                        "wide-leg"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_003",
+                      "name": "White ribbed tank top",
+                      "notes": "Goes with everything",
+                      "style_tags": [
+                        "basics",
+                        "minimal",
+                        "fitted"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "grey",
+                        "charcoal"
+                      ],
+                      "id": "w_004",
+                      "name": "Oversized grey crewneck sweatshirt",
+                      "notes": "Really oversized — drops below the hip",
+                      "style_tags": [
+                        "oversized",
+                        "basics",
+                        "cozy"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_005",
+                      "name": "Black cropped zip hoodie",
+                      "notes": null,
+                      "style_tags": [
+                        "athletic",
+                        "streetwear",
+                        "cropped"
+                      ]
+                    },
+                    {
+                      "category": "outerwear",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_006",
+                      "name": "Vintage black denim jacket",
+                      "notes": "Slightly cropped",
+                      "style_tags": [
+                        "denim",
+                        "vintage",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_007",
+                      "name": "Chunky white sneakers",
+                      "notes": null,
+                      "style_tags": [
+                        "sneakers",
+                        "chunky",
+                        "streetwear"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_008",
+                      "name": "Black combat boots",
+                      "notes": "Lace-up, mid-ankle height",
+                      "style_tags": [
+                        "boots",
+                        "grunge",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "brown"
+                      ],
+                      "id": "w_009",
+                      "name": "Brown leather belt",
+                      "notes": null,
+                      "style_tags": [
+                        "classic",
+                        "earth tones",
+                        "accessories"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_010",
+                      "name": "Black crossbody bag",
+                      "notes": null,
+                      "style_tags": [
+                        "minimal",
+                        "accessories",
+                        "everyday"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "record": {
+                "duration_ms": 1057.28,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "designer ballgown size XXS under $5",
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+                  "fit_card": null,
+                  "retry_notice": "No matches in size XXS; retried once without the size filter.",
+                  "selected_item_id": null,
+                  "tool_sequence": [
+                    "search_listings",
+                    "search_listings"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "1a911d7ed052",
+                "timestamp": "2026-11-15T21:33:04.236874+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        },
+        {
+          "passed": true,
+          "checks": {
+            "one_log": true,
+            "http_200": true,
+            "no_content": true,
+            "only_two_search_calls": true,
+            "retry_flag": true,
+            "dropped_constraint": true,
+            "log_selected_null": true,
+            "log_card_null": true,
+            "exact_retry_notice": true,
+            "error_prefix": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "1fa63e884a89",
+              "body": {
+                "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+                "fit_card": null,
+                "notice": "No matches in size XXS; retried once without the size filter.",
+                "outfit_suggestion": null,
+                "parsed": {
+                  "description": "designer ballgown",
+                  "max_price": 5.0,
+                  "size": "XXS"
+                },
+                "query": "designer ballgown size XXS under $5",
+                "search_results": [],
+                "selected_item": null,
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "designer ballgown",
+                      "max_price": 5.0,
+                      "size": "XXS"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "dropped_constraint": "size XXS",
+                    "inputs": {
+                      "description": "designer ballgown",
+                      "max_price": 5.0,
+                      "size": null
+                    },
+                    "retry": true,
+                    "tool": "search_listings"
+                  }
+                ],
+                "wardrobe": {
+                  "items": [
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "dark blue",
+                        "indigo"
+                      ],
+                      "id": "w_001",
+                      "name": "Baggy straight-leg jeans, dark wash",
+                      "notes": "High-waisted, sits above the hip",
+                      "style_tags": [
+                        "denim",
+                        "streetwear",
+                        "baggy"
+                      ]
+                    },
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "khaki",
+                        "tan"
+                      ],
+                      "id": "w_002",
+                      "name": "Wide-leg khaki trousers",
+                      "notes": null,
+                      "style_tags": [
+                        "earth tones",
+                        "minimal",
+                        "wide-leg"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_003",
+                      "name": "White ribbed tank top",
+                      "notes": "Goes with everything",
+                      "style_tags": [
+                        "basics",
+                        "minimal",
+                        "fitted"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "grey",
+                        "charcoal"
+                      ],
+                      "id": "w_004",
+                      "name": "Oversized grey crewneck sweatshirt",
+                      "notes": "Really oversized — drops below the hip",
+                      "style_tags": [
+                        "oversized",
+                        "basics",
+                        "cozy"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_005",
+                      "name": "Black cropped zip hoodie",
+                      "notes": null,
+                      "style_tags": [
+                        "athletic",
+                        "streetwear",
+                        "cropped"
+                      ]
+                    },
+                    {
+                      "category": "outerwear",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_006",
+                      "name": "Vintage black denim jacket",
+                      "notes": "Slightly cropped",
+                      "style_tags": [
+                        "denim",
+                        "vintage",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_007",
+                      "name": "Chunky white sneakers",
+                      "notes": null,
+                      "style_tags": [
+                        "sneakers",
+                        "chunky",
+                        "streetwear"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_008",
+                      "name": "Black combat boots",
+                      "notes": "Lace-up, mid-ankle height",
+                      "style_tags": [
+                        "boots",
+                        "grunge",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "brown"
+                      ],
+                      "id": "w_009",
+                      "name": "Brown leather belt",
+                      "notes": null,
+                      "style_tags": [
+                        "classic",
+                        "earth tones",
+                        "accessories"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_010",
+                      "name": "Black crossbody bag",
+                      "notes": null,
+                      "style_tags": [
+                        "minimal",
+                        "accessories",
+                        "everyday"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "record": {
+                "duration_ms": 1072.96,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "designer ballgown size XXS under $5",
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+                  "fit_card": null,
+                  "retry_notice": "No matches in size XXS; retried once without the size filter.",
+                  "selected_item_id": null,
+                  "tool_sequence": [
+                    "search_listings",
+                    "search_listings"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "1fa63e884a89",
+                "timestamp": "2026-11-15T21:33:05.295008+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        },
+        {
+          "passed": true,
+          "checks": {
+            "one_log": true,
+            "http_200": true,
+            "no_content": true,
+            "only_two_search_calls": true,
+            "retry_flag": true,
+            "dropped_constraint": true,
+            "log_selected_null": true,
+            "log_card_null": true,
+            "exact_retry_notice": true,
+            "error_prefix": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "6a394390cbcc",
+              "body": {
+                "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+                "fit_card": null,
+                "notice": "No matches in size XXS; retried once without the size filter.",
+                "outfit_suggestion": null,
+                "parsed": {
+                  "description": "designer ballgown",
+                  "max_price": 5.0,
+                  "size": "XXS"
+                },
+                "query": "designer ballgown size XXS under $5",
+                "search_results": [],
+                "selected_item": null,
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "designer ballgown",
+                      "max_price": 5.0,
+                      "size": "XXS"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "dropped_constraint": "size XXS",
+                    "inputs": {
+                      "description": "designer ballgown",
+                      "max_price": 5.0,
+                      "size": null
+                    },
+                    "retry": true,
+                    "tool": "search_listings"
+                  }
+                ],
+                "wardrobe": {
+                  "items": [
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "dark blue",
+                        "indigo"
+                      ],
+                      "id": "w_001",
+                      "name": "Baggy straight-leg jeans, dark wash",
+                      "notes": "High-waisted, sits above the hip",
+                      "style_tags": [
+                        "denim",
+                        "streetwear",
+                        "baggy"
+                      ]
+                    },
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "khaki",
+                        "tan"
+                      ],
+                      "id": "w_002",
+                      "name": "Wide-leg khaki trousers",
+                      "notes": null,
+                      "style_tags": [
+                        "earth tones",
+                        "minimal",
+                        "wide-leg"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_003",
+                      "name": "White ribbed tank top",
+                      "notes": "Goes with everything",
+                      "style_tags": [
+                        "basics",
+                        "minimal",
+                        "fitted"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "grey",
+                        "charcoal"
+                      ],
+                      "id": "w_004",
+                      "name": "Oversized grey crewneck sweatshirt",
+                      "notes": "Really oversized — drops below the hip",
+                      "style_tags": [
+                        "oversized",
+                        "basics",
+                        "cozy"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_005",
+                      "name": "Black cropped zip hoodie",
+                      "notes": null,
+                      "style_tags": [
+                        "athletic",
+                        "streetwear",
+                        "cropped"
+                      ]
+                    },
+                    {
+                      "category": "outerwear",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_006",
+                      "name": "Vintage black denim jacket",
+                      "notes": "Slightly cropped",
+                      "style_tags": [
+                        "denim",
+                        "vintage",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_007",
+                      "name": "Chunky white sneakers",
+                      "notes": null,
+                      "style_tags": [
+                        "sneakers",
+                        "chunky",
+                        "streetwear"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_008",
+                      "name": "Black combat boots",
+                      "notes": "Lace-up, mid-ankle height",
+                      "style_tags": [
+                        "boots",
+                        "grunge",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "brown"
+                      ],
+                      "id": "w_009",
+                      "name": "Brown leather belt",
+                      "notes": null,
+                      "style_tags": [
+                        "classic",
+                        "earth tones",
+                        "accessories"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_010",
+                      "name": "Black crossbody bag",
+                      "notes": null,
+                      "style_tags": [
+                        "minimal",
+                        "accessories",
+                        "everyday"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "record": {
+                "duration_ms": 1074.86,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "designer ballgown size XXS under $5",
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+                  "fit_card": null,
+                  "retry_notice": "No matches in size XXS; retried once without the size filter.",
+                  "selected_item_id": null,
+                  "tool_sequence": [
+                    "search_listings",
+                    "search_listings"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "6a394390cbcc",
+                "timestamp": "2026-11-15T21:33:06.368902+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "criterion": 3,
+      "label": "Malformed and non-string JSON payload rejection",
+      "target": "3/3",
+      "count": 0,
+      "verdict": "MISSED",
+      "trials": [
+        {
+          "passed": false,
+          "checks": {
+            "request_1_one_log": true,
+            "request_1_http_400": true,
+            "request_1_error_text": true,
+            "request_1_log_400": true,
+            "request_1_no_model_calls": true,
+            "request_1_under_50ms": true,
+            "request_1_logged_validation_error": true,
+            "request_2_one_log": true,
+            "request_2_http_400": false,
+            "request_2_error_text": false,
+            "request_2_log_400": false,
+            "request_2_no_model_calls": true,
+            "request_2_under_50ms": true,
+            "request_2_logged_validation_error": false,
+            "request_3_one_log": true,
+            "request_3_http_400": false,
+            "request_3_error_text": false,
+            "request_3_log_400": false,
+            "request_3_no_model_calls": true,
+            "request_3_under_50ms": true,
+            "request_3_logged_validation_error": false
+          },
+          "http_requests": [
+            {
+              "status": 400,
+              "header": "e5b5af2bf637",
+              "body": {
+                "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}"
+              },
+              "record": {
+                "duration_ms": 0.38,
+                "http_status": 400,
+                "input": {
+                  "json_object": true,
+                  "query": null,
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}",
+                  "fit_card": null,
+                  "retry_notice": null,
+                  "selected_item_id": null,
+                  "tool_sequence": []
+                },
+                "route": "/ask",
+                "run_id": "e5b5af2bf637",
+                "timestamp": "2026-11-15T21:33:07.444728+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            },
+            {
+              "status": 500,
+              "header": "567a14ae4e9c",
+              "body": {
+                "error": "Internal server error; retry or inspect the local log."
+              },
+              "record": {
+                "duration_ms": 0.33,
+                "http_status": 500,
+                "input": {
+                  "json_object": false,
+                  "query": null,
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "Internal server error; retry or inspect the local log.",
+                  "fit_card": null,
+                  "retry_notice": null,
+                  "selected_item_id": null,
+                  "tool_sequence": []
+                },
+                "route": "/ask",
+                "run_id": "567a14ae4e9c",
+                "timestamp": "2026-11-15T21:33:07.445894+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            },
+            {
+              "status": 500,
+              "header": "bcb0186e952c",
+              "body": {
+                "error": "Internal server error; retry or inspect the local log."
+              },
+              "record": {
+                "duration_ms": 0.32,
+                "http_status": 500,
+                "input": {
+                  "json_object": true,
+                  "query": null,
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "Internal server error; retry or inspect the local log.",
+                  "fit_card": null,
+                  "retry_notice": null,
+                  "selected_item_id": null,
+                  "tool_sequence": []
+                },
+                "route": "/ask",
+                "run_id": "bcb0186e952c",
+                "timestamp": "2026-11-15T21:33:07.446901+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        },
+        {
+          "passed": false,
+          "checks": {
+            "request_1_one_log": true,
+            "request_1_http_400": true,
+            "request_1_error_text": true,
+            "request_1_log_400": true,
+            "request_1_no_model_calls": true,
+            "request_1_under_50ms": true,
+            "request_1_logged_validation_error": true,
+            "request_2_one_log": true,
+            "request_2_http_400": false,
+            "request_2_error_text": false,
+            "request_2_log_400": false,
+            "request_2_no_model_calls": true,
+            "request_2_under_50ms": true,
+            "request_2_logged_validation_error": false,
+            "request_3_one_log": true,
+            "request_3_http_400": false,
+            "request_3_error_text": false,
+            "request_3_log_400": false,
+            "request_3_no_model_calls": true,
+            "request_3_under_50ms": true,
+            "request_3_logged_validation_error": false
+          },
+          "http_requests": [
+            {
+              "status": 400,
+              "header": "672dd3e71850",
+              "body": {
+                "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}"
+              },
+              "record": {
+                "duration_ms": 0.31,
+                "http_status": 400,
+                "input": {
+                  "json_object": true,
+                  "query": null,
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}",
+                  "fit_card": null,
+                  "retry_notice": null,
+                  "selected_item_id": null,
+                  "tool_sequence": []
+                },
+                "route": "/ask",
+                "run_id": "672dd3e71850",
+                "timestamp": "2026-11-15T21:33:07.447924+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            },
+            {
+              "status": 500,
+              "header": "707051cf7a31",
+              "body": {
+                "error": "Internal server error; retry or inspect the local log."
+              },
+              "record": {
+                "duration_ms": 0.3,
+                "http_status": 500,
+                "input": {
+                  "json_object": false,
+                  "query": null,
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "Internal server error; retry or inspect the local log.",
+                  "fit_card": null,
+                  "retry_notice": null,
+                  "selected_item_id": null,
+                  "tool_sequence": []
+                },
+                "route": "/ask",
+                "run_id": "707051cf7a31",
+                "timestamp": "2026-11-15T21:33:07.448922+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            },
+            {
+              "status": 500,
+              "header": "62548ab8702e",
+              "body": {
+                "error": "Internal server error; retry or inspect the local log."
+              },
+              "record": {
+                "duration_ms": 0.31,
+                "http_status": 500,
+                "input": {
+                  "json_object": true,
+                  "query": null,
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "Internal server error; retry or inspect the local log.",
+                  "fit_card": null,
+                  "retry_notice": null,
+                  "selected_item_id": null,
+                  "tool_sequence": []
+                },
+                "route": "/ask",
+                "run_id": "62548ab8702e",
+                "timestamp": "2026-11-15T21:33:07.449921+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        },
+        {
+          "passed": false,
+          "checks": {
+            "request_1_one_log": true,
+            "request_1_http_400": true,
+            "request_1_error_text": true,
+            "request_1_log_400": true,
+            "request_1_no_model_calls": true,
+            "request_1_under_50ms": true,
+            "request_1_logged_validation_error": true,
+            "request_2_one_log": true,
+            "request_2_http_400": false,
+            "request_2_error_text": false,
+            "request_2_log_400": false,
+            "request_2_no_model_calls": true,
+            "request_2_under_50ms": true,
+            "request_2_logged_validation_error": false,
+            "request_3_one_log": true,
+            "request_3_http_400": false,
+            "request_3_error_text": false,
+            "request_3_log_400": false,
+            "request_3_no_model_calls": true,
+            "request_3_under_50ms": true,
+            "request_3_logged_validation_error": false
+          },
+          "http_requests": [
+            {
+              "status": 400,
+              "header": "d17b8d2756d4",
+              "body": {
+                "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}"
+              },
+              "record": {
+                "duration_ms": 0.3,
+                "http_status": 400,
+                "input": {
+                  "json_object": true,
+                  "query": null,
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}",
+                  "fit_card": null,
+                  "retry_notice": null,
+                  "selected_item_id": null,
+                  "tool_sequence": []
+                },
+                "route": "/ask",
+                "run_id": "d17b8d2756d4",
+                "timestamp": "2026-11-15T21:33:07.450968+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            },
+            {
+              "status": 500,
+              "header": "84516e211e36",
+              "body": {
+                "error": "Internal server error; retry or inspect the local log."
+              },
+              "record": {
+                "duration_ms": 0.3,
+                "http_status": 500,
+                "input": {
+                  "json_object": false,
+                  "query": null,
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "Internal server error; retry or inspect the local log.",
+                  "fit_card": null,
+                  "retry_notice": null,
+                  "selected_item_id": null,
+                  "tool_sequence": []
+                },
+                "route": "/ask",
+                "run_id": "84516e211e36",
+                "timestamp": "2026-11-15T21:33:07.452010+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            },
+            {
+              "status": 500,
+              "header": "88a6478b0d81",
+              "body": {
+                "error": "Internal server error; retry or inspect the local log."
+              },
+              "record": {
+                "duration_ms": 0.28,
+                "http_status": 500,
+                "input": {
+                  "json_object": true,
+                  "query": null,
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": "Internal server error; retry or inspect the local log.",
+                  "fit_card": null,
+                  "retry_notice": null,
+                  "selected_item_id": null,
+                  "tool_sequence": []
+                },
+                "route": "/ask",
+                "run_id": "88a6478b0d81",
+                "timestamp": "2026-11-15T21:33:07.453060+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "criterion": 4,
+      "label": "Secret/wardrobe privacy redaction and temporary cleanup",
+      "target": "3/3",
+      "count": 0,
+      "verdict": "MISSED",
+      "trials": [
+        {
+          "passed": false,
+          "checks": {
+            "one_log": true,
+            "no_secret": true,
+            "no_raw_wardrobe_names": false,
+            "selected_id": true,
+            "retry_notice": true,
+            "zero_temp_directories_after": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "fc29bbd7f048",
+              "body": {
+                "error": null,
+                "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "notice": "No matches in size XL; retried once without the size filter.",
+                "outfit_suggestion": "1) Wear the Graphic Tee — 2003 Tour Bootleg Style with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.\n2) Style the Graphic Tee — 2003 Tour Bootleg Style with Wide-leg khaki trousers and Black combat boots for a different look.",
+                "parsed": {
+                  "description": "vintage graphic tee",
+                  "max_price": 30.0,
+                  "size": "XL"
+                },
+                "query": "vintage graphic tee under $30, size XL",
+                "search_results": [
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "black"
+                    ],
+                    "condition": "good",
+                    "description": "Vintage-style bootleg tee with faded graphic. Slightly boxy fit. 100% cotton, soft and worn-in.",
+                    "id": "lst_006",
+                    "platform": "depop",
+                    "price": 24.0,
+                    "size": "L",
+                    "style_tags": [
+                      "graphic tee",
+                      "vintage",
+                      "grunge",
+                      "streetwear",
+                      "band tee"
+                    ],
+                    "title": "Graphic Tee — 2003 Tour Bootleg Style"
+                  },
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "grey",
+                      "charcoal"
+                    ],
+                    "condition": "fair",
+                    "description": "Faded grey band-style tee with distressed graphic. Crew neck. Fits boxy. Well-loved but no holes or major damage.",
+                    "id": "lst_033",
+                    "platform": "depop",
+                    "price": 19.0,
+                    "size": "L",
+                    "style_tags": [
+                      "vintage",
+                      "grunge",
+                      "band tee",
+                      "graphic tee",
+                      "streetwear"
+                    ],
+                    "title": "Vintage Band Tee — Faded Grey"
+                  },
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "white",
+                      "pink",
+                      "purple"
+                    ],
+                    "condition": "excellent",
+                    "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                    "id": "lst_002",
+                    "platform": "depop",
+                    "price": 18.0,
+                    "size": "S/M",
+                    "style_tags": [
+                      "y2k",
+                      "vintage",
+                      "graphic tee",
+                      "cottagecore"
+                    ],
+                    "title": "Y2K Baby Tee — Butterfly Print"
+                  }
+                ],
+                "selected_item": {
+                  "brand": null,
+                  "category": "tops",
+                  "colors": [
+                    "black"
+                  ],
+                  "condition": "good",
+                  "description": "Vintage-style bootleg tee with faded graphic. Slightly boxy fit. 100% cotton, soft and worn-in.",
+                  "id": "lst_006",
+                  "platform": "depop",
+                  "price": 24.0,
+                  "size": "L",
+                  "style_tags": [
+                    "graphic tee",
+                    "vintage",
+                    "grunge",
+                    "streetwear",
+                    "band tee"
+                  ],
+                  "title": "Graphic Tee — 2003 Tour Bootleg Style"
+                },
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": "XL"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "dropped_constraint": "size XL",
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": null
+                    },
+                    "retry": true,
+                    "tool": "search_listings"
+                  },
+                  {
+                    "new_item_id": "lst_006",
+                    "tool": "suggest_outfit"
+                  },
+                  {
+                    "new_item_id": "lst_006",
+                    "tool": "create_fit_card"
+                  }
+                ],
+                "wardrobe": {
+                  "items": [
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "dark blue",
+                        "indigo"
+                      ],
+                      "id": "w_001",
+                      "name": "Baggy straight-leg jeans, dark wash",
+                      "notes": "High-waisted, sits above the hip",
+                      "style_tags": [
+                        "denim",
+                        "streetwear",
+                        "baggy"
+                      ]
+                    },
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "khaki",
+                        "tan"
+                      ],
+                      "id": "w_002",
+                      "name": "Wide-leg khaki trousers",
+                      "notes": null,
+                      "style_tags": [
+                        "earth tones",
+                        "minimal",
+                        "wide-leg"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_003",
+                      "name": "White ribbed tank top",
+                      "notes": "Goes with everything",
+                      "style_tags": [
+                        "basics",
+                        "minimal",
+                        "fitted"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "grey",
+                        "charcoal"
+                      ],
+                      "id": "w_004",
+                      "name": "Oversized grey crewneck sweatshirt",
+                      "notes": "Really oversized — drops below the hip",
+                      "style_tags": [
+                        "oversized",
+                        "basics",
+                        "cozy"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_005",
+                      "name": "Black cropped zip hoodie",
+                      "notes": null,
+                      "style_tags": [
+                        "athletic",
+                        "streetwear",
+                        "cropped"
+                      ]
+                    },
+                    {
+                      "category": "outerwear",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_006",
+                      "name": "Vintage black denim jacket",
+                      "notes": "Slightly cropped",
+                      "style_tags": [
+                        "denim",
+                        "vintage",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_007",
+                      "name": "Chunky white sneakers",
+                      "notes": null,
+                      "style_tags": [
+                        "sneakers",
+                        "chunky",
+                        "streetwear"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_008",
+                      "name": "Black combat boots",
+                      "notes": "Lace-up, mid-ankle height",
+                      "style_tags": [
+                        "boots",
+                        "grunge",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "brown"
+                      ],
+                      "id": "w_009",
+                      "name": "Brown leather belt",
+                      "notes": null,
+                      "style_tags": [
+                        "classic",
+                        "earth tones",
+                        "accessories"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_010",
+                      "name": "Black crossbody bag",
+                      "notes": null,
+                      "style_tags": [
+                        "minimal",
+                        "accessories",
+                        "everyday"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "record": {
+                "duration_ms": 2552.42,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "vintage graphic tee under $30, size XL",
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 2,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": null,
+                  "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                  "retry_notice": "No matches in size XL; retried once without the size filter.",
+                  "selected_item_id": "lst_006",
+                  "tool_sequence": [
+                    "search_listings",
+                    "search_listings",
+                    "suggest_outfit",
+                    "create_fit_card"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "fc29bbd7f048",
+                "timestamp": "2026-11-15T21:33:07.454350+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ],
+          "privacy_debug": {
+            "raw_wardrobe_names_found": [
+              "Baggy straight-leg jeans, dark wash",
+              "Chunky white sneakers"
+            ],
+            "temp_before_count": 0,
+            "temp_after_count": 0
+          }
+        },
+        {
+          "passed": false,
+          "checks": {
+            "one_log": true,
+            "no_secret": true,
+            "no_raw_wardrobe_names": false,
+            "selected_id": true,
+            "retry_notice": true,
+            "zero_temp_directories_after": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "e092fab56a48",
+              "body": {
+                "error": null,
+                "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "notice": "No matches in size XL; retried once without the size filter.",
+                "outfit_suggestion": "1) Wear the Graphic Tee — 2003 Tour Bootleg Style with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.\n2) Style the Graphic Tee — 2003 Tour Bootleg Style with Wide-leg khaki trousers and Black combat boots for a different look.",
+                "parsed": {
+                  "description": "vintage graphic tee",
+                  "max_price": 30.0,
+                  "size": "XL"
+                },
+                "query": "vintage graphic tee under $30, size XL",
+                "search_results": [
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "black"
+                    ],
+                    "condition": "good",
+                    "description": "Vintage-style bootleg tee with faded graphic. Slightly boxy fit. 100% cotton, soft and worn-in.",
+                    "id": "lst_006",
+                    "platform": "depop",
+                    "price": 24.0,
+                    "size": "L",
+                    "style_tags": [
+                      "graphic tee",
+                      "vintage",
+                      "grunge",
+                      "streetwear",
+                      "band tee"
+                    ],
+                    "title": "Graphic Tee — 2003 Tour Bootleg Style"
+                  },
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "grey",
+                      "charcoal"
+                    ],
+                    "condition": "fair",
+                    "description": "Faded grey band-style tee with distressed graphic. Crew neck. Fits boxy. Well-loved but no holes or major damage.",
+                    "id": "lst_033",
+                    "platform": "depop",
+                    "price": 19.0,
+                    "size": "L",
+                    "style_tags": [
+                      "vintage",
+                      "grunge",
+                      "band tee",
+                      "graphic tee",
+                      "streetwear"
+                    ],
+                    "title": "Vintage Band Tee — Faded Grey"
+                  },
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "white",
+                      "pink",
+                      "purple"
+                    ],
+                    "condition": "excellent",
+                    "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                    "id": "lst_002",
+                    "platform": "depop",
+                    "price": 18.0,
+                    "size": "S/M",
+                    "style_tags": [
+                      "y2k",
+                      "vintage",
+                      "graphic tee",
+                      "cottagecore"
+                    ],
+                    "title": "Y2K Baby Tee — Butterfly Print"
+                  }
+                ],
+                "selected_item": {
+                  "brand": null,
+                  "category": "tops",
+                  "colors": [
+                    "black"
+                  ],
+                  "condition": "good",
+                  "description": "Vintage-style bootleg tee with faded graphic. Slightly boxy fit. 100% cotton, soft and worn-in.",
+                  "id": "lst_006",
+                  "platform": "depop",
+                  "price": 24.0,
+                  "size": "L",
+                  "style_tags": [
+                    "graphic tee",
+                    "vintage",
+                    "grunge",
+                    "streetwear",
+                    "band tee"
+                  ],
+                  "title": "Graphic Tee — 2003 Tour Bootleg Style"
+                },
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": "XL"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "dropped_constraint": "size XL",
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": null
+                    },
+                    "retry": true,
+                    "tool": "search_listings"
+                  },
+                  {
+                    "new_item_id": "lst_006",
+                    "tool": "suggest_outfit"
+                  },
+                  {
+                    "new_item_id": "lst_006",
+                    "tool": "create_fit_card"
+                  }
+                ],
+                "wardrobe": {
+                  "items": [
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "dark blue",
+                        "indigo"
+                      ],
+                      "id": "w_001",
+                      "name": "Baggy straight-leg jeans, dark wash",
+                      "notes": "High-waisted, sits above the hip",
+                      "style_tags": [
+                        "denim",
+                        "streetwear",
+                        "baggy"
+                      ]
+                    },
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "khaki",
+                        "tan"
+                      ],
+                      "id": "w_002",
+                      "name": "Wide-leg khaki trousers",
+                      "notes": null,
+                      "style_tags": [
+                        "earth tones",
+                        "minimal",
+                        "wide-leg"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_003",
+                      "name": "White ribbed tank top",
+                      "notes": "Goes with everything",
+                      "style_tags": [
+                        "basics",
+                        "minimal",
+                        "fitted"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "grey",
+                        "charcoal"
+                      ],
+                      "id": "w_004",
+                      "name": "Oversized grey crewneck sweatshirt",
+                      "notes": "Really oversized — drops below the hip",
+                      "style_tags": [
+                        "oversized",
+                        "basics",
+                        "cozy"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_005",
+                      "name": "Black cropped zip hoodie",
+                      "notes": null,
+                      "style_tags": [
+                        "athletic",
+                        "streetwear",
+                        "cropped"
+                      ]
+                    },
+                    {
+                      "category": "outerwear",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_006",
+                      "name": "Vintage black denim jacket",
+                      "notes": "Slightly cropped",
+                      "style_tags": [
+                        "denim",
+                        "vintage",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_007",
+                      "name": "Chunky white sneakers",
+                      "notes": null,
+                      "style_tags": [
+                        "sneakers",
+                        "chunky",
+                        "streetwear"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_008",
+                      "name": "Black combat boots",
+                      "notes": "Lace-up, mid-ankle height",
+                      "style_tags": [
+                        "boots",
+                        "grunge",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "brown"
+                      ],
+                      "id": "w_009",
+                      "name": "Brown leather belt",
+                      "notes": null,
+                      "style_tags": [
+                        "classic",
+                        "earth tones",
+                        "accessories"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_010",
+                      "name": "Black crossbody bag",
+                      "notes": null,
+                      "style_tags": [
+                        "minimal",
+                        "accessories",
+                        "everyday"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "record": {
+                "duration_ms": 2499.81,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "vintage graphic tee under $30, size XL",
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 2,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": null,
+                  "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                  "retry_notice": "No matches in size XL; retried once without the size filter.",
+                  "selected_item_id": "lst_006",
+                  "tool_sequence": [
+                    "search_listings",
+                    "search_listings",
+                    "suggest_outfit",
+                    "create_fit_card"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "e092fab56a48",
+                "timestamp": "2026-11-15T21:33:10.009157+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ],
+          "privacy_debug": {
+            "raw_wardrobe_names_found": [
+              "Baggy straight-leg jeans, dark wash",
+              "Chunky white sneakers"
+            ],
+            "temp_before_count": 0,
+            "temp_after_count": 0
+          }
+        },
+        {
+          "passed": false,
+          "checks": {
+            "one_log": true,
+            "no_secret": true,
+            "no_raw_wardrobe_names": false,
+            "selected_id": true,
+            "retry_notice": true,
+            "zero_temp_directories_after": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "dca5cdebe506",
+              "body": {
+                "error": null,
+                "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "notice": "No matches in size XL; retried once without the size filter.",
+                "outfit_suggestion": "1) Wear the Graphic Tee — 2003 Tour Bootleg Style with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.\n2) Style the Graphic Tee — 2003 Tour Bootleg Style with Wide-leg khaki trousers and Black combat boots for a different look.",
+                "parsed": {
+                  "description": "vintage graphic tee",
+                  "max_price": 30.0,
+                  "size": "XL"
+                },
+                "query": "vintage graphic tee under $30, size XL",
+                "search_results": [
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "black"
+                    ],
+                    "condition": "good",
+                    "description": "Vintage-style bootleg tee with faded graphic. Slightly boxy fit. 100% cotton, soft and worn-in.",
+                    "id": "lst_006",
+                    "platform": "depop",
+                    "price": 24.0,
+                    "size": "L",
+                    "style_tags": [
+                      "graphic tee",
+                      "vintage",
+                      "grunge",
+                      "streetwear",
+                      "band tee"
+                    ],
+                    "title": "Graphic Tee — 2003 Tour Bootleg Style"
+                  },
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "grey",
+                      "charcoal"
+                    ],
+                    "condition": "fair",
+                    "description": "Faded grey band-style tee with distressed graphic. Crew neck. Fits boxy. Well-loved but no holes or major damage.",
+                    "id": "lst_033",
+                    "platform": "depop",
+                    "price": 19.0,
+                    "size": "L",
+                    "style_tags": [
+                      "vintage",
+                      "grunge",
+                      "band tee",
+                      "graphic tee",
+                      "streetwear"
+                    ],
+                    "title": "Vintage Band Tee — Faded Grey"
+                  },
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "white",
+                      "pink",
+                      "purple"
+                    ],
+                    "condition": "excellent",
+                    "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                    "id": "lst_002",
+                    "platform": "depop",
+                    "price": 18.0,
+                    "size": "S/M",
+                    "style_tags": [
+                      "y2k",
+                      "vintage",
+                      "graphic tee",
+                      "cottagecore"
+                    ],
+                    "title": "Y2K Baby Tee — Butterfly Print"
+                  }
+                ],
+                "selected_item": {
+                  "brand": null,
+                  "category": "tops",
+                  "colors": [
+                    "black"
+                  ],
+                  "condition": "good",
+                  "description": "Vintage-style bootleg tee with faded graphic. Slightly boxy fit. 100% cotton, soft and worn-in.",
+                  "id": "lst_006",
+                  "platform": "depop",
+                  "price": 24.0,
+                  "size": "L",
+                  "style_tags": [
+                    "graphic tee",
+                    "vintage",
+                    "grunge",
+                    "streetwear",
+                    "band tee"
+                  ],
+                  "title": "Graphic Tee — 2003 Tour Bootleg Style"
+                },
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": "XL"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "dropped_constraint": "size XL",
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": null
+                    },
+                    "retry": true,
+                    "tool": "search_listings"
+                  },
+                  {
+                    "new_item_id": "lst_006",
+                    "tool": "suggest_outfit"
+                  },
+                  {
+                    "new_item_id": "lst_006",
+                    "tool": "create_fit_card"
+                  }
+                ],
+                "wardrobe": {
+                  "items": [
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "dark blue",
+                        "indigo"
+                      ],
+                      "id": "w_001",
+                      "name": "Baggy straight-leg jeans, dark wash",
+                      "notes": "High-waisted, sits above the hip",
+                      "style_tags": [
+                        "denim",
+                        "streetwear",
+                        "baggy"
+                      ]
+                    },
+                    {
+                      "category": "bottoms",
+                      "colors": [
+                        "khaki",
+                        "tan"
+                      ],
+                      "id": "w_002",
+                      "name": "Wide-leg khaki trousers",
+                      "notes": null,
+                      "style_tags": [
+                        "earth tones",
+                        "minimal",
+                        "wide-leg"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_003",
+                      "name": "White ribbed tank top",
+                      "notes": "Goes with everything",
+                      "style_tags": [
+                        "basics",
+                        "minimal",
+                        "fitted"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "grey",
+                        "charcoal"
+                      ],
+                      "id": "w_004",
+                      "name": "Oversized grey crewneck sweatshirt",
+                      "notes": "Really oversized — drops below the hip",
+                      "style_tags": [
+                        "oversized",
+                        "basics",
+                        "cozy"
+                      ]
+                    },
+                    {
+                      "category": "tops",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_005",
+                      "name": "Black cropped zip hoodie",
+                      "notes": null,
+                      "style_tags": [
+                        "athletic",
+                        "streetwear",
+                        "cropped"
+                      ]
+                    },
+                    {
+                      "category": "outerwear",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_006",
+                      "name": "Vintage black denim jacket",
+                      "notes": "Slightly cropped",
+                      "style_tags": [
+                        "denim",
+                        "vintage",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "white"
+                      ],
+                      "id": "w_007",
+                      "name": "Chunky white sneakers",
+                      "notes": null,
+                      "style_tags": [
+                        "sneakers",
+                        "chunky",
+                        "streetwear"
+                      ]
+                    },
+                    {
+                      "category": "shoes",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_008",
+                      "name": "Black combat boots",
+                      "notes": "Lace-up, mid-ankle height",
+                      "style_tags": [
+                        "boots",
+                        "grunge",
+                        "classic"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "brown"
+                      ],
+                      "id": "w_009",
+                      "name": "Brown leather belt",
+                      "notes": null,
+                      "style_tags": [
+                        "classic",
+                        "earth tones",
+                        "accessories"
+                      ]
+                    },
+                    {
+                      "category": "accessories",
+                      "colors": [
+                        "black"
+                      ],
+                      "id": "w_010",
+                      "name": "Black crossbody bag",
+                      "notes": null,
+                      "style_tags": [
+                        "minimal",
+                        "accessories",
+                        "everyday"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "record": {
+                "duration_ms": 2490.26,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "vintage graphic tee under $30, size XL",
+                  "wardrobe_item_count": null
+                },
+                "model_calls": 2,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": null,
+                  "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                  "retry_notice": "No matches in size XL; retried once without the size filter.",
+                  "selected_item_id": "lst_006",
+                  "tool_sequence": [
+                    "search_listings",
+                    "search_listings",
+                    "suggest_outfit",
+                    "create_fit_card"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "dca5cdebe506",
+                "timestamp": "2026-11-15T21:33:12.510347+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ],
+          "privacy_debug": {
+            "raw_wardrobe_names_found": [
+              "Baggy straight-leg jeans, dark wash",
+              "Chunky white sneakers"
+            ],
+            "temp_before_count": 0,
+            "temp_after_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "criterion": 5,
+      "label": "Explicit empty-wardrobe HTTP styling and zero-item telemetry",
+      "target": "3/3",
+      "count": 0,
+      "verdict": "MISSED",
+      "trials": [
+        {
+          "passed": false,
+          "checks": {
+            "one_log": true,
+            "http_200": true,
+            "error_null": true,
+            "nonempty_outfit": true,
+            "no_wardrobe_statement": true,
+            "exact_user_title": false,
+            "other_general_clothes": true,
+            "no_ownership_claim": true,
+            "zero_wardrobe_logged": true,
+            "selected_id": true,
+            "card_price": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "71ca3df6009a",
+              "body": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Pair it with relaxed jeans and clean sneakers.",
+                "notice": null,
+                "outfit_suggestion": "No wardrobe is saved, so these are general outfit ideas:\n1) Pair the Y2K Baby Tee — Butterfly Print with relaxed jeans and clean sneakers.\n2) Try the Y2K Baby Tee — Butterfly Print with a neutral skirt and ankle boots.",
+                "parsed": {
+                  "description": "vintage graphic tee",
+                  "max_price": 30.0,
+                  "size": "M"
+                },
+                "query": "vintage graphic tee under $30, size M",
+                "search_results": [
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "white",
+                      "pink",
+                      "purple"
+                    ],
+                    "condition": "excellent",
+                    "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                    "id": "lst_002",
+                    "platform": "depop",
+                    "price": 18.0,
+                    "size": "S/M",
+                    "style_tags": [
+                      "y2k",
+                      "vintage",
+                      "graphic tee",
+                      "cottagecore"
+                    ],
+                    "title": "Y2K Baby Tee — Butterfly Print"
+                  }
+                ],
+                "selected_item": {
+                  "brand": null,
+                  "category": "tops",
+                  "colors": [
+                    "white",
+                    "pink",
+                    "purple"
+                  ],
+                  "condition": "excellent",
+                  "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                  "id": "lst_002",
+                  "platform": "depop",
+                  "price": 18.0,
+                  "size": "S/M",
+                  "style_tags": [
+                    "y2k",
+                    "vintage",
+                    "graphic tee",
+                    "cottagecore"
+                  ],
+                  "title": "Y2K Baby Tee — Butterfly Print"
+                },
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": "M"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "suggest_outfit"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "create_fit_card"
+                  }
+                ],
+                "wardrobe": {
+                  "items": []
+                }
+              },
+              "record": {
+                "duration_ms": 1712.17,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "vintage graphic tee under $30, size M",
+                  "wardrobe_item_count": 0
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": null,
+                  "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Pair it with relaxed jeans and clean sneakers.",
+                  "retry_notice": null,
+                  "selected_item_id": "lst_002",
+                  "tool_sequence": [
+                    "search_listings",
+                    "suggest_outfit",
+                    "create_fit_card"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "71ca3df6009a",
+                "timestamp": "2026-11-15T21:33:15.003393+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        },
+        {
+          "passed": false,
+          "checks": {
+            "one_log": true,
+            "http_200": true,
+            "error_null": true,
+            "nonempty_outfit": true,
+            "no_wardrobe_statement": true,
+            "exact_user_title": false,
+            "other_general_clothes": true,
+            "no_ownership_claim": true,
+            "zero_wardrobe_logged": true,
+            "selected_id": true,
+            "card_price": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "38a0e5e3bbb2",
+              "body": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Pair it with relaxed jeans and clean sneakers.",
+                "notice": null,
+                "outfit_suggestion": "No wardrobe is saved, so these are general outfit ideas:\n1) Pair the Y2K Baby Tee — Butterfly Print with relaxed jeans and clean sneakers.\n2) Try the Y2K Baby Tee — Butterfly Print with a neutral skirt and ankle boots.",
+                "parsed": {
+                  "description": "vintage graphic tee",
+                  "max_price": 30.0,
+                  "size": "M"
+                },
+                "query": "vintage graphic tee under $30, size M",
+                "search_results": [
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "white",
+                      "pink",
+                      "purple"
+                    ],
+                    "condition": "excellent",
+                    "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                    "id": "lst_002",
+                    "platform": "depop",
+                    "price": 18.0,
+                    "size": "S/M",
+                    "style_tags": [
+                      "y2k",
+                      "vintage",
+                      "graphic tee",
+                      "cottagecore"
+                    ],
+                    "title": "Y2K Baby Tee — Butterfly Print"
+                  }
+                ],
+                "selected_item": {
+                  "brand": null,
+                  "category": "tops",
+                  "colors": [
+                    "white",
+                    "pink",
+                    "purple"
+                  ],
+                  "condition": "excellent",
+                  "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                  "id": "lst_002",
+                  "platform": "depop",
+                  "price": 18.0,
+                  "size": "S/M",
+                  "style_tags": [
+                    "y2k",
+                    "vintage",
+                    "graphic tee",
+                    "cottagecore"
+                  ],
+                  "title": "Y2K Baby Tee — Butterfly Print"
+                },
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": "M"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "suggest_outfit"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "create_fit_card"
+                  }
+                ],
+                "wardrobe": {
+                  "items": []
+                }
+              },
+              "record": {
+                "duration_ms": 1748.02,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "vintage graphic tee under $30, size M",
+                  "wardrobe_item_count": 0
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": null,
+                  "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Pair it with relaxed jeans and clean sneakers.",
+                  "retry_notice": null,
+                  "selected_item_id": "lst_002",
+                  "tool_sequence": [
+                    "search_listings",
+                    "suggest_outfit",
+                    "create_fit_card"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "38a0e5e3bbb2",
+                "timestamp": "2026-11-15T21:33:16.717140+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        },
+        {
+          "passed": false,
+          "checks": {
+            "one_log": true,
+            "http_200": true,
+            "error_null": true,
+            "nonempty_outfit": true,
+            "no_wardrobe_statement": true,
+            "exact_user_title": false,
+            "other_general_clothes": true,
+            "no_ownership_claim": true,
+            "zero_wardrobe_logged": true,
+            "selected_id": true,
+            "card_price": true
+          },
+          "http_requests": [
+            {
+              "status": 200,
+              "header": "c461ec20432c",
+              "body": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Pair it with relaxed jeans and clean sneakers.",
+                "notice": null,
+                "outfit_suggestion": "No wardrobe is saved, so these are general outfit ideas:\n1) Pair the Y2K Baby Tee — Butterfly Print with relaxed jeans and clean sneakers.\n2) Try the Y2K Baby Tee — Butterfly Print with a neutral skirt and ankle boots.",
+                "parsed": {
+                  "description": "vintage graphic tee",
+                  "max_price": 30.0,
+                  "size": "M"
+                },
+                "query": "vintage graphic tee under $30, size M",
+                "search_results": [
+                  {
+                    "brand": null,
+                    "category": "tops",
+                    "colors": [
+                      "white",
+                      "pink",
+                      "purple"
+                    ],
+                    "condition": "excellent",
+                    "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                    "id": "lst_002",
+                    "platform": "depop",
+                    "price": 18.0,
+                    "size": "S/M",
+                    "style_tags": [
+                      "y2k",
+                      "vintage",
+                      "graphic tee",
+                      "cottagecore"
+                    ],
+                    "title": "Y2K Baby Tee — Butterfly Print"
+                  }
+                ],
+                "selected_item": {
+                  "brand": null,
+                  "category": "tops",
+                  "colors": [
+                    "white",
+                    "pink",
+                    "purple"
+                  ],
+                  "condition": "excellent",
+                  "description": "Super cute early 2000s baby tee with butterfly graphic. Fitted crop length. Tag says medium but fits like a small.",
+                  "id": "lst_002",
+                  "platform": "depop",
+                  "price": 18.0,
+                  "size": "S/M",
+                  "style_tags": [
+                    "y2k",
+                    "vintage",
+                    "graphic tee",
+                    "cottagecore"
+                  ],
+                  "title": "Y2K Baby Tee — Butterfly Print"
+                },
+                "tool_calls": [
+                  {
+                    "inputs": {
+                      "description": "vintage graphic tee",
+                      "max_price": 30.0,
+                      "size": "M"
+                    },
+                    "tool": "search_listings"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "suggest_outfit"
+                  },
+                  {
+                    "new_item_id": "lst_002",
+                    "tool": "create_fit_card"
+                  }
+                ],
+                "wardrobe": {
+                  "items": []
+                }
+              },
+              "record": {
+                "duration_ms": 1717.0,
+                "http_status": 200,
+                "input": {
+                  "json_object": true,
+                  "query": "vintage graphic tee under $30, size M",
+                  "wardrobe_item_count": 0
+                },
+                "model_calls": 0,
+                "model_tokens": {
+                  "output": 0,
+                  "prompt": 0,
+                  "total": 0
+                },
+                "output": {
+                  "error": null,
+                  "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Pair it with relaxed jeans and clean sneakers.",
+                  "retry_notice": null,
+                  "selected_item_id": "lst_002",
+                  "tool_sequence": [
+                    "search_listings",
+                    "suggest_outfit",
+                    "create_fit_card"
+                  ]
+                },
+                "route": "/ask",
+                "run_id": "c461ec20432c",
+                "timestamp": "2026-11-15T21:33:18.466363+00:00",
+                "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+              },
+              "exactly_one_log": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
