@@ -64,6 +64,8 @@ def _output_summary(data) -> dict:
         "fit_card": str(data.get("fit_card"))[:180] if data.get("fit_card") else None,
         "error": str(data.get("error"))[:180] if data.get("error") else None,
         "retry_notice": str(data.get("notice"))[:180] if data.get("notice") else None,
+        "tool_sequence": [call.get("tool") for call in data.get("tool_calls", [])
+                          if isinstance(call, dict)],
     }
 
 
