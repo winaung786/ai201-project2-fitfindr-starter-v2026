@@ -1,0 +1,47 @@
+name: FitFindr Unit 9 student-criteria evaluation
+
+on:
+  push:
+    paths:
+      - "scripts/capstone_student_eval.py"
+      - "serve.py"
+      - ".github/workflows/capstone-student-eval.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  student-five-criteria:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Clean GitHub checkout
+        uses: actions/checkout@v4
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install FitFindr dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Choose student baseline vs retest
+        id: select
+        run: |
+          if test -f results/capstone-student-before-trials.json; then
+            echo "phase=after" >> "$GITHUB_OUTPUT"
+          else
+            echo "phase=before" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Run five user-authored standards three times each
+        env:
+          AI201_CACHE: "0"
+          GEMINI_API_KEY: ""
+        run: python scripts/capstone_student_eval.py --phase "${{ steps.select.outputs.phase }}"
+      - name: Commit actual HTTP records and scores
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/capstone-student-${{ steps.select.outputs.phase }}-requests.jsonl results/capstone-student-${{ steps.select.outputs.phase }}-trials.json results/capstone-student-${{ steps.select.outputs.phase }}-table.md
+          git commit -m "Unit 9 student criteria: save ${{ steps.select.outputs.phase }} 3-trial evidence"
+          git pull --rebase origin main
+          git push
