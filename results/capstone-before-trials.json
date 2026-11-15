@@ -1,0 +1,1020 @@
+{
+  "phase": "before",
+  "created_at_utc": "2026-11-15T21:15:34.273109+00:00",
+  "method": "15 actual Flask POST requests with real MCP subprocess and local model fallbacks",
+  "no_live_model": true,
+  "cache_disabled": true,
+  "criteria_ai_assisted_not_student_authored": true,
+  "criteria_sha256": "3fc2e0921a4eaa37a44a6b28afc5941956d565ff1d010464c288d7d849967842",
+  "instrumentation_sha256": "e66982a7a256c7e28e8e9671d362780cecb9e4a8ca0a908f62413fe71463fe06",
+  "logged_requests": 15,
+  "rows": [
+    {
+      "criterion": 1,
+      "label": "Structured successful request",
+      "target": "3/3",
+      "met": true,
+      "pass_count": 3,
+      "verdict": "MET",
+      "trials": [
+        {
+          "passed": true,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "matching_run_id": true,
+            "listing_and_fit_card": true,
+            "timestamp": true,
+            "input_and_output": true,
+            "http_status_logged": true,
+            "duration_ms": true,
+            "usage_counters": true
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "65bd6859f122",
+            "response_excerpt": {
+              "error": null,
+              "selected_item_id": "lst_002",
+              "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+              "notice": null,
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": "M"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "suggest_outfit"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "create_fit_card"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 2801.31,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "vintage graphic tee under $30, size M",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "retry_notice": null,
+                "selected_item_id": "lst_002"
+              },
+              "route": "/ask",
+              "run_id": "65bd6859f122",
+              "timestamp": "2026-11-15T21:15:13.548363+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        },
+        {
+          "passed": true,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "matching_run_id": true,
+            "listing_and_fit_card": true,
+            "timestamp": true,
+            "input_and_output": true,
+            "http_status_logged": true,
+            "duration_ms": true,
+            "usage_counters": true
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "b73efbc0b791",
+            "response_excerpt": {
+              "error": null,
+              "selected_item_id": "lst_002",
+              "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+              "notice": null,
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": "M"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "suggest_outfit"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "create_fit_card"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 1660.04,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "vintage graphic tee under $30, size M",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "retry_notice": null,
+                "selected_item_id": "lst_002"
+              },
+              "route": "/ask",
+              "run_id": "b73efbc0b791",
+              "timestamp": "2026-11-15T21:15:16.350834+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        },
+        {
+          "passed": true,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "matching_run_id": true,
+            "listing_and_fit_card": true,
+            "timestamp": true,
+            "input_and_output": true,
+            "http_status_logged": true,
+            "duration_ms": true,
+            "usage_counters": true
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "b921b5be29f9",
+            "response_excerpt": {
+              "error": null,
+              "selected_item_id": "lst_002",
+              "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+              "notice": null,
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": "M"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "suggest_outfit"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "create_fit_card"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 1650.82,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "vintage graphic tee under $30, size M",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "retry_notice": null,
+                "selected_item_id": "lst_002"
+              },
+              "route": "/ask",
+              "run_id": "b921b5be29f9",
+              "timestamp": "2026-11-15T21:15:18.011665+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "criterion": 2,
+      "label": "Recover ordered tool path",
+      "target": "3/3",
+      "met": false,
+      "pass_count": 0,
+      "verdict": "MISSED",
+      "trials": [
+        {
+          "passed": false,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "request_run_id": true,
+            "actual_tool_calls": true,
+            "logged_tool_sequence": false,
+            "logged_matches_actual": false
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "72092599e16b",
+            "response_excerpt": {
+              "error": null,
+              "selected_item_id": "lst_002",
+              "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+              "notice": null,
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": "M"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "suggest_outfit"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "create_fit_card"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 1672.63,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "vintage graphic tee under $30, size M",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "retry_notice": null,
+                "selected_item_id": "lst_002"
+              },
+              "route": "/ask",
+              "run_id": "72092599e16b",
+              "timestamp": "2026-11-15T21:15:19.663293+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        },
+        {
+          "passed": false,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "request_run_id": true,
+            "actual_tool_calls": true,
+            "logged_tool_sequence": false,
+            "logged_matches_actual": false
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "a8b6deded589",
+            "response_excerpt": {
+              "error": null,
+              "selected_item_id": "lst_002",
+              "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+              "notice": null,
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": "M"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "suggest_outfit"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "create_fit_card"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 1656.13,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "vintage graphic tee under $30, size M",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "retry_notice": null,
+                "selected_item_id": "lst_002"
+              },
+              "route": "/ask",
+              "run_id": "a8b6deded589",
+              "timestamp": "2026-11-15T21:15:21.336706+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        },
+        {
+          "passed": false,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "request_run_id": true,
+            "actual_tool_calls": true,
+            "logged_tool_sequence": false,
+            "logged_matches_actual": false
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "02a2830ce297",
+            "response_excerpt": {
+              "error": null,
+              "selected_item_id": "lst_002",
+              "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+              "notice": null,
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": "M"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "suggest_outfit"
+                },
+                {
+                  "new_item_id": "lst_002",
+                  "tool": "create_fit_card"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 1654.35,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "vintage graphic tee under $30, size M",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": null,
+                "fit_card": "Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "retry_notice": null,
+                "selected_item_id": "lst_002"
+              },
+              "route": "/ask",
+              "run_id": "02a2830ce297",
+              "timestamp": "2026-11-15T21:15:22.993633+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "criterion": 3,
+      "label": "Rejected input logged",
+      "target": "3/3",
+      "met": true,
+      "pass_count": 3,
+      "verdict": "MET",
+      "trials": [
+        {
+          "passed": true,
+          "checks": {
+            "http_400": true,
+            "one_log_record": true,
+            "matching_run_id": true,
+            "http_400_logged": true,
+            "error_logged": true,
+            "duration_ms": true
+          },
+          "evidence": {
+            "http_status": 400,
+            "response_run_id": "a13826f66114",
+            "response_excerpt": {
+              "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}",
+              "selected_item_id": null,
+              "fit_card": null,
+              "notice": null,
+              "tool_calls": []
+            },
+            "structured_log": {
+              "duration_ms": 0.37,
+              "http_status": 400,
+              "input": {
+                "json_object": true,
+                "query": null,
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}",
+                "fit_card": null,
+                "retry_notice": null,
+                "selected_item_id": null
+              },
+              "route": "/ask",
+              "run_id": "a13826f66114",
+              "timestamp": "2026-11-15T21:15:24.648863+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        },
+        {
+          "passed": true,
+          "checks": {
+            "http_400": true,
+            "one_log_record": true,
+            "matching_run_id": true,
+            "http_400_logged": true,
+            "error_logged": true,
+            "duration_ms": true
+          },
+          "evidence": {
+            "http_status": 400,
+            "response_run_id": "25e3a1fde080",
+            "response_excerpt": {
+              "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}",
+              "selected_item_id": null,
+              "fit_card": null,
+              "notice": null,
+              "tool_calls": []
+            },
+            "structured_log": {
+              "duration_ms": 0.29,
+              "http_status": 400,
+              "input": {
+                "json_object": true,
+                "query": null,
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}",
+                "fit_card": null,
+                "retry_notice": null,
+                "selected_item_id": null
+              },
+              "route": "/ask",
+              "run_id": "25e3a1fde080",
+              "timestamp": "2026-11-15T21:15:24.649918+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        },
+        {
+          "passed": true,
+          "checks": {
+            "http_400": true,
+            "one_log_record": true,
+            "matching_run_id": true,
+            "http_400_logged": true,
+            "error_logged": true,
+            "duration_ms": true
+          },
+          "evidence": {
+            "http_status": 400,
+            "response_run_id": "3850cd8801ba",
+            "response_excerpt": {
+              "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}",
+              "selected_item_id": null,
+              "fit_card": null,
+              "notice": null,
+              "tool_calls": []
+            },
+            "structured_log": {
+              "duration_ms": 0.28,
+              "http_status": 400,
+              "input": {
+                "json_object": true,
+                "query": null,
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": "Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}",
+                "fit_card": null,
+                "retry_notice": null,
+                "selected_item_id": null
+              },
+              "route": "/ask",
+              "run_id": "3850cd8801ba",
+              "timestamp": "2026-11-15T21:15:24.650851+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "criterion": 4,
+      "label": "Size retry preserved",
+      "target": "3/3",
+      "met": true,
+      "pass_count": 3,
+      "verdict": "MET",
+      "trials": [
+        {
+          "passed": true,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "exactly_one_relaxed_retry": true,
+            "logged_retry_notice": true,
+            "listing_returned": true
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "554c329dc938",
+            "response_excerpt": {
+              "error": null,
+              "selected_item_id": "lst_006",
+              "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+              "notice": "No matches in size XL; retried once without the size filter.",
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": "XL"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "dropped_constraint": "size XL",
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": null
+                  },
+                  "retry": true,
+                  "tool": "search_listings"
+                },
+                {
+                  "new_item_id": "lst_006",
+                  "tool": "suggest_outfit"
+                },
+                {
+                  "new_item_id": "lst_006",
+                  "tool": "create_fit_card"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 2156.19,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "vintage graphic tee under $30, size XL",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": null,
+                "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "retry_notice": "No matches in size XL; retried once without the size filter.",
+                "selected_item_id": "lst_006"
+              },
+              "route": "/ask",
+              "run_id": "554c329dc938",
+              "timestamp": "2026-11-15T21:15:24.651775+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        },
+        {
+          "passed": true,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "exactly_one_relaxed_retry": true,
+            "logged_retry_notice": true,
+            "listing_returned": true
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "c0db4bfbe670",
+            "response_excerpt": {
+              "error": null,
+              "selected_item_id": "lst_006",
+              "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+              "notice": "No matches in size XL; retried once without the size filter.",
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": "XL"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "dropped_constraint": "size XL",
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": null
+                  },
+                  "retry": true,
+                  "tool": "search_listings"
+                },
+                {
+                  "new_item_id": "lst_006",
+                  "tool": "suggest_outfit"
+                },
+                {
+                  "new_item_id": "lst_006",
+                  "tool": "create_fit_card"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 2222.27,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "vintage graphic tee under $30, size XL",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": null,
+                "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "retry_notice": "No matches in size XL; retried once without the size filter.",
+                "selected_item_id": "lst_006"
+              },
+              "route": "/ask",
+              "run_id": "c0db4bfbe670",
+              "timestamp": "2026-11-15T21:15:26.808844+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        },
+        {
+          "passed": true,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "exactly_one_relaxed_retry": true,
+            "logged_retry_notice": true,
+            "listing_returned": true
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "b335111b3186",
+            "response_excerpt": {
+              "error": null,
+              "selected_item_id": "lst_006",
+              "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+              "notice": "No matches in size XL; retried once without the size filter.",
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": "XL"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "dropped_constraint": "size XL",
+                  "inputs": {
+                    "description": "vintage graphic tee",
+                    "max_price": 30.0,
+                    "size": null
+                  },
+                  "retry": true,
+                  "tool": "search_listings"
+                },
+                {
+                  "new_item_id": "lst_006",
+                  "tool": "suggest_outfit"
+                },
+                {
+                  "new_item_id": "lst_006",
+                  "tool": "create_fit_card"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 2193.31,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "vintage graphic tee under $30, size XL",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": null,
+                "fit_card": "Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.",
+                "retry_notice": "No matches in size XL; retried once without the size filter.",
+                "selected_item_id": "lst_006"
+              },
+              "route": "/ask",
+              "run_id": "b335111b3186",
+              "timestamp": "2026-11-15T21:15:29.032291+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "criterion": 5,
+      "label": "No-match logging and zero provider usage",
+      "target": "3/3",
+      "met": true,
+      "pass_count": 3,
+      "verdict": "MET",
+      "trials": [
+        {
+          "passed": true,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "agent_error": true,
+            "no_listing_or_card": true,
+            "logged_app_error": true,
+            "no_logged_card": true,
+            "zero_provider_calls": true,
+            "zero_provider_tokens": true
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "433724421b1e",
+            "response_excerpt": {
+              "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+              "selected_item_id": null,
+              "fit_card": null,
+              "notice": "No matches in size XXS; retried once without the size filter.",
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "designer ballgown",
+                    "max_price": 5.0,
+                    "size": "XXS"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "dropped_constraint": "size XXS",
+                  "inputs": {
+                    "description": "designer ballgown",
+                    "max_price": 5.0,
+                    "size": null
+                  },
+                  "retry": true,
+                  "tool": "search_listings"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 1011.72,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "designer ballgown size XXS under $5",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+                "fit_card": null,
+                "retry_notice": "No matches in size XXS; retried once without the size filter.",
+                "selected_item_id": null
+              },
+              "route": "/ask",
+              "run_id": "433724421b1e",
+              "timestamp": "2026-11-15T21:15:31.226488+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        },
+        {
+          "passed": true,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "agent_error": true,
+            "no_listing_or_card": true,
+            "logged_app_error": true,
+            "no_logged_card": true,
+            "zero_provider_calls": true,
+            "zero_provider_tokens": true
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "3dffa0e4b1d1",
+            "response_excerpt": {
+              "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+              "selected_item_id": null,
+              "fit_card": null,
+              "notice": "No matches in size XXS; retried once without the size filter.",
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "designer ballgown",
+                    "max_price": 5.0,
+                    "size": "XXS"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "dropped_constraint": "size XXS",
+                  "inputs": {
+                    "description": "designer ballgown",
+                    "max_price": 5.0,
+                    "size": null
+                  },
+                  "retry": true,
+                  "tool": "search_listings"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 1016.11,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "designer ballgown size XXS under $5",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+                "fit_card": null,
+                "retry_notice": "No matches in size XXS; retried once without the size filter.",
+                "selected_item_id": null
+              },
+              "route": "/ask",
+              "run_id": "3dffa0e4b1d1",
+              "timestamp": "2026-11-15T21:15:32.239135+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        },
+        {
+          "passed": true,
+          "checks": {
+            "http_200": true,
+            "one_log_record": true,
+            "agent_error": true,
+            "no_listing_or_card": true,
+            "logged_app_error": true,
+            "no_logged_card": true,
+            "zero_provider_calls": true,
+            "zero_provider_tokens": true
+          },
+          "evidence": {
+            "http_status": 200,
+            "response_run_id": "f7f3f8a7ad89",
+            "response_excerpt": {
+              "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+              "selected_item_id": null,
+              "fit_card": null,
+              "notice": "No matches in size XXS; retried once without the size filter.",
+              "tool_calls": [
+                {
+                  "inputs": {
+                    "description": "designer ballgown",
+                    "max_price": 5.0,
+                    "size": "XXS"
+                  },
+                  "tool": "search_listings"
+                },
+                {
+                  "dropped_constraint": "size XXS",
+                  "inputs": {
+                    "description": "designer ballgown",
+                    "max_price": 5.0,
+                    "size": null
+                  },
+                  "retry": true,
+                  "tool": "search_listings"
+                }
+              ]
+            },
+            "structured_log": {
+              "duration_ms": 1016.21,
+              "http_status": 200,
+              "input": {
+                "json_object": true,
+                "query": "designer ballgown size XXS under $5",
+                "wardrobe_item_count": null
+              },
+              "model_calls": 0,
+              "model_tokens": {
+                "output": 0,
+                "prompt": 0,
+                "total": 0
+              },
+              "output": {
+                "error": "No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.",
+                "fit_card": null,
+                "retry_notice": "No matches in size XXS; retried once without the size filter.",
+                "selected_item_id": null
+              },
+              "route": "/ask",
+              "run_id": "f7f3f8a7ad89",
+              "timestamp": "2026-11-15T21:15:33.256160+00:00",
+              "token_measurement": "Observed provider usage; zero means no billed model calls were recorded."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
