@@ -4,8 +4,8 @@
   "http_requests": 11,
   "valid_requests": 10,
   "rejected_requests": 1,
-  "mean_duration_seconds_per_valid_request": 1.5874,
-  "seconds_for_100_runs_at_observed_average": 158.74,
+  "mean_duration_seconds_per_valid_request": 1.2136,
+  "seconds_for_100_runs_at_observed_average": 121.36,
   "total_model_calls_observed": 0,
   "tokens_observed": 0,
   "measurement_method": "time.perf_counter around complete HTTP handler; token usage returned by provider (zero when model unavailable)"
