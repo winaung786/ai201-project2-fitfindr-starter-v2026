@@ -529,11 +529,11 @@ This is the same FitFindr agent built in Units 3 and 4, including MCP-based list
 
 **Assessment order and student-owned criteria**
 
-The five Unit 9 acceptance criteria must be **written by the student alone**. They will be added as a clearly labeled Capstone section in `criteria.md`, with measurable targets and reasons, and committed **before** the first Unit 9 evaluation results. AI assistance may *review* them for testability, not author the five standards. The Unit 3/4 criteria remain intact. No pre/post scores will be claimed before those criteria and actual trials exist.
+The student supplied five new independent Unit 9 acceptance criteria, which were committed unchanged under **Unit 9 Capstone — student-supplied acceptance criteria** in [criteria.md](criteria.md) **before** the new baseline and retest. The earlier Unit 3/4 criteria and the older AI-assisted provisional rehearsal remain in the repository for provenance, but the final capstone evaluation below uses the **student-supplied criteria**. The exact title spelling, case, Unicode punctuation, five targets, and justifications were preserved. Their SHA256 is identical in both phases: `214265cbf1709c7fce9f03e5c1e52483ea61d03f2dbb41fa61224cc4e4e1a854`.
 
 **Instrumentation**
 
-`capstone_logging.py::instrument_http` appends one JSON record per HTTP `POST /ask`. Fields are named: UTC `timestamp`, `run_id`, `route`, clipped `input` query/wardrobe count, summarized `output`, `http_status`, full `duration_ms`, observed `model_calls`, and `model_tokens` (including subprocess usage if a model responds). The API key and full wardrobe are not logged. A temporary metrics file used by the MCP child is deleted after each request. The log is written to `results/capstone-requests.jsonl` by default, or `FITFINDR_LOG_PATH` when set.
+`capstone_logging.py::instrument_http` appends one JSON record per HTTP `POST /ask`. Fields are named: UTC `timestamp`, `run_id`, `route`, clipped `input` query/wardrobe count, summarized `output`, `http_status`, full `duration_ms`, observed `model_calls`, and `model_tokens` (including subprocess usage if a model responds). The API key and full wardrobe object are not directly logged, **but raw wardrobe names can appear inside the truncated generated fit-card text**; the student-criteria privacy test below exposed this leak. Do not treat the logs as safe for public user data until this is corrected. A temporary metrics file used by the MCP child is deleted after each request. The log is written to `results/capstone-requests.jsonl` by default, or `FITFINDR_LOG_PATH` when set.
 
 **Real run evidence — 10 valid requests plus 1 deliberately rejected request.** This is the actual output produced by `scripts/capstone_smoke.py::main` using `serve.py::ask`, recorded by `capstone_logging.py::instrument_http` in a clean Python 3.12 GitHub Actions checkout. The real MCP subprocess ran; no Gemini key was provided, so text used local fallback. The rejected input returned HTTP 400. This is an *operational smoke session*, not the five acceptance-criteria evaluation.
 
@@ -561,88 +561,100 @@ Measured from ten valid end-to-end HTTP requests with `time.perf_counter` around
 
 **Run Log and Verdicts**
 
-**Five AI-assisted provisional checks, three separate trials each, before one code improvement.** These are an instrumented technical rehearsal, **not** the professor-required five independently student-authored criteria. The provisional standards were saved in [capstone-provisional-criteria.md](capstone-provisional-criteria.md) and committed before results; they were not relaxed afterward. Test environment: clean Python 3.12 GitHub Actions checkout, actual Flask + MCP subprocess, no Gemini API key, caching off. `results/capstone-before-requests.jsonl` contains all 15 real log entries.
+**Final Unit 9 student-supplied criteria, baseline.** Python 3.12 clean GitHub Actions checkout, `serve.py::ask` using the real MCP search/styling subprocesses, local fallbacks, and `AI201_CACHE=0`. All five criteria were run as **three separate trials**, with criterion 3 sending three different malformed HTTP requests in each trial. Thus the baseline contains **21 actual HTTP requests** and **15 graded trials**, logged in [raw JSONL](results/capstone-student-before-requests.jsonl).
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Structured successful request | 3/3 | PASS | PASS | PASS | MET (3/3) |
-| 2. Recover ordered tool path | 3/3 | FAIL | FAIL | FAIL | MISSED (0/3) |
-| 3. Rejected input logged | 3/3 | PASS | PASS | PASS | MET (3/3) |
-| 4. Size retry preserved | 3/3 | PASS | PASS | PASS | MET (3/3) |
-| 5. No-match logging and zero provider usage | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 1. Happy-path HTTP telemetry and correlation header | 3/3 | FAIL | FAIL | FAIL | MISSED (0/3) |
+| 2. Bounded size-retry and empty-search failure-path telemetry | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 3. Malformed and non-string JSON payload rejection | 3/3 | FAIL | FAIL | FAIL | MISSED (0/3) |
+| 4. Secret/wardrobe privacy redaction and temporary cleanup | 3/3 | FAIL | FAIL | FAIL | MISSED (0/3) |
+| 5. Explicit empty-wardrobe HTTP styling and zero-item telemetry | 3/3 | FAIL | FAIL | FAIL | MISSED (0/3) |
 
-**Diagnoses and verdicts:** Checks 1, 3, 4 and 5 were MET on 3/3 each; there was no miss for those checks to diagnose. Check 2 was MISSED on **all three trials**. The agent returned `tool_calls` in the correct three-step order, but `capstone_logging.py::_output_summary` discarded the tool names when making the reduced JSONL `output` summary. Thus `output.tool_sequence` was missing from every baseline log, so an operator could not reconstruct the agent sequence even though the agent itself completed. The stage is the **structured logger**, not the search or model.
+**Every verdict was scored literally against the unchanged student target.** Criterion 2 MET all three trials. The other baseline misses and their mechanisms:
 
-**Raw actual output from the first trial of each criterion** (one JSONL record per request, not invented output):
+- **Criterion 1:** `tools.py::create_fit_card` used the title from `data/listings.json` with a U+2014 em dash, but the acceptance text copied U+2013 en dash. The literal substring check failed despite correctly selected item `lst_002`, price `$18.00` and platform `depop`.
+- **Criterion 3:** In `serve.py::ask`, calling `payload.get()` on a JSON array and `.strip()` on numeric `query` raised `AttributeError` before validation. The HTTP instrumentation caught each exception as a generic HTTP 500 rather than returning the specified 400 error. Empty object `{}` passed its subcheck.
+- **Criterion 4:** `capstone_logging.py::_output_summary` copied the first 180 characters of the fit card, including wardrobe clothing names. The dummy API key did not appear in JSONL and `tempfile.TemporaryDirectory` cleaned up; it was **wardrobe name redaction** that missed.
+- **Criterion 5:** The empty wardrobe, fallback styling, count zero, selected item, price and ownership checks passed, but the copied U+2013 title did not match the source listing's U+2014 title.
 
-**Criterion 1, trial 1 — actual recorded JSONL** (`scripts/capstone_eval.py::_trial` → `serve.py::ask` → `capstone_logging.py::_measure_one`):
+**Actual baseline output** (one trial for each criterion, including all three invalid requests for criterion 3):
 
-```json
-{"duration_ms":2801.31,"http_status":200,"input":{"json_object":true,"query":"vintage graphic tee under $30, size M","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":null,"fit_card":"Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.","retry_notice":null,"selected_item_id":"lst_002"},"route":"/ask","run_id":"65bd6859f122","timestamp":"2026-11-15T21:15:13.548363+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
-```
-
-**Criterion 2, trial 1 — actual recorded JSONL** (`scripts/capstone_eval.py::_trial` → `serve.py::ask` → `capstone_logging.py::_measure_one`):
-
-```json
-{"duration_ms":1672.63,"http_status":200,"input":{"json_object":true,"query":"vintage graphic tee under $30, size M","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":null,"fit_card":"Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.","retry_notice":null,"selected_item_id":"lst_002"},"route":"/ask","run_id":"72092599e16b","timestamp":"2026-11-15T21:15:19.663293+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
-```
-
-**Criterion 3, trial 1 — actual recorded JSONL** (`scripts/capstone_eval.py::_trial` → `serve.py::ask` → `capstone_logging.py::_measure_one`):
+**Before, criterion 1:** real `capstone_logging.py::_measure_one` JSONL output from `scripts/capstone_student_eval.py` trial 1:
 
 ```json
-{"duration_ms":0.37,"http_status":400,"input":{"json_object":true,"query":null,"wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":"Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}","fit_card":null,"retry_notice":null,"selected_item_id":null},"route":"/ask","run_id":"a13826f66114","timestamp":"2026-11-15T21:15:24.648863+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+{"duration_ms":2772.36,"http_status":200,"input":{"json_object":true,"query":"vintage graphic tee under $30, size M","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":null,"fit_card":"Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.","retry_notice":null,"selected_item_id":"lst_002","tool_sequence":["search_listings","suggest_outfit","create_fit_card"]},"route":"/ask","run_id":"4c15a2920b2d","timestamp":"2026-11-15T21:32:57.964934+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
 ```
 
-**Criterion 4, trial 1 — actual recorded JSONL** (`scripts/capstone_eval.py::_trial` → `serve.py::ask` → `capstone_logging.py::_measure_one`):
+**Before, criterion 2:** real `capstone_logging.py::_measure_one` JSONL output from `scripts/capstone_student_eval.py` trial 1:
 
 ```json
-{"duration_ms":2156.19,"http_status":200,"input":{"json_object":true,"query":"vintage graphic tee under $30, size XL","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":null,"fit_card":"Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.","retry_notice":"No matches in size XL; retried once without the size filter.","selected_item_id":"lst_006"},"route":"/ask","run_id":"554c329dc938","timestamp":"2026-11-15T21:15:24.651775+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+{"duration_ms":1057.28,"http_status":200,"input":{"json_object":true,"query":"designer ballgown size XXS under $5","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":"No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.","fit_card":null,"retry_notice":"No matches in size XXS; retried once without the size filter.","selected_item_id":null,"tool_sequence":["search_listings","search_listings"]},"route":"/ask","run_id":"1a911d7ed052","timestamp":"2026-11-15T21:33:04.236874+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
 ```
 
-**Criterion 5, trial 1 — actual recorded JSONL** (`scripts/capstone_eval.py::_trial` → `serve.py::ask` → `capstone_logging.py::_measure_one`):
+**Before, criterion 3:** real `capstone_logging.py::_measure_one` JSONL output from `scripts/capstone_student_eval.py` trial 1:
 
 ```json
-{"duration_ms":1011.72,"http_status":200,"input":{"json_object":true,"query":"designer ballgown size XXS under $5","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":"No listings match that request, even after dropping the size filter. Try changing a keyword or raising the price limit.","fit_card":null,"retry_notice":"No matches in size XXS; retried once without the size filter.","selected_item_id":null},"route":"/ask","run_id":"433724421b1e","timestamp":"2026-11-15T21:15:31.226488+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+{"duration_ms":0.38,"http_status":400,"input":{"json_object":true,"query":null,"wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":"Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}","fit_card":null,"retry_notice":null,"selected_item_id":null,"tool_sequence":[]},"route":"/ask","run_id":"e5b5af2bf637","timestamp":"2026-11-15T21:33:07.444728+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+{"duration_ms":0.33,"http_status":500,"input":{"json_object":false,"query":null,"wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":"Internal server error; retry or inspect the local log.","fit_card":null,"retry_notice":null,"selected_item_id":null,"tool_sequence":[]},"route":"/ask","run_id":"567a14ae4e9c","timestamp":"2026-11-15T21:33:07.445894+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+{"duration_ms":0.32,"http_status":500,"input":{"json_object":true,"query":null,"wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":"Internal server error; retry or inspect the local log.","fit_card":null,"retry_notice":null,"selected_item_id":null,"tool_sequence":[]},"route":"/ask","run_id":"bcb0186e952c","timestamp":"2026-11-15T21:33:07.446901+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
 ```
 
+**Before, criterion 4:** real `capstone_logging.py::_measure_one` JSONL output from `scripts/capstone_student_eval.py` trial 1:
 
-See [the complete before log and checks](results/capstone-before-table.md) and [machine-readable trial details](results/capstone-before-trials.json).
+```json
+{"duration_ms":2552.42,"http_status":200,"input":{"json_object":true,"query":"vintage graphic tee under $30, size XL","wardrobe_item_count":null},"model_calls":2,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":null,"fit_card":"Found Graphic Tee — 2003 Tour Bootleg Style for $24.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.","retry_notice":"No matches in size XL; retried once without the size filter.","selected_item_id":"lst_006","tool_sequence":["search_listings","search_listings","suggest_outfit","create_fit_card"]},"route":"/ask","run_id":"fc29bbd7f048","timestamp":"2026-11-15T21:33:07.454350+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+```
+
+**Before, criterion 5:** real `capstone_logging.py::_measure_one` JSONL output from `scripts/capstone_student_eval.py` trial 1:
+
+```json
+{"duration_ms":1712.17,"http_status":200,"input":{"json_object":true,"query":"vintage graphic tee under $30, size M","wardrobe_item_count":0},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":null,"fit_card":"Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Pair it with relaxed jeans and clean sneakers.","retry_notice":null,"selected_item_id":"lst_002","tool_sequence":["search_listings","suggest_outfit","create_fit_card"]},"route":"/ask","run_id":"71ca3df6009a","timestamp":"2026-11-15T21:33:15.003393+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+```
+
+All other raw trials, their HTTP responses, and individual check booleans are in [the before evaluation artifact](results/capstone-student-before-trials.json).
 
 **The Improvement**
 
-**Exactly one targeted change:** In `capstone_logging.py::_output_summary`, add `tool_sequence`, extracting only the tool names from the existing agent `tool_calls` list. This follows the measured check-2 logger omission; no agent logic, search ranking, model prompt, MCP behavior, or target criteria were changed. It does not add raw tool arguments or wardrobe data to the new log field.
+**One targeted source change:** A genuine failure in criterion 3 exposed unsafe type handling in `serve.py::ask`. I replaced `(payload.get("query") or "").strip()` with an explicit check that the JSON root is a dictionary and `query` is a string before calling `.strip()`. The response for invalid input keeps the same actionable validation message. This does not alter the model, agent loop, search ranking, MCP calls, or student acceptance targets.
 
-**Rerun:** Three fresh independent real Flask requests per check, with the **same five AI-assisted provisional criteria**, same targets, Python version, no-key fallback mode and no response caching. All 15 after records are in `results/capstone-after-requests.jsonl`.
+**Rerun under the same five criteria:** GitHub Actions sent **21 more actual HTTP requests** over three independent trials per criterion; all after records are in [JSONL](results/capstone-student-after-requests.jsonl), with checks and response bodies in [the scored after results](results/capstone-student-after-trials.json).
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Structured successful request | 3/3 | PASS | PASS | PASS | MET (3/3) |
-| 2. Recover ordered tool path | 3/3 | PASS | PASS | PASS | MET (3/3) |
-| 3. Rejected input logged | 3/3 | PASS | PASS | PASS | MET (3/3) |
-| 4. Size retry preserved | 3/3 | PASS | PASS | PASS | MET (3/3) |
-| 5. No-match logging and zero provider usage | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 1. Happy-path HTTP telemetry and correlation header | 3/3 | FAIL | FAIL | FAIL | MISSED (0/3) |
+| 2. Bounded size-retry and empty-search failure-path telemetry | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 3. Malformed and non-string JSON payload rejection | 3/3 | PASS | PASS | PASS | MET (3/3) |
+| 4. Secret/wardrobe privacy redaction and temporary cleanup | 3/3 | FAIL | FAIL | FAIL | MISSED (0/3) |
+| 5. Explicit empty-wardrobe HTTP styling and zero-item telemetry | 3/3 | FAIL | FAIL | FAIL | MISSED (0/3) |
 
-**Did it help?** Yes. The tool-path observation rose from **0/3 MISSED → 3/3 MET**, while the other four stayed MET (3/3 each). Total individual passing trials rose from **12/15 → 15/15**. Both stages used 15 real HTTP requests, not simulations of log lines. The unchanged provisional criteria have identical SHA256 in both test artifacts; the instrumentation source hash differs.
+**Measured effect:** Criterion 3 improved from **MISSED 0/3 to MET 3/3**. For every malformed payload, actual HTTP 400 and JSONL 400 were observed, under 50 ms, with no model calls. Criterion 2 remained MET (3/3). The still-missed criteria 1, 4 and 5 were not modified or silently reinterpreted. Passing graded trials increased from **3/15 to 6/15**. An improvement that fixes one real mechanism, while leaving unrelated misses visible, meets the course's diagnostic principle.
 
-**Actual after-fix log output, check 2 trial 1** (created by `capstone_logging.py::_measure_one`):
+**Actual after output for criterion 3, trial 1** from `capstone_logging.py::_measure_one` (three HTTP requests):
 
 ```json
-{"duration_ms":1731.16,"http_status":200,"input":{"json_object":true,"query":"vintage graphic tee under $30, size M","wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":null,"fit_card":"Found Y2K Baby Tee — Butterfly Print for $18.00 on depop. Wear it with Baggy straight-leg jeans, dark wash and Chunky white sneakers for a relaxed look.","retry_notice":null,"selected_item_id":"lst_002","tool_sequence":["search_listings","suggest_outfit","create_fit_card"]},"route":"/ask","run_id":"73ded3e28041","timestamp":"2026-11-15T21:17:49.099172+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+{"duration_ms":0.32,"http_status":400,"input":{"json_object":true,"query":null,"wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":"Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}","fit_card":null,"retry_notice":null,"selected_item_id":null,"tool_sequence":[]},"route":"/ask","run_id":"a01327182858","timestamp":"2026-11-15T21:34:32.489183+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+{"duration_ms":0.22,"http_status":400,"input":{"json_object":false,"query":null,"wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":"Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}","fit_card":null,"retry_notice":null,"selected_item_id":null,"tool_sequence":[]},"route":"/ask","run_id":"ac30d76e338e","timestamp":"2026-11-15T21:34:32.490020+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
+{"duration_ms":0.22,"http_status":400,"input":{"json_object":true,"query":null,"wardrobe_item_count":null},"model_calls":0,"model_tokens":{"output":0,"prompt":0,"total":0},"output":{"error":"Send JSON with a 'query' field, e.g. {\"query\": \"vintage graphic tee under $30\"}","fit_card":null,"retry_notice":null,"selected_item_id":null,"tool_sequence":[]},"route":"/ask","run_id":"47e6e42f12af","timestamp":"2026-11-15T21:34:32.490774+00:00","token_measurement":"Observed provider usage; zero means no billed model calls were recorded."}
 ```
 
-Evidence: [after table with five real outputs](results/capstone-after-table.md), [full comparison and mechanism-level diagnosis](results/capstone-comparison.md), [before JSON](results/capstone-before-trials.json), and [after JSON](results/capstone-after-trials.json). The after result records **actual local fallback**, not paid Gemini inference.
+See [the full actual student-criteria before/after comparison, with one raw record per criterion in each phase](results/capstone-student-comparison.md). The earlier AI-assisted provisional comparison remains available separately, not substituted for the student's results.
 
 **What's Still Broken**
 
-All five **provisional** checks now meet their 3/3 targets, but the measured sample remains small and non-keyed. The first target I'd tighten is check 2: verify the new tool sequence on a failed/retried path, including both `search_listings` calls, in 3/3 runs. A model-keyed evaluation would be required to measure actual live Gemini latency and token usage; no claim about those is made here.
+Three student criteria remain MISSED on the exact stated strings after the one-change retest, and the reasons are specific rather than hidden.
 
-**Course requirement still open:** The professor requires the student to write five fresh Unit 9 acceptance criteria independently. The AI-assisted check set in this repository **cannot honestly be presented as independently authored**. The original Unit 3/4 criteria in `criteria.md` do not fill this requirement. The student should write/commit their own five Unit 9 criteria (at least three about this instrumentation layer, one bad path) and rerun the evaluation against those standards before submitting the graded capstone.
+- **Criterion 1:** The manually copied clothing title uses an en dash while the source item and real output use an em dash. Because the target compares literal text, it measures typographic reproduction instead of item identity. A *legitimate criterion revision*, if the instructor accepts that justification, would preserve the original line and add a new comparison to the selected listing's canonical title. **No target was revised after viewing results.**
+- **Criterion 4:** The JSONL `output.fit_card` excerpt retains raw wardrobe item names, even though the fake key and temporary directories pass redaction/cleanup checks. The first engineering task in another unit would be to remove generated caption content from persistent telemetry or sanitize it; exposing user wardrobe details in logs poses a privacy risk. I stopped after one measured improvement so the input-hardening effect was attributable to a single change.
+- **Criterion 5:** The same en-dash versus em-dash mismatch fails its literal title check; empty-wardrobe general styling and zero-item logging otherwise worked. A revised check could compare against the canonical selected item title rather than a copied string.
 
-**Engineering next step if there were another unit:** Redact sensitive query content from structured logs before exposing the service publicly, then verify the redaction never deletes request correlation. I stopped after the single measured tool-path improvement so the before/after comparison isolates one code change. The system remains Path B local-with-logs, with no public hosted URL.
+**What I'd do next:** Prioritize the **criterion 4 wardrobe privacy leak** before any public rollout, then test that redaction retains safe request IDs and error/latency observability. The same real model-keyed evaluation still needs to be run to measure live Gemini behavior/cost; the committed runs here use actual Flask/MCP with local AI fallbacks.
+
+The criteria were written before this test; failing any criterion was not used as a reason to lower its original 3/3 target. This project meets the one-change before/after evidence procedure even though not all five targets are MET.
 
 **How I Used AI**
 
-1. **Scope and observability:** I asked AI for implementation help extending the existing FitFindr server rather than writing a new agent. It reviewed the Flask/MCP run path, drafted a request-logging wrapper, and produced a clean-checkout GitHub Actions smoke test. I kept Shape A (local-with-logs), retained the original agent behavior, and fixed the smoke script import path after an initial failed checkout.
-2. **Test execution and diagnosis:** I asked AI to automate three repeated trials for each of five observable behaviors and compare a single targeted fix. AI-assisted provisional checks were committed before the baseline, which revealed `output.tool_sequence` was absent in 0/3 runs. The logger was changed to record only tool names; 15 fresh requests then measured that check at 3/3. These checks are **AI-assisted drafts**, so the professor's independent student-authorship requirement is not claimed as fulfilled.
+1. **Scope and instrumentation:** I asked AI to inspect the existing FitFindr Flask/MCP implementation and build an observable local run path without starting a new shopping app. The result was `capstone_logging.py`, a clean-checkout smoke workflow and measured timing/usage records. I retained **Shape A — Deploy and instrument**, preserved Units 3/4, and fixed the CI import issue when the first run failed.
+2. **Student-authored acceptance testing:** After I supplied my five criteria, I asked AI to commit them first, automate three independent trials for each, identify concrete misses, make one fix, and retest without loosening targets. The baseline exposed two HTTP 500 responses for malformed JSON, plus a wardrobe privacy leak and a copied-title typography mismatch. I used the diagnosis to fix `serve.py`'s input type check and measured criterion 3 improving from 0/3 to 3/3; the other misses were reported rather than covered up. I also used AI to produce the comparison report, while **the five standards themselves were supplied by me**.
 
-See [full measured before/after evidence](results/capstone-comparison.md).
+[Student-supplied 42-request before/after comparison](results/capstone-student-comparison.md) · [Criteria](criteria.md) · [Running instructions](RUNNING.md)
